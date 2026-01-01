@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 /* Critical pulse marker */
+/* ===============================
+   Critical Incident Pulse (Map)
+   =============================== */
+
 .leaflet-critical-pulse {
   position: relative;
 }

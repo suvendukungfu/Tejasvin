@@ -7,14 +7,21 @@ export default function IncidentItem({ incident }) {
   const isCritical =
     incident.severity === "Critical" && incident.status === "Active";
 
+  const isModerate =
+    incident.severity === "Moderate" && incident.status === "Active";
+
   return (
     <div
       onClick={() => navigate(`/incident/${incident.id}`)}
       className={`
         bg-slate-900 border rounded-xl p-4 cursor-pointer transition
-        ${isCritical
-          ? "border-red-500/60 ring-2 ring-red-500/40 animate-pulse"
-          : "border-slate-800 hover:border-slate-700 hover:bg-slate-800/40"}
+        ${
+          isCritical
+            ? "border-red-500/60 ring-2 ring-red-500/40 animate-pulse"
+            : isModerate
+            ? "border-yellow-500/40 ring-1 ring-yellow-500/20"
+            : "border-slate-800 hover:border-slate-700 hover:bg-slate-800/40"
+        }
       `}
     >
       {/* Top Row */}
@@ -30,7 +37,7 @@ export default function IncidentItem({ incident }) {
         📍 {incident.location}
       </p>
 
-      {/* Meta */}
+      {/* Meta Info */}
       <div className="flex justify-between text-xs text-slate-500 mt-2">
         <span>{incident.time}</span>
         <span>
