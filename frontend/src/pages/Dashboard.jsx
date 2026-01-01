@@ -51,7 +51,22 @@ export default function Dashboard() {
         {/* Left: LIVE INCIDENT MAP */}
         <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl h-[420px] p-2">
           <IncidentMap />
-        </div>
+              </div>
+              {/* Right: INCIDENT TIMELINE */}
+<div className="bg-slate-900 border border-slate-800 rounded-xl p-4 h-[420px] overflow-y-auto">
+  
+  <h3 className="text-sm font-semibold text-white mb-4">
+    Live Incident Timeline
+  </h3>
+
+  <div className="space-y-6">
+    {incidents.map((incident) => (
+      <IncidentItem key={incident.id} incident={incident} />
+    ))}
+  </div>
+
+</div>
+
 
         {/* Right: INCIDENT FEED */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 h-[420px] overflow-y-auto">
