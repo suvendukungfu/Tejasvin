@@ -4,35 +4,42 @@ import IncidentMap from "../components/dashboard/IncidentMap";
 import { incidents } from "../data/mockIncidents";
 
 export default function Dashboard() {
+  // Derived metrics (later these will come from backend)
+  const activeIncidents = incidents.filter(
+    (i) => i.status === "Active"
+  ).length;
+
   return (
     <div className="space-y-8">
       
       {/* ================= KPI / STATS SECTION ================= */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
         <StatsCard
           title="Active Incidents"
-          value="12"
+          value={activeIncidents}
           subtitle="Currently ongoing"
           color="#ef4444"
+          danger={activeIncidents > 0}
         />
 
         <StatsCard
           title="Incidents Today"
-          value="38"
+          value={38}
           subtitle="Reported today"
           color="#f59e0b"
         />
 
         <StatsCard
           title="Avg Response Time"
-          value="4.2 min"
-          subtitle="Emergency dispatch"
+          value={4.2}
+          subtitle="Emergency dispatch (min)"
           color="#3b82f6"
         />
 
         <StatsCard
           title="Resolved"
-          value="26"
+          value={26}
           subtitle="Cases closed"
           color="#22c55e"
         />
@@ -61,7 +68,6 @@ export default function Dashboard() {
 
         </div>
       </div>
-
     </div>
   );
 }
