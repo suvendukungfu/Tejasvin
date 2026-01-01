@@ -1,8 +1,8 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 import L from "leaflet";
 import { incidents } from "../../data/mockIncidents";
 
-// Marker colors by severity
 const severityIcon = (severity) => {
   const colors = {
     Critical: "red",
@@ -21,13 +21,14 @@ const severityIcon = (severity) => {
 };
 
 export default function IncidentMap() {
+  const navigate = useNavigate();
+
   return (
     <MapContainer
       center={[28.6139, 77.209]}
       zoom={12}
       className="h-full w-full rounded-xl"
     >
-      {/* Dark map tiles */}
       <TileLayer
         attribution="© OpenStreetMap contributors"
         url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
@@ -38,6 +39,9 @@ export default function IncidentMap() {
           key={incident.id}
           position={[incident.lat, incident.lng]}
           icon={severityIcon(incident.severity)}
+          eventHandlers={{
+            click: () => navigate(`/incident/${incident.id}`),
+          }}
         >
           <Popup>
             <div className="text-sm">
@@ -45,7 +49,9 @@ export default function IncidentMap() {
               <p>{incident.location}</p>
               <p>Severity: {incident.severity}</p>
               <p>Status: {incident.status}</p>
-              <p>Impact: {incident.force} N</p>
+              <p className="text-blue-400 mt-1 cursor-pointer">
+                Click for details →
+              </p>
             </div>
           </Popup>
         </Marker>
