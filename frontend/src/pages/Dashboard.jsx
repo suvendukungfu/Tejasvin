@@ -1,6 +1,8 @@
 import StatsCard from "../components/dashboard/StatsCard";
 import IncidentItem from "../components/dashboard/IncidentItem";
 import { incidents } from "../data/mockIncidents";
+import IncidentMap from "../components/dashboard/IncidentMap";
+
 
 export default function Dashboard() {
   return (
@@ -45,7 +47,11 @@ export default function Dashboard() {
           <p className="text-slate-400 text-sm">
             🗺️ Live Incident Map (coming next)
           </p>
-        </div>
+              </div>
+              <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl h-[420px] p-2">
+  <IncidentMap />
+</div>
+
 
         {/* Right: INCIDENT FEED */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 h-[420px] overflow-y-auto">
