@@ -1,9 +1,18 @@
+import Navbar from "./components/layout/Navbar";
+import PageContainer from "./components/layout/PageContainer";
+import Dashboard from "./pages/Dashboard";
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-red-500">
-        AccidentAlert – Tailwind v4 OK
-      </h1>
+    <div className="min-h-screen bg-slate-950">
+      {/* Top Navigation */}
+      <Navbar />
+
+      {/* Main Page Content */}
+      <PageContainer>
+        <Dashboard />
+      </PageContainer>
     </div>
   );
 }
+
