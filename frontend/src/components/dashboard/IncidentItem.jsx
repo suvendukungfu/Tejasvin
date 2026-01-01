@@ -1,8 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import SeverityBadge from "./SeverityBadge";
 
 export default function IncidentItem({ incident }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 hover:border-slate-700 transition cursor-pointer">
+    <div
+      onClick={() => navigate(`/incident/${incident.id}`)}
+      className="bg-slate-900 border border-slate-800 rounded-xl p-4 
+                 hover:border-slate-700 hover:bg-slate-800/40 
+                 transition cursor-pointer"
+    >
       
       {/* Top Row */}
       <div className="flex items-center justify-between mb-2">
