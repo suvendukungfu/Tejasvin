@@ -4,14 +4,19 @@ import SeverityBadge from "./SeverityBadge";
 export default function IncidentItem({ incident }) {
   const navigate = useNavigate();
 
+  const isCritical =
+    incident.severity === "Critical" && incident.status === "Active";
+
   return (
     <div
       onClick={() => navigate(`/incident/${incident.id}`)}
-      className="bg-slate-900 border border-slate-800 rounded-xl p-4 
-                 hover:border-slate-700 hover:bg-slate-800/40 
-                 transition cursor-pointer"
+      className={`
+        bg-slate-900 border rounded-xl p-4 cursor-pointer transition
+        ${isCritical
+          ? "border-red-500/60 ring-2 ring-red-500/40 animate-pulse"
+          : "border-slate-800 hover:border-slate-700 hover:bg-slate-800/40"}
+      `}
     >
-      
       {/* Top Row */}
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm font-medium text-white">
@@ -25,8 +30,8 @@ export default function IncidentItem({ incident }) {
         📍 {incident.location}
       </p>
 
-      {/* Meta Info */}
-      <div className="flex items-center justify-between text-xs text-slate-500 mt-2">
+      {/* Meta */}
+      <div className="flex justify-between text-xs text-slate-500 mt-2">
         <span>{incident.time}</span>
         <span>
           Impact: <span className="text-slate-300">{incident.force} N</span>
