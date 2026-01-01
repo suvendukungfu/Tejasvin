@@ -104,19 +104,29 @@
 //     </MapContainer>
 //   );
 // }
-import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Circle,
+  useMap,
+} from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet.heat";
+
 import { incidents } from "../../data/mockIncidents";
-import { useEffect } from "react";
+import MapControls from "./MapControls";
 
 /* ---------- Icons ---------- */
 const normalIcon = (color) =>
   new L.Icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
-    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    shadowUrl:
+      "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   });
@@ -129,11 +139,11 @@ const criticalPulseIcon = new L.DivIcon({
 });
 
 /* ---------- Heatmap Layer ---------- */
-function HeatmapLayer({ incidents }) {
+function HeatmapLayer({ data }) {
   const map = useMap();
 
   useEffect(() => {
-    const points = incidents.map((i) => [
+    const points = data.map((i) => [
       i.lat,
       i.lng,
       i.severity === "Critical" ? 1 : 0.5,
@@ -146,76 +156,104 @@ function HeatmapLayer({ incidents }) {
     }).addTo(map);
 
     return () => map.removeLayer(heat);
-  }, [map]);
+  }, [map, data]);
 
   return null;
 }
 
 /* ---------- Offset ---------- */
-const getPosition = (incident, index) => {
-  if (incident.severity === "Critical") return [incident.lat, incident.lng];
-  const offset = 0.00015 * index;
-  return [incident.lat + offset, incident.lng + offset];
+const getPosition = (i, idx) => {
+  if (i.severity === "Critical") return [i.lat, i.lng];
+  const o = 0.00015 * idx;
+  return [i.lat + o, i.lng + o];
 };
 
 /* ---------- Map ---------- */
 export default function IncidentMap() {
   const navigate = useNavigate();
 
+  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [showRadius, setShowRadius] = useState(true);
+  const [showCluster, setShowCluster] = useState(true);
+
   return (
-    <MapContainer center={[28.6139, 77.209]} zoom={12} className="h-full w-full rounded-xl">
-      <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
-      <HeatmapLayer incidents={incidents} />
+    <div className="relative h-full w-full">
+      
+      {/* MAP CONTROLS */}
+      <MapControls
+        showHeatmap={showHeatmap}
+        setShowHeatmap={setShowHeatmap}
+        showRadius={showRadius}
+        setShowRadius={setShowRadius}
+        showCluster={showCluster}
+        setShowCluster={setShowCluster}
+      />
 
-      {/* Alert Radius */}
-      {incidents.map((i) => (
-        <Circle
-          key={`radius-${i.id}`}
-          center={[i.lat, i.lng]}
-          radius={i.severity === "Critical" ? 1000 : 500}
-          pathOptions={{
-            color: i.severity === "Critical" ? "#ef4444" : "#facc15",
-            fillOpacity: 0.08,
-          }}
-        />
-      ))}
+      <MapContainer
+        center={[28.6139, 77.209]}
+        zoom={12}
+        className="h-full w-full rounded-xl"
+      >
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
 
-      {/* Clustered Markers */}
-      <MarkerClusterGroup>
-        {incidents.map((incident, index) => {
-          const isCritical =
-            incident.severity === "Critical" && incident.status === "Active";
+        {/* HEATMAP */}
+        {showHeatmap && <HeatmapLayer data={incidents} />}
 
-          const color =
-            incident.severity === "Severe"
-              ? "orange"
-              : incident.severity === "Moderate"
-              ? "yellow"
-              : "green";
-
-          return (
-            <Marker
-              key={incident.id}
-              position={getPosition(incident, index)}
-              icon={isCritical ? criticalPulseIcon : normalIcon(color)}
-              zIndexOffset={isCritical ? 1000 : 400}
-              eventHandlers={{
-                click: () => navigate(`/incident/${incident.id}`),
+        {/* ALERT RADIUS */}
+        {showRadius &&
+          incidents.map((i) => (
+            <Circle
+              key={`r-${i.id}`}
+              center={[i.lat, i.lng]}
+              radius={i.severity === "Critical" ? 1000 : 500}
+              pathOptions={{
+                color: i.severity === "Critical" ? "#ef4444" : "#facc15",
+                fillOpacity: 0.08,
               }}
-            >
-              <Popup>
-                <strong>{incident.id}</strong>
-                <br />
-                {incident.location}
-                <br />
-                Severity: {incident.severity}
-                <br />
-                AI Confidence: {(incident.confidence * 100).toFixed(1)}%
-              </Popup>
-            </Marker>
-          );
-        })}
-      </MarkerClusterGroup>
-    </MapContainer>
+            />
+          ))}
+
+        {/* MARKERS */}
+        {showCluster ? (
+          <MarkerClusterGroup>
+            {incidents.map(renderMarker)}
+          </MarkerClusterGroup>
+        ) : (
+          incidents.map(renderMarker)
+        )}
+      </MapContainer>
+    </div>
   );
+
+  function renderMarker(i, idx) {
+    const isCritical =
+      i.severity === "Critical" && i.status === "Active";
+
+    const color =
+      i.severity === "Severe"
+        ? "orange"
+        : i.severity === "Moderate"
+        ? "yellow"
+        : "green";
+
+    return (
+      <Marker
+        key={i.id}
+        position={getPosition(i, idx)}
+        icon={isCritical ? criticalPulseIcon : normalIcon(color)}
+        zIndexOffset={isCritical ? 1000 : 400}
+        eventHandlers={{
+          click: () => navigate(`/incident/${i.id}`),
+        }}
+      >
+        <Popup>
+          <strong>{i.id}</strong>
+          <br />
+          {i.location}
+          <br />
+          AI Confidence: {(i.confidence * 100).toFixed(1)}%
+        </Popup>
+      </Marker>
+    );
+  }
 }
