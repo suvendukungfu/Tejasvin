@@ -121,6 +121,12 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('incident:responder_update', data);
     });
 
+    socket.on('incident:vitals_update', (data) => {
+        // data: { incidentId, vitals: { status, heartRate, notes } }
+        console.log(`🩺 Vitals update for ${data.incidentId}: ${data.vitals.status}`);
+        socket.broadcast.emit('incident:vitals_sync', data);
+    });
+
     socket.on('disconnect', () => {
         console.log('User disconnected from Rescue Network');
     });
