@@ -71,6 +71,12 @@ export default function App() {
       updateResponderLocation(data);
     });
 
+    socketService.on("incident:vitals_sync", (data) => {
+      console.log("VITALS SYNCED:", data);
+      // We can update the emergency store with the latest vitals
+      useEmergencyStore.setState({ latestVitals: data.vitals });
+    });
+
     // 3. Service Worker & Push
     if ('serviceWorker' in navigator && isAuthenticated) {
       const setupPush = async () => {

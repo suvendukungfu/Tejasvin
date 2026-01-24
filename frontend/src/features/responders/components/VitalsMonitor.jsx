@@ -18,6 +18,11 @@ export default function VitalsMonitor({ incidentId, onUpdate }) {
                 status,
                 notes
             });
+            socketService.emit('incident:vitals_update', {
+                incidentId,
+                vitals: { heartRate, status, notes }
+            });
+
             if (onUpdate) onUpdate(res.data);
             setSuccess(true);
             setTimeout(() => setSuccess(false), 2000);
@@ -85,8 +90,8 @@ export default function VitalsMonitor({ incidentId, onUpdate }) {
                     type="submit"
                     disabled={loading}
                     className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${success
-                            ? 'bg-green-600 text-white shadow-green-500/20'
-                            : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/20'
+                        ? 'bg-green-600 text-white shadow-green-500/20'
+                        : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/20'
                         }`}
                 >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (success ? <CheckCircle2 className="w-4 h-4" /> : <Send className="w-4 h-4" />)}
