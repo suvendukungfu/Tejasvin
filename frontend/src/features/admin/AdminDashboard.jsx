@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { ShieldCheck, UserCheck, UserX, Activity, Map, RefreshCw, Loader2 } from "lucide-react";
 import api from "../../services/api";
 import Badge from "../../components/ui/Badge";
@@ -109,9 +110,9 @@ export default function AdminDashboard() {
                                     <td className="px-8 py-5 font-mono text-sm text-blue-400">{r.stats?.saves || 0}</td>
                                     <td className="px-8 py-5">
                                         {r.isVerified ? (
-                                            <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-500 text-[10px] font-black uppercase tracking-widest border border-blue-500/20">Verified</span>
+                                            <Badge variant="blue">Verified</Badge>
                                         ) : (
-                                            <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-black uppercase tracking-widest border border-amber-500/20">Under Review</span>
+                                            <Badge variant="amber">Under Review</Badge>
                                         )}
                                     </td>
                                     <td className="px-8 py-5 text-right">
