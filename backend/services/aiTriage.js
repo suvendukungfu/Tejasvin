@@ -1,8 +1,9 @@
 /**
- * Mock AI Triage Service
- * In production, this would call an LLM (Gemini/OpenAI) or a custom TensorFlow model.
+ * Analyzes incident descriptions and metadata to provide life-saving advice.
+ * @param {string} description - The user-provided incident description.
+ * @param {string} type - The machine-detected or user-selected incident type.
+ * @returns {Object} advice, priority, and confidence score.
  */
-
 const triageIncident = (description, type) => {
     const desc = (description || '').toLowerCase();
 
