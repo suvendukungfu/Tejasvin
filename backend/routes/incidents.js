@@ -3,6 +3,28 @@ const router = express.Router();
 const Incident = require('../models/Incident');
 const auth = require('../middleware/auth');
 
+// @route    GET api/incidents/stats
+// @desc     Get aggregated stats
+// @access   Private
+router.get('/stats', auth, async (req, res) => {
+    try {
+        const total = await Incident.countDocuments();
+        const active = await Incident.countDocuments({ status: 'Active' });
+        const critical = await Incident.countDocuments({ status: 'Active', severity: 'Critical' });
+        const resolved = await Incident.countDocuments({ status: 'Resolved' });
+
+        res.json({
+            activeSOS: active,
+            criticalSOS: critical,
+            totalSaves: resolved,
+            totalIncidents: total
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
 // @route    GET api/incidents
 // @desc     Get all active incidents
 // @access   Private
@@ -65,6 +87,30 @@ router.put('/:id/accept', auth, async (req, res) => {
             await incident.save();
         }
 
+        res.json(incident);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route    PUT api/incidents/:id/vitals
+// @desc     Update patient vitals (Responder view)
+// @access   Private
+router.put('/:id/vitals', auth, async (req, res) => {
+    try {
+        const { status, heartRate, notes } = req.body;
+        const incident = await Incident.findById(req.params.id);
+
+        if (!incident) return res.status(404).json({ msg: 'Incident not found' });
+
+        incident.vitals = {
+            status: status || incident.vitals?.status,
+            heartRate: heartRate || incident.vitals?.heartRate,
+            notes: notes || incident.vitals?.notes
+        };
+
+        await incident.save();
         res.json(incident);
     } catch (err) {
         console.error(err.message);

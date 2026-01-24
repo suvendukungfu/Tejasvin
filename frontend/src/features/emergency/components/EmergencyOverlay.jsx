@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useEmergencyStore, useUserStore } from "../../../app/store";
-import { X, Phone, ShieldCheck } from "lucide-react";
+import { X, Phone, ShieldCheck, Flame, Heart, AlertTriangle } from "lucide-react";
+import { useState } from "react";
 import clsx from "clsx";
 
 export default function EmergencyOverlay() {
@@ -39,36 +40,83 @@ export default function EmergencyOverlay() {
 
     /* ---------------- ACTIVE STATE ---------------- */
     if (status === 'ACTIVE') {
+        const [showNumbers, setShowNumbers] = useState(false);
+        const { aiAdvice } = useEmergencyStore();
+
+        const emergencyNumbers = [
+            { name: "Police", number: "100", icon: <ShieldCheck className="w-5 h-5" /> },
+            { name: "Ambulance", number: "102", icon: <Heart className="w-5 h-5" /> },
+            { name: "Fire", number: "101", icon: <Flame className="w-5 h-5" /> }
+        ];
+
         return (
             <div className="fixed inset-0 z-[100] bg-red-600 flex flex-col items-center justify-center text-white animate-in fade-in duration-300">
 
                 {/* Pulsing Background */}
                 <div className="absolute inset-0 bg-red-700 animate-pulse" />
 
-                <div className="relative z-10 flex flex-col items-center space-y-8 p-6 text-center">
+                <div className="relative z-10 flex flex-col items-center space-y-8 p-6 text-center w-full max-w-md">
                     <ShieldCheck className="w-24 h-24 text-white" />
 
                     <div className="space-y-2">
                         <h1 className="text-4xl font-black uppercase tracking-widest">
                             Help Requested
                         </h1>
-                        <p className="text-red-100 text-lg">
-                            Responders and authorities have been notified.
+                        <p className="text-red-100 text-lg font-medium opacity-90">
+                            Responders and authorities notified.
                         </p>
                     </div>
 
-                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 w-full max-w-sm">
-                        <p className="text-sm font-semibold uppercase opacity-70 mb-1">Incident ID</p>
-                        <p className="font-mono text-xl">{activeIncidentId}</p>
+                    {/* AI FIRST AID ADVICE */}
+                    {aiAdvice && (
+                        <div className="bg-white text-red-700 rounded-3xl p-6 shadow-2xl border-4 border-white/20 animate-in zoom-in duration-500 delay-200">
+                            <div className="flex items-center gap-2 mb-2">
+                                <AlertTriangle className="w-5 h-5" />
+                                <span className="text-xs font-black uppercase tracking-widest">Immediate First-Aid</span>
+                            </div>
+                            <p className="text-sm font-bold leading-relaxed">
+                                {aiAdvice}
+                            </p>
+                        </div>
+                    )}
+
+                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 w-full">
+                        <p className="text-xs font-black uppercase tracking-widest opacity-50 mb-1">Live Tracker ID</p>
+                        <p className="font-mono text-xl font-bold">{activeIncidentId}</p>
                     </div>
 
-                    <p className="text-sm animate-pulse">
-                        📍 Broadcasting live location...
-                    </p>
+                    {/* Hotline Menu */}
+                    <div className="w-full space-y-3">
+                        <button
+                            onClick={() => setShowNumbers(!showNumbers)}
+                            className="w-full py-4 bg-black/20 hover:bg-black/30 border border-white/10 rounded-2xl flex items-center justify-center gap-3 font-bold transition-all"
+                        >
+                            <Phone className="w-5 h-5" />
+                            {showNumbers ? "Hide Quick Dial" : "Call Authorities Directly"}
+                        </button>
+
+                        {showNumbers && (
+                            <div className="grid grid-cols-1 gap-2 animate-in slide-in-from-top-4 duration-300">
+                                {emergencyNumbers.map((num) => (
+                                    <a
+                                        key={num.number}
+                                        href={`tel:${num.number}`}
+                                        className="flex items-center justify-between p-4 bg-white/20 hover:bg-white/30 rounded-xl transition-colors border border-white/10"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            {num.icon}
+                                            <span className="font-bold">{num.name}</span>
+                                        </div>
+                                        <span className="bg-white text-red-600 px-3 py-1 rounded-lg text-sm font-black">{num.number}</span>
+                                    </a>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     <button
                         onClick={cancelSOS}
-                        className="mt-8 px-8 py-3 bg-white text-red-600 font-bold rounded-full shadow-lg hover:bg-red-50 transition"
+                        className="mt-4 px-12 py-4 bg-white text-red-600 font-black rounded-2xl shadow-xl hover:bg-red-50 transition active:scale-95 uppercase tracking-widest"
                     >
                         I AM SAFE NOW
                     </button>

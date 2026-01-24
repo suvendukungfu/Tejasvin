@@ -83,4 +83,43 @@ router.get('/me', auth, async (req, res) => {
     }
 });
 
+// @route    PUT api/auth/profile
+// @desc     Update user profile
+// @access   Private
+router.put('/profile', auth, async (req, res) => {
+    const { name, bio, role } = req.body;
+
+    try {
+        let user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ msg: 'User not found' });
+
+        if (name) user.name = name;
+        if (bio) user.bio = bio;
+        if (role) user.role = role;
+
+        await user.save();
+        res.json(user);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route    POST api/auth/subscribe
+// @desc     Save push subscription
+// @access   Private
+router.post('/subscribe', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ msg: 'User not found' });
+
+        user.pushSubscription = req.body;
+        await user.save();
+        res.json({ msg: 'Subscription saved' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
 module.exports = router;

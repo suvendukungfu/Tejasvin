@@ -61,6 +61,7 @@ export default function MissionModal() {
                         </button>
                         <button
                             onClick={() => {
+                                if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
                                 acceptMission();
                                 startNavigation();
                             }}

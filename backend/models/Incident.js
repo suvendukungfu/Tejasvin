@@ -3,7 +3,15 @@ const mongoose = require('mongoose');
 const IncidentSchema = new mongoose.Schema({
     victim: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     type: { type: String, default: 'Accident' },
+    description: { type: String },
     severity: { type: String, enum: ['Low', 'Moderate', 'Severe', 'Critical'], default: 'Moderate' },
+    aiAdvice: { type: String },
+    confidence: { type: Number },
+    vitals: {
+        status: { type: String, default: 'Unstable' },
+        heartRate: Number,
+        notes: String
+    },
     location: {
         type: { type: String, default: 'Point' },
         coordinates: { type: [Number], required: true } // [lng, lat]

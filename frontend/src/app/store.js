@@ -6,33 +6,59 @@ import socketService from '../services/socket';
 export const useEmergencyStore = create((set) => ({
     status: 'IDLE', // 'IDLE' | 'COUNTDOWN' | 'CONNECTING' | 'ACTIVE' | 'RESOLVED'
     activeIncidentId: null,
+    aiAdvice: null,
     countdownValue: 5,
+    activeResponders: {}, // { responderId: { lat, lng, name } }
 
     triggerSOS: () => set({ status: 'COUNTDOWN', countdownValue: 5 }),
 
-    cancelSOS: () => set({ status: 'IDLE', countdownValue: 5 }),
+    cancelSOS: () => set({ status: 'IDLE', countdownValue: 5, activeResponders: {}, aiAdvice: null }),
 
-    confirmSOS: (location) => {
+    confirmSOS: async (location) => {
         set({ status: 'CONNECTING' });
+        const { user } = useUserStore.getState();
 
-        // Real Socket Emit
-        socketService.emit('emergency:sos', {
+        const payload = {
             type: 'Accident',
-            severity: 'Critical',
+            description: "Vehicle collision near coordinates", // Mock description for now
             lat: location?.lat || 28.6139,
             lng: location?.lng || 77.2090,
-            time: new Date().toLocaleTimeString()
-        });
+            userId: user?.id || null
+        };
 
-        setTimeout(() => {
-            console.log('SOS CONFIRMED - API TRIGGERED');
-            set({ status: 'ACTIVE', activeIncidentId: `INC-${Date.now()}` });
-        }, 2000);
+        try {
+            const api = (await import('../services/api')).default;
+            const res = await api.post('/incidents', payload);
+
+            // Emit via socket for real-time broadcast and also save result locally
+            socketService.emit('emergency:sos', payload);
+
+            set({
+                status: 'ACTIVE',
+                activeIncidentId: res.data._id,
+                aiAdvice: res.data.aiAdvice
+            });
+        } catch (err) {
+            console.error('SOS registration failed:', err);
+            set({ status: 'IDLE' });
+        }
     },
+
+    updateResponderLocation: (data) => set((state) => ({
+        activeResponders: {
+            ...state.activeResponders,
+            [data.responderName]: { lat: data.lat, lng: data.lng, name: data.responderName }
+        }
+    })),
 
     setCountdown: (value) => set({ countdownValue: value }),
 
-    reset: () => set({ status: 'IDLE', activeIncidentId: null, countdownValue: 5 }),
+    reset: () => set({ status: 'IDLE', activeIncidentId: null, aiAdvice: null, countdownValue: 5, activeResponders: {} }),
+
+    markResolved: (responderInfo) => set({
+        status: 'RESOLVED',
+        lastResponder: responderInfo // { id, name }
+    })
 }));
 
 
@@ -93,7 +119,12 @@ export const useMissionStore = create((set) => ({
 
     startNavigation: () => set({ missionStatus: 'ON_ROUTE' }),
 
-    completeMission: () => set({ missionStatus: 'COMPLETED' }),
+    arriveAtMission: () => set({ missionStatus: 'ARRIVED' }),
+
+    completeMission: () => set((state) => ({
+        missionStatus: 'COMPLETED',
+        lastCompletedMission: state.activeMission
+    })),
 
     cancelMission: () => set({ activeMission: null, missionStatus: 'IDLE' }),
 }));

@@ -1,18 +1,20 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useMissionStore, useEmergencyStore } from "../../../app/store";
 import { PartyPopper, CheckCircle2 } from "lucide-react";
+import ReviewModal from "../../emergency/components/ReviewModal";
 import clsx from "clsx";
 
 export default function SuccessOverlay() {
-    const { missionStatus, cancelMission } = useMissionStore();
-    const { status: emergencyStatus, reset: resetEmergency } = useEmergencyStore();
+    const { missionStatus, cancelMission, lastCompletedMission } = useMissionStore();
+    const { status: emergencyStatus, reset: resetEmergency, lastResponder } = useEmergencyStore();
+    const [showReview, setShowReview] = useState(false);
 
     const isMissionSuccess = missionStatus === 'COMPLETED';
     const isSOSResolved = emergencyStatus === 'RESOLVED';
 
     const isVisible = isMissionSuccess || isSOSResolved;
 
-    if (!isVisible) return null;
+    if (!isVisible && !showReview) return null;
 
     return (
         <div className="fixed inset-0 z-[200] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-6 animate-in fade-in duration-500">
@@ -42,14 +44,26 @@ export default function SuccessOverlay() {
 
                 <button
                     onClick={() => {
-                        if (isMissionSuccess) cancelMission();
-                        if (isSOSResolved) resetEmergency();
+                        setShowReview(true);
                     }}
                     className="w-full py-4 bg-success-base text-white font-bold rounded-xl hover:bg-success-base/90 transition shadow-lg shadow-success-base/20"
                 >
-                    Return to Dashboard
+                    Rate & Finish
                 </button>
             </div>
+
+            <ReviewModal
+                isOpen={showReview}
+                onClose={() => {
+                    setShowReview(false);
+                    if (isMissionSuccess) cancelMission();
+                    if (isSOSResolved) resetEmergency();
+                }}
+                incidentId={isMissionSuccess ? lastCompletedMission?._id : lastResponder?.incidentId}
+                toUserId={isMissionSuccess ? lastCompletedMission?.userId : lastResponder?.id}
+                toUserName={isMissionSuccess ? "Victim" : lastResponder?.name}
+                role={isMissionSuccess ? "responder" : "victim"}
+            />
 
         </div>
     );

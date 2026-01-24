@@ -120,6 +120,7 @@ import "leaflet.heat";
 
 import { incidents } from "../data/mockIncidents";
 import MapControls from "./MapControls";
+import { useEmergencyStore } from "../../../app/store";
 
 /* ---------- Icons ---------- */
 const normalIcon = (color) =>
@@ -175,6 +176,14 @@ export default function IncidentMap() {
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [showRadius, setShowRadius] = useState(true);
   const [showCluster, setShowCluster] = useState(true);
+  const { activeResponders } = useEmergencyStore();
+
+  const responderIcon = new L.Icon({
+    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png`,
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  });
 
   return (
     <div className="relative h-full w-full">
@@ -221,6 +230,22 @@ export default function IncidentMap() {
         ) : (
           incidents.map(renderMarker)
         )}
+
+        {/* LIVE RESPONDERS */}
+        {Object.values(activeResponders).map((responder, idx) => (
+          <Marker
+            key={`responder-${idx}`}
+            position={[responder.lat, responder.lng]}
+            icon={responderIcon}
+            zIndexOffset={2000}
+          >
+            <Popup>
+              <strong>Responder: {responder.name}</strong>
+              <br />
+              Status: On Route
+            </Popup>
+          </Marker>
+        ))}
       </MapContainer>
     </div>
   );

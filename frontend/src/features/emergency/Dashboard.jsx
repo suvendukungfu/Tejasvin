@@ -1,48 +1,78 @@
+import { useEffect, useState } from "react";
 import StatsCard from "./components/StatsCard";
 import IncidentItem from "./components/IncidentItem";
 import LiveMap from "../map/components/LiveMap";
-import { incidents } from "./data/mockIncidents";
+import api from "../../services/api";
+import SkeletonCard from "./components/SkeletonCard";
 
 export default function Dashboard() {
-  // Derived metrics (later these will come from backend)
-  const activeIncidents = incidents.filter(
-    (i) => i.status === "Active"
-  ).length;
+  const [stats, setStats] = useState({ activeSOS: 0, criticalSOS: 0, totalSaves: 0 });
+  const [activeIncidents, setActiveIncidents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [statsRes, incidentsRes] = await Promise.all([
+          api.get("/incidents/stats"),
+          api.get("/incidents")
+        ]);
+        setStats(statsRes.data);
+        setActiveIncidents(incidentsRes.data);
+      } catch (err) {
+        console.error("Failed to fetch dashboard data", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="space-y-8">
 
       {/* ================= KPI / STATS SECTION ================= */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {loading ? (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        ) : (
+          <>
+            <StatsCard
+              title="Active SOS"
+              value={stats.activeSOS}
+              subtitle="Emergency alerts"
+              color="#ef4444"
+              danger={stats.activeSOS > 0}
+            />
 
-        <StatsCard
-          title="Active Incidents"
-          value={activeIncidents}
-          subtitle="Currently ongoing"
-          color="#ef4444"
-          danger={activeIncidents > 0}
-        />
+            <StatsCard
+              title="Critical Alerts"
+              value={stats.criticalSOS}
+              subtitle="Life-threatening"
+              color="#f59e0b"
+              danger={stats.criticalSOS > 0}
+            />
 
-        <StatsCard
-          title="Incidents Today"
-          value={38}
-          subtitle="Reported today"
-          color="#f59e0b"
-        />
+            <StatsCard
+              title="Avg Response Time"
+              value={4.2}
+              subtitle="Live average (min)"
+              color="#3b82f6"
+            />
 
-        <StatsCard
-          title="Avg Response Time"
-          value={4.2}
-          subtitle="Emergency dispatch (min)"
-          color="#3b82f6"
-        />
-
-        <StatsCard
-          title="Resolved"
-          value={26}
-          subtitle="Cases closed"
-          color="#22c55e"
-        />
+            <StatsCard
+              title="Total Saves"
+              value={stats.totalSaves}
+              subtitle="Successful rescues"
+              color="#22c55e"
+            />
+          </>
+        )}
       </div>
 
       {/* ================= MAIN DASHBOARD SECTION ================= */}
@@ -56,29 +86,19 @@ export default function Dashboard() {
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 h-[420px] overflow-y-auto">
 
           <h3 className="text-sm font-semibold text-white mb-4">
-            Live Incident Timeline
-          </h3>
-
-          <div className="space-y-6">
-            {incidents.map((incident) => (
-              <IncidentItem key={incident.id} incident={incident} />
-            ))}
-          </div>
-
-        </div>
-
-
-        {/* Right: INCIDENT FEED */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 h-[420px] overflow-y-auto">
-
-          <h3 className="text-sm font-semibold text-white mb-4">
             Live Incident Feed
           </h3>
 
           <div className="space-y-4">
-            {incidents.map((incident) => (
-              <IncidentItem key={incident.id} incident={incident} />
-            ))}
+            {activeIncidents.length > 0 ? (
+              activeIncidents.map((incident) => (
+                <IncidentItem key={incident._id || incident.id} incident={incident} />
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center h-48 text-slate-600 italic text-sm">
+                No active incidents reported.
+              </div>
+            )}
           </div>
 
         </div>
