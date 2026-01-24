@@ -1,31 +1,93 @@
+import { Bell, Settings, ShieldAlert, ToggleLeft, ToggleRight, LogOut } from "lucide-react";
+import { useRecruiterStore, useUserStore } from "../../app/store";
+
 export default function Navbar() {
+  const { user, isAuthenticated, logout } = useUserStore();
+
+  if (!isAuthenticated) return null; // Or show simple logo only
+
   return (
-    <nav className="w-full h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6">
-      
-      {/* Left: Logo / App Name */}
-      <div className="flex items-center gap-3">
-        <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-        <h1 className="text-lg font-semibold text-white tracking-wide">
-          AccidentAlert
-        </h1>
-      </div>
+    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 pointer-events-none">
+      <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
 
-      {/* Center: System Status */}
-      <div className="hidden md:flex items-center gap-2 px-4 py-1 rounded-full bg-slate-800 border border-slate-700">
-        <span className="w-2 h-2 rounded-full bg-green-500" />
-        <span className="text-sm text-slate-300">System Online</span>
-      </div>
+        {/* Floating Glass Bar */}
+        <div className="bg-slate-900/80 backdrop-blur-xl border border-white/10 shadow-xl rounded-full px-6 py-3 flex items-center justify-between w-full gap-4">
 
-      {/* Right: Actions */}
-      <div className="flex items-center gap-4">
-        <button className="text-slate-400 hover:text-white transition">
-          🔔
-        </button>
-        <button className="text-slate-400 hover:text-white transition">
-          ⚙️
-        </button>
-      </div>
+          {/* Logo */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-red-600/20">
+              <ShieldAlert className="w-5 h-5 text-red-500" />
+              <div className="absolute inset-0 rounded-lg bg-red-500/20 animate-pulse" />
+            </div>
+            <h1 className="text-xl font-display font-bold text-white tracking-tight hidden sm:block">
+              Accident<span className="text-red-500">Alert</span>
+            </h1>
+          </div>
 
+          <div className="hidden lg:flex items-center gap-6">
+            <button className="text-sm font-medium text-white transition">Dashboard</button>
+            <button className="text-sm font-medium text-slate-400 hover:text-white transition">Live Map</button>
+            <DemoToggle />
+          </div>
+
+          {/* Right Icons & User */}
+          <div className="flex items-center gap-3 ml-auto">
+
+            {/* User Info */}
+            <div className="hidden md:flex flex-col items-end mr-1">
+              <span className="text-xs font-bold text-white leading-none">{user?.name || "User"}</span>
+              <span className="text-[10px] text-slate-500 uppercase tracking-widest font-black leading-tight mt-0.5">{user?.role}</span>
+            </div>
+
+            <button className="bg-white/10 hover:bg-white/20 active:bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-200 p-2 rounded-full relative">
+              <Bell className="w-5 h-5 text-slate-300" />
+              <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-slate-900" />
+            </button>
+
+            <div className="group relative">
+              <button className="bg-white/10 hover:bg-white/20 active:bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-200 w-8 h-8 rounded-full overflow-hidden border-2 border-slate-700">
+                <img
+                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name || 'Felix'}`}
+                  alt="User"
+                  className="w-full h-full object-cover"
+                />
+              </button>
+
+              {/* Simple Tooltip/Menu on Hover could go here, or just Logout button next to it */}
+            </div>
+
+            <button
+              onClick={logout}
+              className="bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-400 p-2 rounded-full border border-white/10 transition-all"
+              title="Logout"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+
+        </div>
+      </div>
     </nav>
+  );
+}
+
+function DemoToggle() {
+  const { isDemoMode, toggleDemoMode } = useRecruiterStore();
+
+  return (
+    <button
+      onClick={toggleDemoMode}
+      className={`
+        flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all
+        ${isDemoMode
+          ? "bg-purple-500/10 border-purple-500/50 text-purple-400"
+          : "bg-slate-800 border-slate-700 text-slate-500 hover:text-slate-300"}
+      `}
+    >
+      {isDemoMode ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
+      <span className="text-xs font-semibold uppercase tracking-wider">
+        {isDemoMode ? "Recruiter Mode" : "Demo Off"}
+      </span>
+    </button>
   );
 }
