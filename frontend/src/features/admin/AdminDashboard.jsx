@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
 import { ShieldCheck, UserCheck, UserX, Activity, Map, RefreshCw, Loader2 } from "lucide-react";
 import api from "../../services/api";
+import Badge from "../../components/ui/Badge";
 
 export default function AdminDashboard() {
     const [responders, setResponders] = useState([]);
