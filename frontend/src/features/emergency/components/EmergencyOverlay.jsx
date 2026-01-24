@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import { useEmergencyStore, useUserStore } from "../../../app/store";
-import { X, Phone, ShieldCheck, Flame, Heart, AlertTriangle } from "lucide-react";
+import { X, Phone, ShieldCheck, Flame, Heart, AlertTriangle, HeartPulse } from "lucide-react";
 import { useState } from "react";
 import clsx from "clsx";
 
@@ -77,6 +76,25 @@ export default function EmergencyOverlay() {
                             <p className="text-sm font-bold leading-relaxed">
                                 {aiAdvice}
                             </p>
+                        </div>
+                    )}
+
+                    {/* REAL-TIME VITALS SYNC */}
+                    {useEmergencyStore.getState().latestVitals && (
+                        <div className="w-full bg-red-700/50 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex items-center justify-between animate-in slide-in-from-bottom-4 duration-500">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-white/10 rounded-lg">
+                                    <HeartPulse className="w-4 h-4 text-white animate-pulse" />
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-[10px] font-black uppercase tracking-widest opacity-50">Patient Status</p>
+                                    <p className="font-bold text-sm">{useEmergencyStore.getState().latestVitals.status}</p>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-2xl font-black">{useEmergencyStore.getState().latestVitals.heartRate}</p>
+                                <p className="text-[10px] font-black opacity-50 uppercase">BPM</p>
+                            </div>
                         </div>
                     )}
 
