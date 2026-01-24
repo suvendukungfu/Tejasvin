@@ -126,6 +126,10 @@ io.on('connection', (socket) => {
     });
 });
 
+app.get('/health', (req, res) => {
+    res.json({ status: 'up', timestamp: new Date(), uptime: process.uptime() });
+});
+
 app.get('/', (req, res) => {
     res.send('Rescue Network Backend is running!');
 });
