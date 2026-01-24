@@ -23,3 +23,8 @@ If you are developing a production application, we recommend using TypeScript wi
 =======
 # Frontend for Tejasvin Accident Alert
 >>>>>>> 15c5908 (Add frontend README)
+
+## Running Locally
+```bash
+npm install && npm run dev
+```
