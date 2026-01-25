@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from "react-leaflet";
 import L from "leaflet";
-import "leaflet-routing-machine";
 import { useEmergencyStore, useRecruiterStore } from "../../../app/store";
 import logger from "../../../utils/logger";
 import "leaflet/dist/leaflet.css";
