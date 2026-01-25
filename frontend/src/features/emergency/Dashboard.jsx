@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import StatsCard from "./components/StatsCard";
 import IncidentItem from "./components/IncidentItem";
 import LiveMap from "../map/components/LiveMap";
@@ -103,15 +104,32 @@ export default function Dashboard() {
           </h3>
 
           <div className="space-y-4">
-            {activeIncidents.length > 0 ? (
-              activeIncidents.map((incident) => (
-                <IncidentItem key={incident._id || incident.id} incident={incident} />
-              ))
-            ) : (
-              <div className="flex flex-col items-center justify-center h-48 text-slate-600 italic text-sm">
-                No active incidents reported.
-              </div>
-            )}
+            <LayoutGroup>
+              <AnimatePresence mode="popLayout">
+                {activeIncidents.length > 0 ? (
+                  activeIncidents.map((incident) => (
+                    <motion.div
+                      key={incident._id || incident.id}
+                      layout
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <IncidentItem incident={incident} />
+                    </motion.div>
+                  ))
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex flex-col items-center justify-center h-48 text-slate-600 italic text-sm"
+                  >
+                    No active incidents reported.
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </LayoutGroup>
           </div>
 
         </div>
