@@ -1,5 +1,6 @@
 import { useEmergencyStore, useUserStore } from "../../../app/store";
 import { X, Phone, ShieldCheck, Flame, Heart, AlertTriangle, HeartPulse } from "lucide-react";
+import Radar from "../../../components/ui/Radar";
 import { useState, useEffect } from "react";
 import logger from "../../../utils/logger";
 
@@ -29,12 +30,11 @@ export default function EmergencyOverlay() {
     if (status === 'CONNECTING') {
         return (
             <div className="fixed inset-0 z-[100] bg-slate-950/95 flex flex-col items-center justify-center text-white">
-                <div className="relative w-24 h-24 mb-6">
-                    <div className="absolute inset-0 border-t-4 border-red-500 rounded-full animate-spin"></div>
-                    <div className="absolute inset-4 border-t-4 border-red-500/50 rounded-full animate-spin reverse"></div>
+                <div className="relative w-64 h-64 mb-8">
+                    <Radar className="w-full h-full" />
                 </div>
-                <h2 className="text-2xl font-bold animate-pulse">Contacting Authorities...</h2>
-                <p className="text-slate-400 mt-2">Establishing secure connection</p>
+                <h2 className="text-2xl font-bold animate-pulse font-display tracking-wide">Contacting Authorities...</h2>
+                <p className="text-slate-400 mt-2 font-mono text-sm">SECURE_LINK_AGENCY_V2</p>
             </div>
         );
     }
