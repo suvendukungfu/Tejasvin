@@ -56,7 +56,26 @@
   filter: grayscale(100%) contrast(1.2) brightness(0.8) sepia(1) hue-rotate(-50deg) saturate(3);
 }
 
-/* Glass styles moved to inline classes to avoid build issues */
+/* Glass Utilities for Premium Feel */
+.glass-panel {
+  @apply bg-slate-900/40 backdrop-blur-xl border border-white/10;
+}
+
+.glass-card {
+  @apply bg-slate-900/60 backdrop-blur-md border border-white/5 shadow-2xl;
+}
+
+.glass-input {
+  @apply bg-slate-950/50 border border-slate-800 text-white placeholder:text-slate-600 focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 transition-all;
+}
+
+.text-gradient-red {
+  @apply bg-gradient-to-r from-red-500 to-orange-600 bg-clip-text text-transparent;
+}
+
+.text-gradient-blue {
+  @apply bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent;
+}
 
 /* Animations */
 @keyframes fade-in-up {
