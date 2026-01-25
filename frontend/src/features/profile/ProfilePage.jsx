@@ -13,6 +13,7 @@ import {
     AlertCircle
 } from "lucide-react";
 import api from "../../services/api";
+import logger from "../../utils/logger";
 import ContactManager from "./ContactManager";
 
 export default function ProfilePage() {
@@ -30,7 +31,7 @@ export default function ProfilePage() {
             setUser(res.data);
             setIsEditing(false);
         } catch (err) {
-            console.error("Failed to update profile", err);
+            logger.error("Failed to update profile", err);
         } finally {
             setLoading(false);
         }

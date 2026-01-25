@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ShieldCheck, UserCheck, UserX, Activity, Map, RefreshCw, Loader2 } from "lucide-react";
 import api from "../../services/api";
+import logger from "../../utils/logger";
 import Badge from "../../components/ui/Badge";
 
 export default function AdminDashboard() {
@@ -19,7 +20,7 @@ export default function AdminDashboard() {
             setResponders(userRes.data || []);
             setStats({ ...statsRes.data, pendingVerification: (userRes.data || []).filter(r => !r.isVerified).length });
         } catch (err) {
-            console.error("Failed to fetch admin data", err);
+            logger.error("Failed to fetch admin data", err);
         } finally {
             setLoading(false);
         }
@@ -34,7 +35,7 @@ export default function AdminDashboard() {
             await api.put(`/admin/verify/${userId}`, { isVerified: !currentStatus });
             setResponders(responders.map(r => r._id === userId ? { ...r, isVerified: !currentStatus } : r));
         } catch (err) {
-            console.error("Verification toggle failed", err);
+            logger.error("Verification toggle failed", err, { userId });
         }
     };
 

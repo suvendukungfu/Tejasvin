@@ -18,7 +18,7 @@ export interface IUser {
 }
 
 export interface IIncident {
-    victimId?: string;
+    victim?: string;
     type: string;
     description?: string;
     severity: 'Low' | 'Moderate' | 'Severe' | 'Critical';

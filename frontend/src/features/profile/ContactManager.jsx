@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { UserPlus, Trash2, Phone, User as UserIcon, ShieldAlert, Loader2 } from "lucide-react";
 import api from "../../services/api";
+import logger from "../../utils/logger";
 
 export default function ContactManager() {
     const [contacts, setContacts] = useState([]);
@@ -17,7 +18,7 @@ export default function ContactManager() {
             const res = await api.get("/contacts");
             setContacts(res.data);
         } catch (err) {
-            console.error("Failed to fetch contacts", err);
+            logger.error("Failed to fetch contacts", err);
         } finally {
             setLoading(false);
         }
@@ -39,7 +40,7 @@ export default function ContactManager() {
             setPhone("");
             setRelationship("");
         } catch (err) {
-            console.error("Failed to add contact", err);
+            logger.error("Failed to add contact", err);
         } finally {
             setSubmitting(false);
         }
@@ -50,7 +51,7 @@ export default function ContactManager() {
             await api.delete(`/contacts/${id}`);
             setContacts(contacts.filter(c => c._id !== id));
         } catch (err) {
-            console.error("Failed to delete contact", err);
+            logger.error("Failed to delete contact", err, { contactId: id });
         }
     };
 

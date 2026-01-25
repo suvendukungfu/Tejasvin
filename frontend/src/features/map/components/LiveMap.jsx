@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from "react-leaflet";
 import L from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
@@ -38,11 +38,12 @@ export default function LiveMap() {
 
     const { location, locationPermission } = useUserStore();
     const { activeMission, missionStatus } = useMissionStore();
-    const [activeIncident, setActiveIncident] = useState(null);
 
     // Default center (New Delhi as fallback)
     const defaultCenter = [28.6139, 77.2090];
-    const center = location ? [location.lat, location.lng] : defaultCenter;
+    const center = (location && typeof location.lat === 'number' && typeof location.lng === 'number')
+        ? [location.lat, location.lng]
+        : defaultCenter;
 
     return (
         <div className="relative w-full h-full rounded-xl overflow-hidden z-0">
@@ -72,7 +73,7 @@ export default function LiveMap() {
                 {location && <RecenterMap lat={location.lat} lng={location.lng} />}
 
                 {/* User Marker (Blue Pulse) */}
-                {location && (
+                {location && typeof location.lat === 'number' && typeof location.lng === 'number' && (
                     <Marker
                         position={[location.lat, location.lng]}
                         icon={L.divIcon({
@@ -87,37 +88,42 @@ export default function LiveMap() {
                 )}
 
                 {/* Navigation Route (Simulated) */}
-                {missionStatus === 'ON_ROUTE' && location && activeMission && (
-                    <Polyline
-                        positions={[
-                            [location.lat, location.lng],
-                            [activeMission.lat, activeMission.lng]
-                        ]}
-                        color="#3b82f6"
-                        weight={4}
-                        dashArray="10, 10"
-                        className="animate-pulse"
-                    />
-                )}
+                {missionStatus === 'ON_ROUTE' &&
+                    location && typeof location.lat === 'number' && typeof location.lng === 'number' &&
+                    activeMission && typeof activeMission.lat === 'number' && typeof activeMission.lng === 'number' && (
+                        <Polyline
+                            positions={[
+                                [location.lat, location.lng],
+                                [activeMission.lat, activeMission.lng]
+                            ]}
+                            color="#3b82f6"
+                            weight={4}
+                            dashArray="10, 10"
+                            className="animate-pulse"
+                        />
+                    )}
 
                 {/* Incident Markers */}
                 <MarkerClusterGroup chunkedLoading>
-                    {incidents.map((incident) => (
-                        <Marker
-                            key={incident.id}
-                            position={[incident.lat, incident.lng]}
-                            eventHandlers={{
-                                click: () => setActiveIncident(incident),
-                            }}
-                        >
-                            <Popup>
-                                <div className="text-slate-900">
-                                    <strong className="block text-sm font-bold">{incident.type}</strong>
-                                    <span className="text-xs text-slate-500">Severity: {incident.severity}</span>
-                                </div>
-                            </Popup>
-                        </Marker>
-                    ))}
+                    {Array.isArray(incidents) && incidents.map((incident) => {
+                        if (!incident || typeof incident.lat !== 'number' || typeof incident.lng !== 'number') return null;
+                        return (
+                            <Marker
+                                key={incident.id || `${incident.lat}-${incident.lng}`}
+                                position={[incident.lat, incident.lng]}
+                                eventHandlers={{
+                                    click: () => {/* Logic for incident click if needed */ },
+                                }}
+                            >
+                                <Popup>
+                                    <div className="text-slate-900">
+                                        <strong className="block text-sm font-bold">{incident.type || 'Unknown incident'}</strong>
+                                        <span className="text-xs text-slate-500">Severity: {incident.severity || 'N/A'}</span>
+                                    </div>
+                                </Popup>
+                            </Marker>
+                        );
+                    })}
                 </MarkerClusterGroup>
             </MapContainer>
 
