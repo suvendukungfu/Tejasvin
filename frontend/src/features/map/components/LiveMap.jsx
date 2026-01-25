@@ -5,8 +5,9 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import { useUserStore, useMissionStore } from "../../../app/store";
 import { useGeolocation } from "../hooks/useGeolocation";
 import { incidents } from "../../emergency/data/mockIncidents"; // Adjusted path
-import { Navigation } from "lucide-react";
+import { Navigation, Radar } from "lucide-react";
 import "leaflet/dist/leaflet.css";
+import RadarOverlay from "./RadarOverlay";
 
 // Fix Leaflet's default icon issue
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -35,6 +36,7 @@ function RecenterMap({ lat, lng }) {
 export default function LiveMap() {
     // Start tracking
     useGeolocation();
+    const [showRadar, setShowRadar] = useState(true);
 
     const { location, locationPermission } = useUserStore();
     const { activeMission, missionStatus } = useMissionStore();
@@ -51,6 +53,13 @@ export default function LiveMap() {
             {/* Map Control Buttons */}
             <div className="absolute top-4 right-4 z-[400] flex flex-col gap-2">
                 <button
+                    onClick={() => setShowRadar(!showRadar)}
+                    className={`p-2 rounded-lg shadow-lg transition-colors ${showRadar ? 'bg-blue-600 text-white' : 'bg-slate-800 text-white hover:bg-slate-700'}`}
+                    title="Toggle Radar Scan"
+                >
+                    <Radar className={`w-5 h-5 ${showRadar ? 'animate-spin-slow' : ''}`} />
+                </button>
+                <button
                     onClick={() => {/* Trigger recenter logic via state or ref if needed */ }}
                     className="p-2 bg-slate-800 text-white rounded-lg shadow-lg hover:bg-slate-700"
                     title="Recenter"
@@ -58,6 +67,8 @@ export default function LiveMap() {
                     <Navigation className="w-5 h-5" />
                 </button>
             </div>
+
+            {showRadar && <RadarOverlay />}
 
             <MapContainer
                 center={center}
