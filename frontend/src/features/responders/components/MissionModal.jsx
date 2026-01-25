@@ -1,6 +1,6 @@
 import { useMissionStore } from "../../../app/store";
 import { Navigation, X, ShieldAlert, BadgeCheck } from "lucide-react";
-import clsx from "clsx";
+import logger from "../../../utils/logger";
 
 export default function MissionModal() {
     const { activeMission, missionStatus, acceptMission, cancelMission, startNavigation } = useMissionStore();
@@ -60,10 +60,15 @@ export default function MissionModal() {
                             Decline
                         </button>
                         <button
-                            onClick={() => {
-                                if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
-                                acceptMission();
-                                startNavigation();
+                            onClick={async () => {
+                                try {
+                                    if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+                                    await acceptMission(activeMission._id || activeMission.id);
+                                    startNavigation();
+                                    logger.info("Mission accepted", { missionId: activeMission._id || activeMission.id });
+                                } catch (error) {
+                                    logger.error("Failed to accept mission", error);
+                                }
                             }}
                             className="py-3 px-4 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-500 transition shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
                         >

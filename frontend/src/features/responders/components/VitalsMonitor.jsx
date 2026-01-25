@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Heart, Activity, ClipboardList, Send, Loader2, CheckCircle2 } from "lucide-react";
 import api from "../../../services/api";
+import socketService from "../../../services/socket";
+import logger from "../../../utils/logger";
+import { AlertCircle } from "lucide-react";
 
 export default function VitalsMonitor({ incidentId, onUpdate }) {
     const [heartRate, setHeartRate] = useState(80);
@@ -8,26 +11,33 @@ export default function VitalsMonitor({ incidentId, onUpdate }) {
     const [notes, setNotes] = useState("");
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleUpdate = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError(null);
         try {
             const res = await api.put(`/incidents/${incidentId}/vitals`, {
                 heartRate,
                 status,
                 notes
             });
+
             socketService.emit('incident:vitals_update', {
                 incidentId,
                 vitals: { heartRate, status, notes }
             });
 
-            if (onUpdate) onUpdate(res.data);
+            if (onUpdate && typeof onUpdate === 'function') {
+                onUpdate(res.data);
+            }
+
             setSuccess(true);
             setTimeout(() => setSuccess(false), 2000);
         } catch (err) {
-            console.error("Vitals update failed", err);
+            logger.error("Vitals update failed", err, { incidentId });
+            setError("Failed to sync vitals. Please check connection.");
         } finally {
             setLoading(false);
         }
@@ -85,6 +95,13 @@ export default function VitalsMonitor({ incidentId, onUpdate }) {
                         className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-blue-500/50 h-20 resize-none transition-all"
                     />
                 </div>
+
+                {error && (
+                    <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-xs">
+                        <AlertCircle className="w-4 h-4" />
+                        {error}
+                    </div>
+                )}
 
                 <button
                     type="submit"

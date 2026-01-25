@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMissionStore, useEmergencyStore } from "../../../app/store";
 import { PartyPopper, CheckCircle2 } from "lucide-react";
 import ReviewModal from "../../emergency/components/ReviewModal";
-import clsx from "clsx";
 
 export default function SuccessOverlay() {
     const { missionStatus, cancelMission, lastCompletedMission } = useMissionStore();
@@ -59,9 +58,9 @@ export default function SuccessOverlay() {
                     if (isMissionSuccess) cancelMission();
                     if (isSOSResolved) resetEmergency();
                 }}
-                incidentId={isMissionSuccess ? lastCompletedMission?._id : lastResponder?.incidentId}
+                incidentId={isMissionSuccess ? lastCompletedMission?._id || lastCompletedMission?.id : lastResponder?.incidentId}
                 toUserId={isMissionSuccess ? lastCompletedMission?.userId : lastResponder?.id}
-                toUserName={isMissionSuccess ? "Victim" : lastResponder?.name}
+                toUserName={isMissionSuccess ? "Victim" : (lastResponder?.name || "Responder")}
                 role={isMissionSuccess ? "responder" : "victim"}
             />
 

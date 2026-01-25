@@ -1,9 +1,22 @@
+import { useEffect } from "react";
 import { Navigation, MapPin, CheckCircle, Clock, HeartPulse } from "lucide-react";
-import socketService from "../../../services/socket";
+import { useMissionStore, useUserStore } from "../../../app/store";
 import VitalsMonitor from "./VitalsMonitor";
 
 const getDistance = (lat1, lon1, lat2, lon2) => {
-    // ...
+    // Haversine formula
+    const R = 6371e3; // metres
+    const φ1 = lat1 * Math.PI / 180;
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
 };
 
 export default function NavigationOverlay() {
@@ -20,10 +33,9 @@ export default function NavigationOverlay() {
 
     if ((missionStatus !== 'ON_ROUTE' && missionStatus !== 'ARRIVED') || !activeMission) return null;
 
-    const distance = getDistance(
-        location?.lat || 0, location?.lng || 0,
-        activeMission.lat || 28.6139, activeMission.lng || 77.2090
-    );
+    const distance = (location?.lat && location?.lng && activeMission?.lat && activeMission?.lng)
+        ? getDistance(location.lat, location.lng, activeMission.lat, activeMission.lng)
+        : 10000; // Fallback to large distance if data missing
 
     const isCloseEnough = distance <= 50; // 50 metres
 
@@ -84,7 +96,11 @@ export default function NavigationOverlay() {
                         {/* Action Grid */}
                         <div className="grid grid-cols-2 gap-4">
                             <button
-                                onClick={cancelSOS}
+                                onClick={() => {
+                                    if (window.confirm("Are you sure you want to cancel this mission? This should only be done in extreme circumstances.")) {
+                                        cancelMission();
+                                    }
+                                }}
                                 className="py-4 rounded-2xl font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-all"
                             >
                                 Cancel
