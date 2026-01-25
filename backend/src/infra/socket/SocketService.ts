@@ -50,6 +50,13 @@ export class SocketService {
                 socket.broadcast.emit('mission:start', data);
             });
 
+            // V2 Infrastructure Simulation Events
+            socket.on('vehicle:update', (data: any) => {
+                // Relay vehicle telemetry to all connected clients (Admin/Dashboard)
+                // console.log('🚗 V2I Telemetry:', data.id, data.speed_kmh);
+                socket.broadcast.emit('infrastructure:update', data);
+            });
+
             socket.on('disconnect', () => {
                 console.log('User disconnected from Rescue v2');
             });

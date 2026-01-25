@@ -4,6 +4,7 @@ import L from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { useUserStore, useMissionStore } from "../../../app/store";
 import { useGeolocation } from "../hooks/useGeolocation";
+import socketService from "../../../services/socket";
 import { incidents } from "../../emergency/data/mockIncidents"; // Adjusted path
 import { Navigation, Radar } from "lucide-react";
 import "leaflet/dist/leaflet.css";
@@ -40,6 +41,35 @@ export default function LiveMap() {
 
     const { location, locationPermission } = useUserStore();
     const { activeMission, missionStatus } = useMissionStore();
+    const [vehicles, setVehicles] = useState({}); // Stores nearby ghost vehicles
+
+    useEffect(() => {
+        // Listen for V2I Telemetry
+        socketService.on('infrastructure:update', (data) => {
+            setVehicles(prev => ({
+                ...prev,
+                [data.id]: data // Update or add vehicle
+            }));
+
+            // Auto-cleanup stale vehicles > 5s old
+            const now = Date.now();
+            setVehicles(current => {
+                const next = { ...current };
+                let changed = false;
+                Object.keys(next).forEach(key => {
+                    if (now - next[key].timestamp > 5000) {
+                        delete next[key];
+                        changed = true;
+                    }
+                });
+                return changed ? next : current;
+            });
+        });
+
+        return () => {
+            // Cleanup socket listener if needed
+        };
+    }, []);
 
     // Default center (New Delhi as fallback)
     const defaultCenter = [28.6139, 77.2090];
@@ -113,6 +143,36 @@ export default function LiveMap() {
                             className="animate-pulse"
                         />
                     )}
+
+                {/* V2I Ghost Nodes (Simulated Vehicles) */}
+                {Object.values(vehicles).map(v => (
+                    <Marker
+                        key={v.id}
+                        position={[v.lat, v.lng]}
+                        icon={L.divIcon({
+                            className: "bg-transparent",
+                            html: `
+                                <div class="relative w-6 h-6 flex items-center justify-center">
+                                    <div class="absolute w-full h-full bg-cyan-400/30 rounded-full animate-pulse"></div>
+                                    <div class="w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee]"></div>
+                                    <div class="absolute -top-4 text-[8px] font-mono text-cyan-400 whitespace-nowrap bg-slate-900/80 px-1 rounded">
+                                        ${v.speed_kmh} km/h
+                                    </div>
+                                </div>
+                            `,
+                            iconSize: [24, 24],
+                            iconAnchor: [12, 12]
+                        })}
+                    >
+                        <Popup>
+                            <div className="text-slate-900 text-xs">
+                                <strong>Connected Vehicle</strong><br />
+                                ID: {v.id}<br />
+                                Speed: {v.speed_kmh} km/h
+                            </div>
+                        </Popup>
+                    </Marker>
+                ))}
 
                 {/* Incident Markers */}
                 <MarkerClusterGroup chunkedLoading>
