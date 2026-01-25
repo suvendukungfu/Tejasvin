@@ -4,6 +4,58 @@
 @tailwind components;
 @tailwind utilities;
 
+/* TACTICAL NIGHT VISION MODE (Red/Black) */
+:root {
+  --bg-tactical: #020617;
+  /* Default Slate-950 */
+  --surface-tactical: #0f172a;
+  /* Default Slate-900 */
+  --text-primary: #f8fafc;
+  /* Slate-50 */
+  --text-secondary: #94a3b8;
+  /* Slate-400 */
+}
+
+.tactical-mode {
+  --bg-tactical: #000000;
+  --surface-tactical: #110000;
+  /* Deep Red-Black */
+  --text-primary: #ef4444;
+  /* Red-500 */
+  --text-secondary: #7f1d1d;
+  /* Red-900 */
+}
+
+/* Force overrides when in tactical mode */
+.tactical-mode body,
+.tactical-mode .bg-slate-950,
+.tactical-mode .bg-slate-900 {
+  background-color: var(--bg-tactical) !important;
+  color: var(--text-primary) !important;
+}
+
+.tactical-mode .bg-slate-800,
+.tactical-mode .bg-slate-900\/80,
+.tactical-mode .bg-slate-900\/60 {
+  background-color: var(--surface-tactical) !important;
+  border-color: #450a0a !important;
+  /* Red-950 border */
+}
+
+.tactical-mode .text-slate-400,
+.tactical-mode .text-slate-500 {
+  color: var(--text-secondary) !important;
+}
+
+.tactical-mode .text-white {
+  color: #ef4444 !important;
+  /* All white becomes red */
+}
+
+.tactical-mode .leaflet-layer {
+  filter: grayscale(100%) contrast(1.2) brightness(0.8) sepia(1) hue-rotate(-50deg) saturate(3);
+}
+
 /* Glass styles moved to inline classes to avoid build issues */
 
 /* Animations */

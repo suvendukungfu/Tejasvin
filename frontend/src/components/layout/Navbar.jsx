@@ -1,28 +1,56 @@
-import { Bell, Settings, ShieldAlert, ToggleLeft, ToggleRight, LogOut, User as UserIcon } from "lucide-react";
+import { Bell, Settings, ShieldAlert, ToggleLeft, ToggleRight, LogOut, User as UserIcon, EyeOff } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import React from "react";
 import { useRecruiterStore, useUserStore } from "../../app/store";
 
-const DemoToggle = () => {
+function DemoToggle() {
   const { isDemoMode, toggleDemoMode } = useRecruiterStore();
 
+  // Tactical Mode Logic (Local State for now, could be in store)
+  const [isTactical, setIsTactical] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isTactical) {
+      document.body.classList.add('tactical-mode');
+    } else {
+      document.body.classList.remove('tactical-mode');
+    }
+  }, [isTactical]);
+
   return (
-    <button
-      onClick={toggleDemoMode}
-      className={`
-        flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all
-        ${isDemoMode
-          ? "bg-purple-500/10 border-purple-500/50 text-purple-400"
-          : "bg-slate-800 border-slate-700 text-slate-500 hover:text-slate-300"}
-      `}
-      aria-label="Toggle Demo Mode"
-    >
-      {isDemoMode ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
-      <span className="text-xs font-semibold uppercase tracking-wider">
-        {isDemoMode ? "Recruiter Mode" : "Demo Off"}
-      </span>
-    </button>
+    <div className="flex items-center gap-2">
+      <button
+        onClick={() => setIsTactical(!isTactical)}
+        className={`
+          p-1.5 rounded-full border transition-all
+          ${isTactical
+            ? "bg-red-950/30 border-red-500/50 text-red-500"
+            : "bg-slate-800 border-slate-700 text-slate-400 hover:text-white"}
+        `}
+        title="Toggle Tactical Night Vision"
+        aria-label="Toggle Tactical Mode"
+      >
+        <EyeOff className="w-4 h-4" />
+      </button>
+
+      <button
+        onClick={toggleDemoMode}
+        className={`
+          flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all
+          ${isDemoMode
+            ? "bg-purple-500/10 border-purple-500/50 text-purple-400"
+            : "bg-slate-800 border-slate-700 text-slate-500 hover:text-slate-300"}
+        `}
+        aria-label="Toggle Demo Mode"
+      >
+        {isDemoMode ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
+        <span className="text-xs font-semibold uppercase tracking-wider">
+          {isDemoMode ? "Recruiter" : "Standard"}
+        </span>
+      </button>
+    </div>
   );
-};
+}
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useUserStore();
