@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Star, MessageSquare, Send, X, Loader2 } from "lucide-react";
+import { Star, MessageSquare, Send, X, Loader2, AlertCircle } from "lucide-react";
 import api from "../../../services/api";
+import logger from "../../../utils/logger";
 
 export default function ReviewModal({ isOpen, onClose, incidentId, toUserId, toUserName, role }) {
     const [rating, setRating] = useState(5);
@@ -8,10 +9,12 @@ export default function ReviewModal({ isOpen, onClose, incidentId, toUserId, toU
     const [hoveredRating, setHoveredRating] = useState(0);
     const [loading, setLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError(null);
         try {
             await api.post("/feedback", {
                 incidentId,
@@ -28,7 +31,8 @@ export default function ReviewModal({ isOpen, onClose, incidentId, toUserId, toU
                 setRating(5);
             }, 2000);
         } catch (err) {
-            console.error("Failed to submit feedback", err);
+            logger.error("Feedback submission failed", err, { incidentId, role });
+            setError("Failed to submit feedback. Our team has been notified.");
         } finally {
             setLoading(false);
         }
@@ -107,6 +111,13 @@ export default function ReviewModal({ isOpen, onClose, incidentId, toUserId, toU
                             className="w-full bg-slate-800 border border-slate-700 rounded-2xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500/50 h-28 resize-none transition-all"
                         />
                     </div>
+
+                    {error && (
+                        <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-xs">
+                            <AlertCircle className="w-4 h-4" />
+                            {error}
+                        </div>
+                    )}
 
                     <button
                         type="submit"

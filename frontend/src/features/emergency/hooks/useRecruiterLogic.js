@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useRecruiterStore } from "../../../app/store";
-import { incidents as mockIncidents } from "../../emergency/data/mockIncidents";
 
 export const useRecruiterLogic = () => {
     const { isDemoMode, simulateIncident } = useRecruiterStore();
@@ -11,7 +10,7 @@ export const useRecruiterLogic = () => {
         // Simulate an incident every 8 seconds
         const interval = setInterval(() => {
             // In a real app, this would add to the store. 
-            // For now, we'll just trigger the console log via the store action
+            // For now, we'll just trigger the logger via the store action
             simulateIncident();
 
             // Optional: Dispatch a custom event or toast here to show UI feedback

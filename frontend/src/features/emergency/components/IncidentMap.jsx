@@ -121,6 +121,7 @@ import "leaflet.heat";
 import { incidents } from "../data/mockIncidents";
 import MapControls from "./MapControls";
 import { useEmergencyStore } from "../../../app/store";
+import logger from "../../../utils/logger";
 
 /* ---------- Icons ---------- */
 const normalIcon = (color) =>
@@ -144,19 +145,29 @@ function HeatmapLayer({ data }) {
   const map = useMap();
 
   useEffect(() => {
-    const points = data.map((i) => [
-      i.lat,
-      i.lng,
-      i.severity === "Critical" ? 1 : 0.5,
-    ]);
+    if (!Array.isArray(data)) return;
 
-    const heat = L.heatLayer(points, {
-      radius: 35,
-      blur: 25,
-      maxZoom: 13,
-    }).addTo(map);
+    const points = data
+      .filter(i => i && typeof i.lat === 'number' && typeof i.lng === 'number')
+      .map((i) => [
+        i.lat,
+        i.lng,
+        i.severity === "Critical" ? 1 : 0.5,
+      ]);
 
-    return () => map.removeLayer(heat);
+    if (points.length === 0) return;
+
+    try {
+      const heat = L.heatLayer(points, {
+        radius: 35,
+        blur: 25,
+        maxZoom: 13,
+      }).addTo(map);
+
+      return () => map.removeLayer(heat);
+    } catch (error) {
+      logger.error("Failed to initialize HeatmapLayer", error);
+    }
   }, [map, data]);
 
   return null;
@@ -164,9 +175,24 @@ function HeatmapLayer({ data }) {
 
 /* ---------- Offset ---------- */
 const getPosition = (i, idx) => {
-  if (i.severity === "Critical") return [i.lat, i.lng];
+  if (!i) return [28.6139, 77.209];
+
+  // Support both GeoJSON (Backend) and lat/lng (Mock)
+  let lat = i.lat;
+  let lng = i.lng;
+
+  if (i.location && i.location.coordinates) {
+    lng = i.location.coordinates[0];
+    lat = i.location.coordinates[1];
+  }
+
+  if (typeof lat !== 'number' || typeof lng !== 'number') {
+    return [28.6139, 77.209];
+  }
+
+  if (i.severity === "Critical") return [lat, lng];
   const o = 0.00015 * idx;
-  return [i.lat + o, i.lng + o];
+  return [lat + o, lng + o];
 };
 
 /* ---------- Map ---------- */
@@ -176,7 +202,17 @@ export default function IncidentMap() {
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [showRadius, setShowRadius] = useState(true);
   const [showCluster, setShowCluster] = useState(true);
-  const { activeResponders } = useEmergencyStore();
+
+  const { incidents: liveIncidents, fetchIncidents, activeResponders } = useEmergencyStore();
+
+  useEffect(() => {
+    fetchIncidents();
+    const interval = setInterval(fetchIncidents, 10000); // Poll every 10s for dashboard updates
+    return () => clearInterval(interval);
+  }, [fetchIncidents]);
+
+  // Combine live and mock data for demo, or just use live if available
+  const displayIncidents = liveIncidents && liveIncidents.length > 0 ? liveIncidents : incidents;
 
   const responderIcon = new L.Icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png`,
@@ -206,46 +242,52 @@ export default function IncidentMap() {
         <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
 
         {/* HEATMAP */}
-        {showHeatmap && <HeatmapLayer data={incidents} />}
+        {showHeatmap && <HeatmapLayer data={displayIncidents} />}
 
         {/* ALERT RADIUS */}
-        {showRadius &&
-          incidents.map((i) => (
-            <Circle
-              key={`r-${i.id}`}
-              center={[i.lat, i.lng]}
-              radius={i.severity === "Critical" ? 1000 : 500}
-              pathOptions={{
-                color: i.severity === "Critical" ? "#ef4444" : "#facc15",
-                fillOpacity: 0.08,
-              }}
-            />
-          ))}
+        {showRadius && Array.isArray(displayIncidents) &&
+          displayIncidents.map((i) => {
+            const pos = getPosition(i, 0);
+            return (
+              <Circle
+                key={`r-${i.id || i._id || Math.random()}`}
+                center={pos}
+                radius={i.severity === "Critical" ? 1000 : 500}
+                pathOptions={{
+                  color: i.severity === "Critical" ? "#ef4444" : "#facc15",
+                  fillOpacity: 0.08,
+                }}
+              />
+            );
+          })}
 
         {/* MARKERS */}
-        {showCluster ? (
+        {Array.isArray(displayIncidents) && (showCluster ? (
           <MarkerClusterGroup>
-            {incidents.map(renderMarker)}
+            {displayIncidents.map(renderMarker)}
           </MarkerClusterGroup>
         ) : (
-          incidents.map(renderMarker)
-        )}
+          displayIncidents.map(renderMarker)
+        ))}
 
         {/* LIVE RESPONDERS */}
-        {Object.values(activeResponders).map((responder, idx) => (
-          <Marker
-            key={`responder-${idx}`}
-            position={[responder.lat, responder.lng]}
-            icon={responderIcon}
-            zIndexOffset={2000}
-          >
-            <Popup>
-              <strong>Responder: {responder.name}</strong>
-              <br />
-              Status: On Route
-            </Popup>
-          </Marker>
-        ))}
+        {activeResponders && Object.values(activeResponders).map((responder, idx) => {
+          if (!responder || typeof responder.lat !== 'number' || typeof responder.lng !== 'number') return null;
+          return (
+            <Marker
+              key={`responder-${idx}`}
+              position={[responder.lat, responder.lng]}
+              icon={responderIcon}
+              zIndexOffset={2000}
+            >
+              <Popup>
+                <strong>Responder: {responder.name || 'Unknown'}</strong>
+                <br />
+                Status: On Route
+              </Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
     </div>
   );
@@ -263,20 +305,24 @@ export default function IncidentMap() {
 
     return (
       <Marker
-        key={i.id}
+        key={i.id || i._id}
         position={getPosition(i, idx)}
         icon={isCritical ? criticalPulseIcon : normalIcon(color)}
         zIndexOffset={isCritical ? 1000 : 400}
         eventHandlers={{
-          click: () => navigate(`/incident/${i.id}`),
+          click: () => navigate(`/incident/${i.id || i._id}`),
         }}
       >
         <Popup>
-          <strong>{i.id}</strong>
+          <strong>{i.id || i._id}</strong>
           <br />
-          {i.location}
+          {typeof i.location === 'string'
+            ? i.location
+            : i.location?.coordinates
+              ? `Coords: ${i.location.coordinates[1].toFixed(4)}, ${i.location.coordinates[0].toFixed(4)}`
+              : 'Location Not Provided'}
           <br />
-          AI Confidence: {(i.confidence * 100).toFixed(1)}%
+          AI Confidence: {(i.confidence ? i.confidence * 100 : 0).toFixed(1)}%
         </Popup>
       </Marker>
     );

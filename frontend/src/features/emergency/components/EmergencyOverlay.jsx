@@ -1,11 +1,12 @@
 import { useEmergencyStore, useUserStore } from "../../../app/store";
 import { X, Phone, ShieldCheck, Flame, Heart, AlertTriangle, HeartPulse } from "lucide-react";
-import { useState } from "react";
-import clsx from "clsx";
+import { useState, useEffect } from "react";
+import logger from "../../../utils/logger";
 
 export default function EmergencyOverlay() {
-    const { status, countdownValue, setCountdown, activeIncidentId, cancelSOS, confirmSOS } = useEmergencyStore();
+    const { status, countdownValue, setCountdown, activeIncidentId, cancelSOS, confirmSOS, aiAdvice, latestVitals } = useEmergencyStore();
     const { location } = useUserStore();
+    const [showNumbers, setShowNumbers] = useState(false);
 
     /* ---------------- COUNTDOWN LOGIC ---------------- */
     useEffect(() => {
@@ -14,6 +15,7 @@ export default function EmergencyOverlay() {
             if (countdownValue > 0) {
                 timer = setTimeout(() => setCountdown(countdownValue - 1), 1000);
             } else {
+                logger.emergency("SOS countdown reached zero, confirming alert");
                 confirmSOS(location);
             }
         }
@@ -39,8 +41,6 @@ export default function EmergencyOverlay() {
 
     /* ---------------- ACTIVE STATE ---------------- */
     if (status === 'ACTIVE') {
-        const [showNumbers, setShowNumbers] = useState(false);
-        const { aiAdvice } = useEmergencyStore();
 
         const emergencyNumbers = [
             { name: "Police", number: "100", icon: <ShieldCheck className="w-5 h-5" /> },
@@ -80,7 +80,7 @@ export default function EmergencyOverlay() {
                     )}
 
                     {/* REAL-TIME VITALS SYNC */}
-                    {useEmergencyStore.getState().latestVitals && (
+                    {latestVitals && (
                         <div className="w-full bg-red-700/50 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex items-center justify-between animate-in slide-in-from-bottom-4 duration-500">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-white/10 rounded-lg">
@@ -88,11 +88,11 @@ export default function EmergencyOverlay() {
                                 </div>
                                 <div className="text-left">
                                     <p className="text-[10px] font-black uppercase tracking-widest opacity-50">Patient Status</p>
-                                    <p className="font-bold text-sm">{useEmergencyStore.getState().latestVitals.status}</p>
+                                    <p className="font-bold text-sm">{latestVitals.status || 'Monitoring'}</p>
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="text-2xl font-black">{useEmergencyStore.getState().latestVitals.heartRate}</p>
+                                <p className="text-2xl font-black">{latestVitals.heartRate || '--'}</p>
                                 <p className="text-[10px] font-black opacity-50 uppercase">BPM</p>
                             </div>
                         </div>
@@ -133,7 +133,12 @@ export default function EmergencyOverlay() {
                     </div>
 
                     <button
-                        onClick={cancelSOS}
+                        onClick={() => {
+                            if (window.confirm("CONFIRMATION REQUIRED: Are you safe and ready to resolve this alert?")) {
+                                logger.info("User requested SOS cancellation/resolution");
+                                cancelSOS();
+                            }
+                        }}
                         className="mt-4 px-12 py-4 bg-white text-red-600 font-black rounded-2xl shadow-xl hover:bg-red-50 transition active:scale-95 uppercase tracking-widest"
                     >
                         I AM SAFE NOW

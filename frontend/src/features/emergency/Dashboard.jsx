@@ -3,6 +3,7 @@ import StatsCard from "./components/StatsCard";
 import IncidentItem from "./components/IncidentItem";
 import LiveMap from "../map/components/LiveMap";
 import api from "../../services/api";
+import logger from "../../utils/logger";
 import SkeletonCard from "./components/SkeletonCard";
 
 export default function Dashboard() {
@@ -17,15 +18,27 @@ export default function Dashboard() {
           api.get("/incidents/stats"),
           api.get("/incidents")
         ]);
-        setStats(statsRes.data);
-        setActiveIncidents(incidentsRes.data);
+
+        if (statsRes && statsRes.data) {
+          setStats(statsRes.data);
+        }
+
+        if (incidentsRes && Array.isArray(incidentsRes.data)) {
+          setActiveIncidents(incidentsRes.data);
+        } else {
+          setActiveIncidents([]);
+        }
       } catch (err) {
-        console.error("Failed to fetch dashboard data", err);
+        logger.error("Failed to fetch dashboard data", err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
+    const interval = setInterval(fetchData, 10000); // 10s polling for live dashboard
+
+    return () => clearInterval(interval);
   }, []);
 
   return (

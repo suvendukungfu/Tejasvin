@@ -1,12 +1,12 @@
-import { useNavigate } from "react-router-dom";
 import SeverityBadge from "./SeverityBadge";
 import clsx from "clsx";
 import { Clock, MapPin, Activity } from "lucide-react";
 import { useMissionStore } from "../../../app/store";
 
 export default function IncidentItem({ incident }) {
-  const navigate = useNavigate();
   const { offerMission } = useMissionStore();
+
+  if (!incident) return null;
 
   const isCritical = incident.severity === "Critical" && incident.status === "Active";
 
@@ -40,7 +40,7 @@ export default function IncidentItem({ incident }) {
 
       {/* Incident Card */}
       <div
-        onClick={() => offerMission(incident)} // Trigger Mission Offer instead of Nav
+        onClick={() => incident && offerMission(incident)} // Added guard
         className={clsx(
           "relative rounded-xl p-4 cursor-pointer transition-all duration-200 border",
           "hover:-translate-y-0.5 hover:shadow-lg group-hover:bg-slate-800/20",
@@ -52,16 +52,20 @@ export default function IncidentItem({ incident }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
           <span className="font-mono text-xs text-slate-400">
-            {incident.id}
+            {incident.id || incident._id || 'ID_MISSING'}
           </span>
-          <SeverityBadge severity={incident.severity} />
+          <SeverityBadge severity={incident.severity || 'Unknown'} />
         </div>
 
         {/* Location */}
         <div className="flex items-start gap-2 mb-3">
           <MapPin className="w-4 h-4 text-action-base mt-0.5" />
           <p className="text-sm font-medium text-slate-200 leading-tight">
-            {incident.location}
+            {typeof incident.location === 'string'
+              ? incident.location
+              : incident.location?.coordinates
+                ? `Coords: ${incident.location.coordinates[1].toFixed(4)}, ${incident.location.coordinates[0].toFixed(4)}`
+                : 'Location Not Provided'}
           </p>
         </div>
 
@@ -69,11 +73,11 @@ export default function IncidentItem({ incident }) {
         <div className="grid grid-cols-2 gap-2 text-xs text-slate-500 border-t border-white/5 pt-3">
           <div className="flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5" />
-            <span>{incident.time}</span>
+            <span>{incident.time || (incident.createdAt ? new Date(incident.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--')}</span>
           </div>
           <div className="flex items-center gap-1.5 justify-end">
             <Activity className="w-3.5 h-3.5" />
-            <span>{incident.force} N</span>
+            <span>{incident.force ?? incident.telemetry?.force_n ?? '0'} N</span>
           </div>
         </div>
 

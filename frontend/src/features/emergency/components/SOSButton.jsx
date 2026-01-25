@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useEmergencyStore } from "../../../app/store";
 import { AlertCircle } from "lucide-react";
 import clsx from "clsx";
+import logger from "../../../utils/logger";
 
 export default function SOSButton() {
     const { status, triggerSOS } = useEmergencyStore();
@@ -32,9 +33,10 @@ export default function SOSButton() {
 
         // Start 3s timer
         timerRef.current = setTimeout(() => {
+            logger.emergency("SOS triggered via long-press");
             triggerSOS();
             if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 500]);
-            clearInterval(timerRef.currentHaptic);
+            if (timerRef.currentHaptic) clearInterval(timerRef.currentHaptic);
             setIsHolding(false);
         }, 3000);
     };
