@@ -40,6 +40,16 @@ export class SocketService {
                 socket.broadcast.emit('mission:offered', data);
             });
 
+            socket.on('incident:vitals_update', (data: any) => {
+                console.log('❤️ Vitals Update:', data);
+                socket.broadcast.emit('incident:vitals_sync', data);
+            });
+
+            socket.on('mission:accepted', (data: any) => {
+                console.log('✅ Mission Accepted:', data);
+                socket.broadcast.emit('mission:start', data);
+            });
+
             socket.on('disconnect', () => {
                 console.log('User disconnected from Rescue v2');
             });
