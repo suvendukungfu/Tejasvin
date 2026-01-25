@@ -2,6 +2,7 @@
 
 [![V2 Architecture](https://img.shields.io/badge/Architecture-v2.0--TS-blueviolet?style=for-the-badge)](https://github.com/suvendukungfu/Tejasvin)
 [![AI/ML Enabled](https://img.shields.io/badge/AI--Triage-Enabled-green?style=for-the-badge)](https://github.com/suvendukungfu/Tejasvin)
+[![Real-time](https://img.shields.io/badge/Signal-Real--time-red?style=for-the-badge&logo=socket.io&logoColor=white)](https://socket.io/)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue?style=for-the-badge)](https://opensource.org/licenses/ISC)
 
 Rescue Network is a mission-critical, real-time emergency coordination ecosystem. It bridges the fatal gap between an accident and professional medical arrival by mobilizing a verified community of responders and providing immediate, AI-driven first-aid intelligence.
