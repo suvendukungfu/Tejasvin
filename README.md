@@ -54,6 +54,7 @@ npm run dev
 ---
 
 ## 📜 Technical Documentation
+- **[📘 USER GUIDE (How to Use)](docs/USER_GUIDE.md)**: Step-by-step instructions for Victims and Responders.
 - **[Git Workflow & Guidelines](docs/git_guidelines.md)**: Conventional Commits and atomic flow standards.
 - **[API Documentation](docs/API.md)**: Complete REST and WebSocket endpoint reference.
 - **[v2 Architecture Blueprint](docs/v2_architecture_blueprint.md)**: Detailed scaling and AI pipeline specs.
