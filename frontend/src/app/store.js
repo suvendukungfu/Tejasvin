@@ -76,29 +76,40 @@ export const useEmergencyStore = create((set) => ({
 
 // --- User/Location Store ---
 
-export const useUserStore = create((set) => ({
-    user: null, // { id, name, email, role }
-    token: localStorage.getItem('token'),
-    isAuthenticated: !!localStorage.getItem('token'),
-    location: null,
-    locationPermission: 'prompt', // 'granted' | 'denied' | 'prompt'
+import { persist } from 'zustand/middleware';
 
-    setLocation: (lat, lng) => set({ location: { lat, lng } }),
-    setPermission: (status) => set({ locationPermission: status }),
+// --- User/Location Store ---
 
-    // Auth Actions
-    setUser: (userData) => set({ user: userData, isAuthenticated: true }),
+export const useUserStore = create(
+    persist(
+        (set) => ({
+            user: null, // { id, name, email, role }
+            token: null,
+            isAuthenticated: false,
+            location: null,
+            locationPermission: 'prompt', // 'granted' | 'denied' | 'prompt'
 
-    login: (userData, token) => {
-        localStorage.setItem('token', token);
-        set({ user: userData, token, isAuthenticated: true });
-    },
+            setLocation: (lat, lng) => set({ location: { lat, lng } }),
+            setPermission: (status) => set({ locationPermission: status }),
 
-    logout: () => {
-        localStorage.removeItem('token');
-        set({ user: null, token: null, isAuthenticated: false });
-    }
-}));
+            // Auth Actions
+            setUser: (userData) => set({ user: userData, isAuthenticated: true }),
+
+            login: (userData, token) => {
+                // Token is auto-persisted now via middleware
+                set({ user: userData, token, isAuthenticated: true });
+            },
+
+            logout: () => {
+                set({ user: null, token: null, isAuthenticated: false });
+            }
+        }),
+        {
+            name: 'rescue-user-storage', // name of the item in the storage (must be unique)
+            partialize: (state) => ({ user: state.user, token: state.token, isAuthenticated: state.isAuthenticated }),
+        }
+    )
+);
 
 
 // --- Recruiter/Demo Store ---
