@@ -63,9 +63,9 @@ export default function IncidentItem({ incident }) {
           <p className="text-sm font-medium text-slate-200 leading-tight">
             {typeof incident.location === 'string'
               ? incident.location
-              : incident.location?.coordinates
+              : incident.location?.coordinates && Array.isArray(incident.location.coordinates)
                 ? `Coords: ${incident.location.coordinates[1].toFixed(4)}, ${incident.location.coordinates[0].toFixed(4)}`
-                : 'Location Not Provided'}
+                : 'Lat/Lng Map Location'}
           </p>
         </div>
 
