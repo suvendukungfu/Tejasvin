@@ -1,38 +1,76 @@
 import { create } from 'zustand';
 import socketService from '../services/socket';
+import logger from '../utils/logger';
 
 // --- Emergency Store ---
 
 export const useEmergencyStore = create((set) => ({
     status: 'IDLE', // 'IDLE' | 'COUNTDOWN' | 'CONNECTING' | 'ACTIVE' | 'RESOLVED'
     activeIncidentId: null,
+    aiAdvice: null,
     countdownValue: 5,
+    activeResponders: {}, // { responderId: { lat, lng, name } }
+    incidents: [], // Live dashboard data
 
     triggerSOS: () => set({ status: 'COUNTDOWN', countdownValue: 5 }),
 
-    cancelSOS: () => set({ status: 'IDLE', countdownValue: 5 }),
+    cancelSOS: () => set({ status: 'IDLE', countdownValue: 5, activeResponders: {}, aiAdvice: null }),
 
-    confirmSOS: (location) => {
+    confirmSOS: async (location) => {
         set({ status: 'CONNECTING' });
+        const { user } = useUserStore.getState();
 
-        // Real Socket Emit
-        socketService.emit('emergency:sos', {
+        const payload = {
             type: 'Accident',
-            severity: 'Critical',
+            description: "Vehicle collision near coordinates", // Mock description for now
             lat: location?.lat || 28.6139,
             lng: location?.lng || 77.2090,
-            time: new Date().toLocaleTimeString()
-        });
+            victim: user?.id || null
+        };
 
-        setTimeout(() => {
-            console.log('SOS CONFIRMED - API TRIGGERED');
-            set({ status: 'ACTIVE', activeIncidentId: `INC-${Date.now()}` });
-        }, 2000);
+        try {
+            const api = (await import('../services/api')).default;
+            const res = await api.post('/incidents', payload);
+
+            // Emit via socket for real-time broadcast and also save result locally
+            socketService.emit('emergency:sos', payload);
+
+            set({
+                status: 'ACTIVE',
+                activeIncidentId: res.data._id,
+                aiAdvice: res.data.aiAdvice
+            });
+        } catch (err) {
+            logger.error('SOS registration failed', err);
+            set({ status: 'IDLE' });
+        }
     },
+
+    fetchIncidents: async () => {
+        try {
+            const api = (await import('../services/api')).default;
+            const res = await api.get('/incidents');
+            set({ incidents: res.data });
+        } catch (err) {
+            logger.error('Failed to fetch incidents', err);
+        }
+    },
+
+    updateResponderLocation: (data) => set((state) => ({
+        activeResponders: {
+            ...state.activeResponders,
+            [data.responderName]: { lat: data.lat, lng: data.lng, name: data.responderName }
+        }
+    })),
 
     setCountdown: (value) => set({ countdownValue: value }),
 
-    reset: () => set({ status: 'IDLE', activeIncidentId: null, countdownValue: 5 }),
+    reset: () => set({ status: 'IDLE', activeIncidentId: null, aiAdvice: null, countdownValue: 5, activeResponders: {} }),
+
+    markResolved: (responderInfo) => set({
+        status: 'RESOLVED',
+        lastResponder: responderInfo // { id, name }
+    })
 }));
 
 
@@ -75,7 +113,7 @@ export const useRecruiterStore = create((set) => ({
         // In a real app, this would push to the incidents array store
         // For now, we'll just log it or maybe we need an incident store?
         // Let's assume we handle the "live" incidents in a separate store later.
-        console.log("Simulating Incident:", id);
+        logger.info("Simulating Incident", { id });
         return id;
     }
 }));
@@ -89,11 +127,25 @@ export const useMissionStore = create((set) => ({
 
     offerMission: (incident) => set({ activeMission: incident, missionStatus: 'OFFERED' }),
 
-    acceptMission: () => set({ missionStatus: 'ACCEPTED' }),
+    acceptMission: async (incidentId) => {
+        try {
+            const api = (await import('../services/api')).default;
+            await api.post(`/incidents/${incidentId}/accept`);
+            set({ missionStatus: 'ACCEPTED' });
+        } catch (err) {
+            logger.error('Failed to accept mission', err);
+            // Optionally set error state or re-throw
+        }
+    },
 
     startNavigation: () => set({ missionStatus: 'ON_ROUTE' }),
 
-    completeMission: () => set({ missionStatus: 'COMPLETED' }),
+    arriveAtMission: () => set({ missionStatus: 'ARRIVED' }),
+
+    completeMission: () => set((state) => ({
+        missionStatus: 'COMPLETED',
+        lastCompletedMission: state.activeMission
+    })),
 
     cancelMission: () => set({ activeMission: null, missionStatus: 'IDLE' }),
 }));

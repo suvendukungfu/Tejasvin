@@ -1,7 +1,8 @@
 import { io } from "socket.io-client";
+import logger from "../utils/logger";
 
 // In a real app, this would come from an environment variable
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5000";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5001";
 
 class SocketService {
     constructor() {
@@ -17,11 +18,11 @@ class SocketService {
         });
 
         this.socket.on("connect", () => {
-            console.log("Connected to real-time rescue network");
+            logger.info("Connected to real-time rescue network");
         });
 
         this.socket.on("disconnect", () => {
-            console.log("Lost connection to rescue network");
+            logger.warn("Lost connection to rescue network");
         });
 
         return this.socket;
@@ -36,7 +37,17 @@ class SocketService {
 
     on(event, callback) {
         if (this.socket) {
-            this.socket.on(event, callback);
+            this.socket.on(event, (data) => {
+                if (!data) {
+                    logger.warn(`Received empty payload for socket event: ${event}`);
+                    return;
+                }
+                try {
+                    callback(data);
+                } catch (error) {
+                    logger.error(`Error in socket event handler [${event}]`, error);
+                }
+            });
         }
     }
 

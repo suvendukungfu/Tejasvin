@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useEmergencyStore } from "../../../app/store";
 import { AlertCircle } from "lucide-react";
 import clsx from "clsx";
+import logger from "../../../utils/logger";
 
 export default function SOSButton() {
     const { status, triggerSOS } = useEmergencyStore();
@@ -19,13 +20,23 @@ export default function SOSButton() {
         setIsHolding(true);
         pressStartTime.current = Date.now();
 
-        // Haptic feedback start
-        if (navigator.vibrate) navigator.vibrate(100);
+        // Haptic feedback loop start
+        if (navigator.vibrate) {
+            navigator.vibrate(100);
+            const hapticInterval = setInterval(() => {
+                if (navigator.vibrate) navigator.vibrate(40);
+            }, 300); // Pulse every 300ms while holding
+
+            // Store interval to clear it
+            timerRef.currentHaptic = hapticInterval;
+        }
 
         // Start 3s timer
         timerRef.current = setTimeout(() => {
+            logger.emergency("SOS triggered via long-press");
             triggerSOS();
-            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+            if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 500]);
+            if (timerRef.currentHaptic) clearInterval(timerRef.currentHaptic);
             setIsHolding(false);
         }, 3000);
     };
@@ -35,6 +46,10 @@ export default function SOSButton() {
         if (timerRef.current) {
             clearTimeout(timerRef.current);
             timerRef.current = null;
+        }
+        if (timerRef.currentHaptic) {
+            clearInterval(timerRef.currentHaptic);
+            timerRef.currentHaptic = null;
         }
     };
 

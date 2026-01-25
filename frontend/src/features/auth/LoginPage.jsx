@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUserStore } from "../../app/store";
 import api from "../../services/api";
+import logger from "../../utils/logger";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ export default function LoginPage() {
             navigate("/");
         } catch (err) {
             setError(err.response?.data?.msg || "Login failed. Please check your credentials.");
-            console.error("Login error:", err);
+            logger.error("Login error", err, { email });
         } finally {
             setLoading(true); // Keep it loading for a brief second for visual feel
             setTimeout(() => setLoading(false), 500);

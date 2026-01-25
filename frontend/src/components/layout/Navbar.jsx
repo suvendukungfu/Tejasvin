@@ -1,10 +1,14 @@
-import { Bell, Settings, ShieldAlert, ToggleLeft, ToggleRight, LogOut } from "lucide-react";
+import { Bell, Settings, ShieldAlert, ToggleLeft, ToggleRight, LogOut, User as UserIcon } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { useRecruiterStore, useUserStore } from "../../app/store";
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useUserStore();
+  const location = useLocation();
 
-  if (!isAuthenticated) return null; // Or show simple logo only
+  if (!isAuthenticated) return null;
+
+  const isActive = (path) => location.pathname === path;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 pointer-events-none">
@@ -14,7 +18,7 @@ export default function Navbar() {
         <div className="bg-slate-900/80 backdrop-blur-xl border border-white/10 shadow-xl rounded-full px-6 py-3 flex items-center justify-between w-full gap-4">
 
           {/* Logo */}
-          <div className="flex items-center gap-3 flex-shrink-0">
+          <Link to="/" className="flex items-center gap-3 flex-shrink-0 hover:opacity-80 transition-opacity">
             <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-red-600/20">
               <ShieldAlert className="w-5 h-5 text-red-500" />
               <div className="absolute inset-0 rounded-lg bg-red-500/20 animate-pulse" />
@@ -22,10 +26,15 @@ export default function Navbar() {
             <h1 className="text-xl font-display font-bold text-white tracking-tight hidden sm:block">
               Accident<span className="text-red-500">Alert</span>
             </h1>
-          </div>
+          </Link>
 
           <div className="hidden lg:flex items-center gap-6">
-            <button className="text-sm font-medium text-white transition">Dashboard</button>
+            <Link
+              to="/"
+              className={`text-sm font-medium transition ${isActive("/") ? "text-white" : "text-slate-400 hover:text-white"}`}
+            >
+              Dashboard
+            </Link>
             <button className="text-sm font-medium text-slate-400 hover:text-white transition">Live Map</button>
             <DemoToggle />
           </div>
@@ -34,10 +43,10 @@ export default function Navbar() {
           <div className="flex items-center gap-3 ml-auto">
 
             {/* User Info */}
-            <div className="hidden md:flex flex-col items-end mr-1">
+            <Link to="/profile" className="hidden md:flex flex-col items-end mr-1 hover:opacity-80 transition-opacity">
               <span className="text-xs font-bold text-white leading-none">{user?.name || "User"}</span>
               <span className="text-[10px] text-slate-500 uppercase tracking-widest font-black leading-tight mt-0.5">{user?.role}</span>
-            </div>
+            </Link>
 
             <button className="bg-white/10 hover:bg-white/20 active:bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-200 p-2 rounded-full relative">
               <Bell className="w-5 h-5 text-slate-300" />
@@ -45,15 +54,13 @@ export default function Navbar() {
             </button>
 
             <div className="group relative">
-              <button className="bg-white/10 hover:bg-white/20 active:bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-200 w-8 h-8 rounded-full overflow-hidden border-2 border-slate-700">
+              <Link to="/profile" className="block bg-white/10 hover:bg-white/20 active:bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-200 w-8 h-8 rounded-full overflow-hidden border-2 border-slate-700">
                 <img
                   src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name || 'Felix'}`}
                   alt="User"
                   className="w-full h-full object-cover"
                 />
-              </button>
-
-              {/* Simple Tooltip/Menu on Hover could go here, or just Logout button next to it */}
+              </Link>
             </div>
 
             <button
