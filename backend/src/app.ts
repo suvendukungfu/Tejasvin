@@ -9,6 +9,7 @@ import { SocketService } from './infra/socket/SocketService';
 // Modules
 import incidentRoutes from './modules/incident/routes';
 import authRoutes from './modules/auth/routes';
+import feedbackRoutes from './modules/feedback/routes';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ async function bootstrap() {
     // Routes
     app.use('/api/v2/auth', authRoutes);
     app.use('/api/v2/incidents', incidentRoutes);
+    app.use('/api/v2/feedback', feedbackRoutes);
 
     // Global Error Handler
     app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
