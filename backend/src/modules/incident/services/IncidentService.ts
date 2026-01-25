@@ -66,4 +66,21 @@ export class IncidentService {
             { new: true }
         );
     }
+
+    /**
+     * Gets dashboard statistics.
+     */
+    public async getStats(): Promise<any> {
+        const [activeCount, criticalCount, totalCount] = await Promise.all([
+            IncidentModel.countDocuments({ status: 'Active' }),
+            IncidentModel.countDocuments({ status: 'Active', severity: 'Critical' }),
+            IncidentModel.countDocuments({ status: 'Resolved' })
+        ]);
+
+        return {
+            activeSOS: activeCount,
+            criticalSOS: criticalCount,
+            totalSaves: totalCount
+        };
+    }
 }

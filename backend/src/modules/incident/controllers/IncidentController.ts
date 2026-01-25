@@ -12,7 +12,7 @@ export class IncidentController {
         try {
             const { type, description, lat, lng } = req.body;
             const incident = await this.incidentService.createIncident({
-                victimId: (req as any).user.id,
+                victim: (req as any).user.id,
                 type,
                 description,
                 location: {
@@ -47,6 +47,33 @@ export class IncidentController {
             });
             if (!incident) {
                 res.status(404).json({ msg: 'Incident not found' });
+                return;
+            }
+            res.json(incident);
+        } catch (err: any) {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+
+    public async getStats(_req: Request, res: Response): Promise<void> {
+        try {
+            const stats = await this.incidentService.getStats();
+            res.json(stats);
+        } catch (err: any) {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+
+    public async accept(req: Request, res: Response): Promise<void> {
+        try {
+            const incident = await this.incidentService.acceptMission(
+                req.params.id as string,
+                (req as any).user.id
+            );
+            if (!incident) {
+                res.status(404).json({ msg: 'Incident not found or already resolved' });
                 return;
             }
             res.json(incident);
