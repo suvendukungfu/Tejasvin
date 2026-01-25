@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ShieldAlert, Mail, Lock, UserPlus, Fingerprint, AlertCircle } from "lucide-react";
 import api from "../../services/api";
+import logger from "../../utils/logger";
 
 export default function SignupPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("user");
+    const [role, setRole] = useState("victim");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ export default function SignupPage() {
             navigate("/login");
         } catch (err) {
             setError(err.response?.data?.msg || "Registration failed. Please try again.");
+            logger.error("Registration failed", err, { email, role });
         } finally {
             setLoading(false);
         }
@@ -88,8 +90,8 @@ export default function SignupPage() {
                         <div className="grid grid-cols-2 gap-3 p-1 bg-slate-800 rounded-xl border border-slate-700">
                             <button
                                 type="button"
-                                onClick={() => setRole("user")}
-                                className={`py-2 rounded-lg text-sm font-bold transition-all ${role === 'user' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-500 hover:text-slate-400'}`}
+                                onClick={() => setRole("victim")}
+                                className={`py-2 rounded-lg text-sm font-bold transition-all ${role === 'victim' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-500 hover:text-slate-400'}`}
                             >
                                 Standard
                             </button>
