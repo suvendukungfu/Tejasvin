@@ -1,0 +1,9 @@
+{
+  "projectId": "aa37871e-8428-482f-af21-842d88b631f2",
+  "createdAt": 1769379090082,
+  "version": "1.0",
+  "startupCommands": [
+    "cd Hidden-Heritage-Unvisited-Places1.0/hidden-heritage-frontend && npm install; npm run dev"
+  ],
+  "templateId": "nextjs"
+}
