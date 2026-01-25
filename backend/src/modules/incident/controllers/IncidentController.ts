@@ -10,7 +10,7 @@ export class IncidentController {
 
     public async create(req: Request, res: Response): Promise<void> {
         try {
-            const { type, description, lat, lng } = req.body;
+            const { type, description, lat, lng, telemetry } = req.body;
             const incident = await this.incidentService.createIncident({
                 victim: (req as any).user.id,
                 type,
@@ -19,7 +19,7 @@ export class IncidentController {
                     type: 'Point',
                     coordinates: [lng, lat]
                 }
-            });
+            }, telemetry);
             res.status(201).json(incident);
         } catch (err: any) {
             console.error(err.message);
