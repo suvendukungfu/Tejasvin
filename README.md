@@ -40,9 +40,13 @@ The system is built on a **Domain-Driven Clean Architecture** to ensure industri
 npm install
 
 # 2. Configure Environment
-cp .env.example .env # Set your MONGO_URI, JWT_SECRET, and REDIS_URL
+cp .env.example .env
 
-# 3. Parallel Start (Development)
+# 3. Start Database (Docker)
+# This spins up MongoDB and Redis in the background
+docker-compose up -d
+
+# 4. Parallel Start (Development)
 npm run dev
 ```
 
