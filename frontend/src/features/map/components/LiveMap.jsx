@@ -1,11 +1,9 @@
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from "react-leaflet";
+import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from "react-leaflet";
 import L from "leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster";
-import { useUserStore, useMissionStore } from "../../../app/store";
-import { useGeolocation } from "../hooks/useGeolocation";
-import { incidents } from "../../emergency/data/mockIncidents"; // Adjusted path
-import { Navigation } from "lucide-react";
+import "leaflet-routing-machine";
+import { useEmergencyStore, useRecruiterStore } from "../../../app/store";
+import logger from "../../../utils/logger";
 import "leaflet/dist/leaflet.css";
 
 // Fix Leaflet's default icon issue
