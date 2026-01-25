@@ -9,7 +9,10 @@ export interface IMatchResult {
 export class MatchingService {
     /**
      * Ranks nearby helpers using a multi-objective scoring function.
-     * Score = (Trust * 0.4) + (Log(saves+1) * 0.2) + (1/Distance * 0.4)
+     * Weights:
+     * - Proximity (Distance): 40%
+     * - Reliability (Trust + Saves): 30%
+     * - Skill Match (Medical): 30%
      */
     public static rankHelpers(incidentLat: number, incidentLng: number, helpers: IUser[]): IMatchResult[] {
         return helpers.map(helper => {
@@ -20,14 +23,26 @@ export class MatchingService {
                 helper.location?.lng || 0
             );
 
-            // Mock trust and saves if missing for scoring demo
-            const trust = helper.isVerified ? 100 : 50;
+            // 1. Proximity Score (0-100)
+            // Linear decay: 100 at 0m, 0 at 5km
+            const maxDist = 5000;
+            const proxScore = Math.max(0, 100 * (1 - distance / maxDist));
+
+            // 2. Reliability Score (0-100)
+            const isVerified = helper.isVerified ? 1 : 0.5;
             const saves = helper.stats?.saves || 0;
+            // Logarithmic growth for saves: 0->0, 10->50, 100->100
+            const saveScore = Math.min(100, Math.log1p(saves) * 25);
+            const relScore = (isVerified * 50) + (saveScore * 0.5);
 
-            // Normalize distance (Max score for < 500m, decays after)
-            const distanceScore = Math.max(0, 100 - (distance / 50));
+            // 3. Skill Score (0-100)
+            // Bonus for medical skills
+            const medicalSkills = ['CPR', 'EMT', 'FirstAid', 'Doctor', 'Nurse'];
+            const hasMedical = helper.skills?.some(s => medicalSkills.includes(s)) ? 1 : 0;
+            const skillScore = hasMedical * 100;
 
-            const matchScore = (trust * 0.4) + (Math.log1p(saves) * 20) + (distanceScore * 0.4);
+            // Final Weighted Score
+            const matchScore = (proxScore * 0.4) + (relScore * 0.3) + (skillScore * 0.3);
 
             return {
                 helper,

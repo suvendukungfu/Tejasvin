@@ -15,6 +15,7 @@ export interface IUser {
         saves: number;
         totalResponded: number;
     };
+    skills?: string[];
 }
 
 export interface IIncident {
