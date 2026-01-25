@@ -118,10 +118,43 @@ export default function LiveMap() {
                 <MarkerClusterGroup chunkedLoading>
                     {Array.isArray(incidents) && incidents.map((incident) => {
                         if (!incident || typeof incident.lat !== 'number' || typeof incident.lng !== 'number') return null;
+
+                        const severity = incident.severity || 'Moderate';
+                        const isCritical = severity === "Critical" || severity === "High"; // Treating High as critical for demo
+                        const isSevere = severity === "Severe";
+
+                        // Custom DivIcon logic
+                        let customIcon;
+                        if (isCritical) {
+                            customIcon = L.divIcon({
+                                className: "leaflet-critical-pulse",
+                                html: `<div style="width:14px;height:14px;background:#ef4444;border-radius:50%;border:2px solid white;box-shadow:0 0 4px rgba(0,0,0,0.3);"></div>`,
+                                iconSize: [30, 30],
+                                iconAnchor: [15, 15],
+                            });
+                        } else if (isSevere) {
+                            customIcon = L.divIcon({
+                                className: "leaflet-severe-pulse",
+                                html: `<div style="width:14px;height:14px;background:#f97316;border-radius:50%;border:2px solid white;box-shadow:0 0 4px rgba(0,0,0,0.3);"></div>`,
+                                iconSize: [30, 30],
+                                iconAnchor: [15, 15],
+                            });
+                        } else {
+                            // Default Marker for Moderate/Low
+                            customIcon = new L.Icon({
+                                iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${severity === 'Moderate' ? 'gold' : 'green'}.png`,
+                                shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+                                iconSize: [25, 41],
+                                iconAnchor: [12, 41],
+                                popupAnchor: [1, -34],
+                            });
+                        }
+
                         return (
                             <Marker
                                 key={incident.id || `${incident.lat}-${incident.lng}`}
                                 position={[incident.lat, incident.lng]}
+                                icon={customIcon}
                                 eventHandlers={{
                                     click: () => {/* Logic for incident click if needed */ },
                                 }}
@@ -129,7 +162,9 @@ export default function LiveMap() {
                                 <Popup>
                                     <div className="text-slate-900">
                                         <strong className="block text-sm font-bold">{incident.type || 'Unknown incident'}</strong>
-                                        <span className="text-xs text-slate-500">Severity: {incident.severity || 'N/A'}</span>
+                                        <span className={`text-xs font-semibold ${isCritical ? 'text-red-600' : isSevere ? 'text-orange-600' : 'text-slate-500'}`}>
+                                            Severity: {severity}
+                                        </span>
                                     </div>
                                 </Popup>
                             </Marker>
