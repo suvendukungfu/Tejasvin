@@ -15,6 +15,7 @@ import OfflineBanner from "../components/feedback/OfflineBanner";
 import socketService from "../services/socket";
 import { useMissionStore, useUserStore, useEmergencyStore } from "./store";
 import api from "../services/api";
+import logger from "../utils/logger";
 
 import LoginPage from "../features/auth/LoginPage";
 import SignupPage from "../features/auth/SignupPage";
@@ -25,7 +26,7 @@ const VAPID_PUBLIC_KEY = "BPkSjTPzbzJQcK4_LegOuOnygUW3oT7MVcYZ4Cm5iVrn-aRc7VYd0q
 
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
   for (let i = 0; i < rawData.length; ++i) {
@@ -36,7 +37,7 @@ function urlBase64ToUint8Array(base64String) {
 
 export default function App() {
   const { offerMission } = useMissionStore();
-  const { isAuthenticated, login, logout, setUser } = useUserStore();
+  const { isAuthenticated, user, logout, setUser } = useUserStore();
   const { updateResponderLocation } = useEmergencyStore();
 
   useRecruiterLogic(); // Active whenever Demo Mode is on
@@ -50,7 +51,7 @@ export default function App() {
           const res = await api.get('/auth/me');
           setUser(res.data);
         } catch (err) {
-          console.error("Auth verify failed", err);
+          logger.error("Auth verify failed", err);
           logout();
         }
       }
@@ -62,17 +63,17 @@ export default function App() {
     socketService.connect();
 
     socketService.on("mission:offered", (incident) => {
-      console.log("REAL-TIME INCIDENT OFFERED:", incident);
+      logger.info("REAL-TIME INCIDENT OFFERED", incident);
       offerMission(incident);
     });
 
     socketService.on("incident:responder_update", (data) => {
-      console.log("RESPONDER MOVING:", data);
+      logger.info("RESPONDER MOVING", data);
       updateResponderLocation(data);
     });
 
     socketService.on("incident:vitals_sync", (data) => {
-      console.log("VITALS SYNCED:", data);
+      logger.info("VITALS SYNCED", data);
       // We can update the emergency store with the latest vitals
       useEmergencyStore.setState({ latestVitals: data.vitals });
     });
@@ -82,7 +83,7 @@ export default function App() {
       const setupPush = async () => {
         try {
           const register = await navigator.serviceWorker.register('/sw.js');
-          console.log('SW Registered');
+          logger.info('SW Registered');
 
           const subscription = await register.pushManager.getSubscription();
           if (!subscription) {
@@ -91,10 +92,10 @@ export default function App() {
               applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
             });
             await api.post('/auth/subscribe', newSubscription);
-            console.log('Push Subscribed');
+            logger.info('Push Subscribed');
           }
         } catch (err) {
-          console.error('Push setup failed', err);
+          logger.error('Push setup failed', err);
         }
       };
       setupPush();

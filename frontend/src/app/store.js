@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import socketService from '../services/socket';
+import logger from '../utils/logger';
 
 // --- Emergency Store ---
 
@@ -9,6 +10,7 @@ export const useEmergencyStore = create((set) => ({
     aiAdvice: null,
     countdownValue: 5,
     activeResponders: {}, // { responderId: { lat, lng, name } }
+    incidents: [], // Live dashboard data
 
     triggerSOS: () => set({ status: 'COUNTDOWN', countdownValue: 5 }),
 
@@ -23,7 +25,7 @@ export const useEmergencyStore = create((set) => ({
             description: "Vehicle collision near coordinates", // Mock description for now
             lat: location?.lat || 28.6139,
             lng: location?.lng || 77.2090,
-            userId: user?.id || null
+            victim: user?.id || null
         };
 
         try {
@@ -39,8 +41,18 @@ export const useEmergencyStore = create((set) => ({
                 aiAdvice: res.data.aiAdvice
             });
         } catch (err) {
-            console.error('SOS registration failed:', err);
+            logger.error('SOS registration failed', err);
             set({ status: 'IDLE' });
+        }
+    },
+
+    fetchIncidents: async () => {
+        try {
+            const api = (await import('../services/api')).default;
+            const res = await api.get('/incidents');
+            set({ incidents: res.data });
+        } catch (err) {
+            logger.error('Failed to fetch incidents', err);
         }
     },
 
@@ -101,7 +113,7 @@ export const useRecruiterStore = create((set) => ({
         // In a real app, this would push to the incidents array store
         // For now, we'll just log it or maybe we need an incident store?
         // Let's assume we handle the "live" incidents in a separate store later.
-        console.log("Simulating Incident:", id);
+        logger.info("Simulating Incident", { id });
         return id;
     }
 }));
@@ -115,7 +127,16 @@ export const useMissionStore = create((set) => ({
 
     offerMission: (incident) => set({ activeMission: incident, missionStatus: 'OFFERED' }),
 
-    acceptMission: () => set({ missionStatus: 'ACCEPTED' }),
+    acceptMission: async (incidentId) => {
+        try {
+            const api = (await import('../services/api')).default;
+            await api.post(`/incidents/${incidentId}/accept`);
+            set({ missionStatus: 'ACCEPTED' });
+        } catch (err) {
+            logger.error('Failed to accept mission', err);
+            // Optionally set error state or re-throw
+        }
+    },
 
     startNavigation: () => set({ missionStatus: 'ON_ROUTE' }),
 
