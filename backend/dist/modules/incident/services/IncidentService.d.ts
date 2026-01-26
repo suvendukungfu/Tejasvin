@@ -1,11 +1,10 @@
 import { IIncidentDocument } from '../models/Incident';
-import { ISensorTelemetry } from './SeverityClassifier';
 import { IIncident } from '../../../shared/types/domain';
 export declare class IncidentService {
     /**
      * Creates a new incident with AI triage and sensor validation.
      */
-    createIncident(data: Partial<IIncident>, telemetry?: ISensorTelemetry): Promise<IIncidentDocument>;
+    createIncident(data: Partial<IIncident>, telemetry?: any): Promise<IIncidentDocument>;
     /**
      * Updates patient vitals.
      */
@@ -18,4 +17,8 @@ export declare class IncidentService {
      * Accepts a mission.
      */
     acceptMission(incidentId: string, responderId: string): Promise<IIncidentDocument | null>;
+    /**
+     * Gets dashboard statistics.
+     */
+    getStats(): Promise<any>;
 }

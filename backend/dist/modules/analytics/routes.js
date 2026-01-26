@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const AnalyticsController_1 = require("./controllers/AnalyticsController");
+// import { protect, authorize } from '../../../shared/middlewares/auth';
+const router = (0, express_1.Router)();
+// Public for now for demo visualization, or protect if needed
+// router.use(protect);
+router.get('/hotspots', AnalyticsController_1.getHotspots);
+router.get('/stats', AnalyticsController_1.getStats);
+exports.default = router;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicm91dGVzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL21vZHVsZXMvYW5hbHl0aWNzL3JvdXRlcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLHFDQUFpQztBQUNqQywyRUFBMEU7QUFDMUUseUVBQXlFO0FBRXpFLE1BQU0sTUFBTSxHQUFHLElBQUEsZ0JBQU0sR0FBRSxDQUFDO0FBRXhCLDhEQUE4RDtBQUM5RCx1QkFBdUI7QUFFdkIsTUFBTSxDQUFDLEdBQUcsQ0FBQyxXQUFXLEVBQUUsaUNBQVcsQ0FBQyxDQUFDO0FBQ3JDLE1BQU0sQ0FBQyxHQUFHLENBQUMsUUFBUSxFQUFFLDhCQUFRLENBQUMsQ0FBQztBQUUvQixrQkFBZSxNQUFNLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBSb3V0ZXIgfSBmcm9tICdleHByZXNzJztcbmltcG9ydCB7IGdldEhvdHNwb3RzLCBnZXRTdGF0cyB9IGZyb20gJy4vY29udHJvbGxlcnMvQW5hbHl0aWNzQ29udHJvbGxlcic7XG4vLyBpbXBvcnQgeyBwcm90ZWN0LCBhdXRob3JpemUgfSBmcm9tICcuLi8uLi8uLi9zaGFyZWQvbWlkZGxld2FyZXMvYXV0aCc7XG5cbmNvbnN0IHJvdXRlciA9IFJvdXRlcigpO1xuXG4vLyBQdWJsaWMgZm9yIG5vdyBmb3IgZGVtbyB2aXN1YWxpemF0aW9uLCBvciBwcm90ZWN0IGlmIG5lZWRlZFxuLy8gcm91dGVyLnVzZShwcm90ZWN0KTtcblxucm91dGVyLmdldCgnL2hvdHNwb3RzJywgZ2V0SG90c3BvdHMpO1xucm91dGVyLmdldCgnL3N0YXRzJywgZ2V0U3RhdHMpO1xuXG5leHBvcnQgZGVmYXVsdCByb3V0ZXI7XG4iXX0=

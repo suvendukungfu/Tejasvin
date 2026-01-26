@@ -6,6 +6,7 @@ export interface ISensorTelemetry {
     accel_y: number;
     accel_z: number;
     impact_duration_ms: number;
+    delta_velocity_kmh?: number;
 }
 export declare class SeverityClassifier {
     /**

@@ -5,4 +5,6 @@ export declare class IncidentController {
     create(req: Request, res: Response): Promise<void>;
     getActive(_req: Request, res: Response): Promise<void>;
     updateVitals(req: Request, res: Response): Promise<void>;
+    getStats(_req: Request, res: Response): Promise<void>;
+    accept(req: Request, res: Response): Promise<void>;
 }

@@ -7,7 +7,10 @@ export interface IMatchResult {
 export declare class MatchingService {
     /**
      * Ranks nearby helpers using a multi-objective scoring function.
-     * Score = (Trust * 0.4) + (Log(saves+1) * 0.2) + (1/Distance * 0.4)
+     * Weights:
+     * - Proximity (Distance): 40%
+     * - Reliability (Trust + Saves): 30%
+     * - Skill Match (Medical): 30%
      */
     static rankHelpers(incidentLat: number, incidentLng: number, helpers: IUser[]): IMatchResult[];
     private static calculateDistance;
