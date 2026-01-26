@@ -1,0 +1,47 @@
+[
+    {
+        "site_slug": "bateshwar-temples",
+        "mode": "Tourist",
+        "sections": [
+            {
+                "title": "A Walk Through Time",
+                "content": "Imagine standing amidst 200 temples, the bells tolling in the distance. Bateshwar is not just stone; it's a frozen prayer."
+            },
+            {
+                "title": "The Resurrection",
+                "content": "Once buried under the rubble of time and ravines, these temples were painstakingly restored, piece by piece, like a giant jigsaw puzzle."
+            }
+        ],
+        "verified": true
+    },
+    {
+        "site_slug": "bateshwar-temples",
+        "mode": "Student",
+        "sections": [
+            {
+                "title": "Gurjara-Pratihara Architecture",
+                "content": "The temples exhibit the classic curvilinear shikhara of the North Indian Nagara style. Notice the absence of mortar."
+            },
+            {
+                "title": "Restoration Techniques",
+                "content": "ASI led by K.K. Muhammed collaborated with local dacoits to ensure safety during the restoration in 2005."
+            }
+        ],
+        "verified": true
+    },
+    {
+        "site_slug": "bateshwar-temples",
+        "mode": "Researcher",
+        "sections": [
+            {
+                "title": "Iconography Analysis",
+                "content": "The presence of Dashavatara panels suggests a syncretic worship culture in the 9th century."
+            },
+            {
+                "title": "Seismic Stability",
+                "content": "The interlocking stone mechanism provides a degree of seismic resistance."
+            }
+        ],
+        "verified": true
+    }
+]
