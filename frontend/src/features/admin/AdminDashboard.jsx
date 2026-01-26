@@ -12,18 +12,18 @@ export default function AdminDashboard() {
     const [responders, setResponders] = useState([]);
     const [hotspots, setHotspots] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState({ totalUsers: 0, pendingVerification: 0 });
+    // const [stats, setStats] = useState({ totalUsers: 0, pendingVerification: 0 });
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [userRes, statsRes, hotspotRes] = await Promise.all([
+            const [userRes, , hotspotRes] = await Promise.all([
                 api.get("/admin/users?role=responder"),
                 api.get("/incidents/stats"),
                 api.get("/analytics/hotspots").catch(() => ({ data: [] })) // Resilient fallthrough
             ]);
             setResponders(userRes.data || []);
-            setStats({ ...statsRes.data, pendingVerification: (userRes.data || []).filter(r => !r.isVerified).length });
+            // setStats({ ...statsRes.data, pendingVerification: (userRes.data || []).filter(r => !r.isVerified).length });
             setHotspots(hotspotRes.data || []);
         } catch (err) {
             logger.error("Failed to fetch admin data", err);

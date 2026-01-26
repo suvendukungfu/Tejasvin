@@ -1,7 +1,7 @@
 import { useMissionStore } from "../../../app/store";
 import { Navigation, X, ShieldAlert, BadgeCheck } from "lucide-react";
 import logger from "../../../utils/logger";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; // eslint-disable-line no-unused-vars
 
 export default function MissionModal() {
     const { activeMission, missionStatus, acceptMission, cancelMission, startNavigation } = useMissionStore();

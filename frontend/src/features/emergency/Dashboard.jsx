@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 import StatsCard from "./components/StatsCard";
 import IncidentItem from "./components/IncidentItem";
 import LiveMap from "../map/components/LiveMap";
