@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { useEffect, useState } from 'react';
-import { getSiteBySlug, getSafetyScore } from '../services/api';
-import axios from 'axios';
+import { getSiteBySlug, getSafetyScore, getAiStory } from '../services/api';
 import { Shield, Smartphone, Sparkles } from 'lucide-react';
 
 const SiteDetail = () => {
@@ -33,11 +32,11 @@ const SiteDetail = () => {
         if (!site) return;
         setAiLoading(true);
         try {
-            const res = await axios.post('http://localhost:5000/api/ai/story', {
+            const res = await getAiStory({
                 siteName: site.name,
                 persona
             });
-            setStory(res.data);
+            setStory(res.data || res);
         } catch (e) {
             console.error(e);
         } finally {
