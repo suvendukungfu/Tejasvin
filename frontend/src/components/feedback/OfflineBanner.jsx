@@ -1,19 +1,22 @@
 import { WifiOff, AlertTriangle, RefreshCw, CheckCircle2 } from "lucide-react";
 import { useOfflineStatus } from "../../hooks/useOfflineStatus";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function OfflineBanner() {
     const isOffline = useOfflineStatus();
     const [isReconnecting, setIsReconnecting] = useState(false);
     const [showBackOnline, setShowBackOnline] = useState(false);
 
+    const prevIsOffline = useRef(isOffline);
+
     useEffect(() => {
-        if (!isOffline && !showBackOnline) {
+        if (prevIsOffline.current && !isOffline) {
             // Just came back online
-            setShowBackOnline(true);
+            setShowBackOnline(true); // eslint-disable-line react-hooks/set-state-in-effect
             const timer = setTimeout(() => setShowBackOnline(false), 3000);
             return () => clearTimeout(timer);
         }
+        prevIsOffline.current = isOffline;
     }, [isOffline]);
 
     const handleRetry = () => {

@@ -1,4 +1,7 @@
 import { useEmergencyStore } from "../../app/store";
+import { useParams, useNavigate } from 'react-router-dom';
+import { incidents } from './data/mockIncidents';
+import logger from '../../utils/logger';
 
 export default function IncidentDetails() {
   const { id } = useParams();
