@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
-    "lib": ["es2020"],
+    "lib": [
+      "es2020"
+    ],
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
@@ -22,9 +24,18 @@
     "rootDir": "src",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "src/shared/*"]
-    }
+      "*": [
+        "node_modules/*",
+        "src/shared/*"
+      ]
+    },
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }

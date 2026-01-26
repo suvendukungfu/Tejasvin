@@ -1,7 +1,7 @@
 
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:5000';
+const SOCKET_URL = 'http://localhost:5001';
 const VEHICLE_ID = `SIM-CAR-${Math.floor(Math.random() * 1000)}`;
 
 console.log(`🚗 Starting Vehicle Simulator [${VEHICLE_ID}]...`);

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AnalyticsService } from '../services/AnalyticsService';
 
-export const getHotspots = async (req: Request, res: Response) => {
+export const getHotspots = async (_req: Request, res: Response) => {
     try {
         const data = await AnalyticsService.getAccidentHotspots();
         res.json(data);
@@ -11,7 +11,7 @@ export const getHotspots = async (req: Request, res: Response) => {
     }
 };
 
-export const getStats = async (req: Request, res: Response) => {
+export const getStats = async (_req: Request, res: Response) => {
     try {
         const stats = await AnalyticsService.getStats();
         res.json(stats);
