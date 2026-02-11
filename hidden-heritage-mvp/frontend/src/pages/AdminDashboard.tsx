@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import axios from 'axios';
-import { LayoutDashboard, Users, CreditCard, AlertCircle, CheckCircle, XCircle, Trash2 } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, AlertCircle, CheckCircle, Trash2 } from 'lucide-react';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState<any>(null);
     const [reviews, setReviews] = useState<any[]>([]);
     const [payouts, setPayouts] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchData();
     }, []);
 
     const fetchData = async () => {
-        setLoading(true);
         try {
             const statsRes = await axios.get('http://localhost:5000/api/admin/stats');
             setStats(statsRes.data);
@@ -33,8 +31,6 @@ const AdminDashboard = () => {
                 { id: 1, user_name: "Rahul", site_name: "Konark Sun Temple", comment: "Amazing architecture!", rating: 5 },
                 { id: 2, user_name: "Anita", site_name: "Chilika Lake", comment: "Boat ride was too expensive.", rating: 3 }
             ]);
-        } finally {
-            setLoading(false);
         }
     };
 
