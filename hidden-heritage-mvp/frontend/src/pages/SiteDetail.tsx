@@ -1,173 +1,138 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import { useEffect, useState } from 'react';
-import { getSiteBySlug, getSafetyScore, getAiStory } from '../services/api';
-import { Shield, Smartphone, Sparkles } from 'lucide-react';
+import { MapPin, Clock, Info, ArrowLeft } from 'lucide-react';
 
 const SiteDetail = () => {
     const { slug } = useParams();
-    const [site, setSite] = useState<any>(null);
-    const [story, setStory] = useState<any>(null);
-    const [aiLoading, setAiLoading] = useState(false);
-    const [persona, setPersona] = useState('Tourist');
-    const [safetyData, setSafetyData] = useState<any>(null);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        if (site?.id) {
-            getSafetyScore(site.id).then(res => setSafetyData(res.data || res)).catch(console.error);
-        }
-    }, [site]);
+    // Mock data based on slug, real app would fetch from API
+    const site = {
+        name: slug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        description: "A breathtaking example of medieval architecture, standing testament to the region's rich history. Explore the intricate carvings, vast courtyards, and panoramic views from the ramparts.",
+        image: "https://images.unsplash.com/photo-1644903526978-0cb9947849aa?q=80&w=2070&auto=format&fit=crop",
+        location: "Morena District, Madhya Pradesh",
+        timings: "Sunrise to Sunset",
+        entry_fee: "₹25 (Indians), ₹300 (Foreigners)",
+        history: "Built in the 11th century, this site has witnessed the rise and fall of dynasties. It was believed to be a center for higher learning and astronomy."
+    };
 
-    // Safety logic
-    const currentScore = safetyData?.score ?? site?.safety_score ?? 8;
-    const advisory = safetyData?.details?.advisory || 'Standard Advisory';
+    return (
+        <div className="min-h-screen bg-bg-body">
+            <NavBar />
 
-    useEffect(() => {
-        if (slug) {
-            getSiteBySlug(slug).then(res => setSite(res.data)).catch(console.error);
-        }
-    }, [slug]);
+            <div style={{ position: 'relative', height: '60vh' }}>
+                <img
+                    src={site.image}
+                    alt={site.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8))'
+                }} />
 
-    const fetchAiStory = async () => {
-        if (!site) return;
-        setAiLoading(true);
-        try {
-            const res = await getAiStory({
-                siteName: site.name,
-                persona
-            });
-            setStory(res.data || res);
-        } catch (e) {
-            const navigate = useNavigate();
-
-            // Mock data based on slug, real app would fetch from API
-            const site = {
-                name: slug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                description: "A breathtaking example of medieval architecture, standing testament to the region's rich history. Explore the intricate carvings, vast courtyards, and panoramic views from the ramparts.",
-                image: "https://images.unsplash.com/photo-1644903526978-0cb9947849aa?q=80&w=2070&auto=format&fit=crop",
-                location: "Morena District, Madhya Pradesh",
-                timings: "Sunrise to Sunset",
-                entry_fee: "₹25 (Indians), ₹300 (Foreigners)",
-                history: "Built in the 11th century, this site has witnessed the rise and fall of dynasties. It was believed to be a center for higher learning and astronomy."
-            };
-
-            return (
-                <div className="min-h-screen bg-bg-body">
-                    <NavBar />
-                    <h3>Gallery</h3>
-                    <div style={{ marginTop: '1rem', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
-                        <img src="https://placehold.co/300x200" style={{ borderRadius: '8px' }} />
-                        <img src="https://placehold.co/300x200" style={{ borderRadius: '8px' }} />
-                        <img src="https://placehold.co/300x200" style={{ borderRadius: '8px' }} />
-                    </div>
-                </div>
-
-                    {/* AI Storyteller */ }
-            <div style={{ marginTop: '3rem', padding: '1.5rem', backgroundColor: '#fdf8f4', borderRadius: '12px', border: '1px solid #eee' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                    <Sparkles color="var(--color-secondary)" />
-                    <h3>AI History Narrator</h3>
-                </div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>Choose Perspective: </label>
-                    <select value={persona} onChange={(e) => setPersona(e.target.value)} style={{ padding: '0.3rem', borderRadius: '4px' }}>
-                        <option value="Tourist">Casual Tourist</option>
-                        <option value="Student">History Student</option>
-                        <option value="Researcher">Academic Researcher</option>
-                    </select>
-                </div>
-
-                {story ? (
-                    <div className="fade-in">
-                        <p style={{ fontStyle: 'italic', fontSize: '1.1rem', color: '#444' }}>"{story.content}"</p>
-                        <small style={{ display: 'block', marginTop: '1rem', color: '#888' }}>Suggested Question: {story.suggested_followup}</small>
-                        <button onClick={() => setStory(null)} style={{ marginTop: '1rem', textDecoration: 'underline', border: 'none', background: 'none', cursor: 'pointer' }}>Reset</button>
-                    </div>
-                ) : (
+                <div className="container" style={{ position: 'absolute', bottom: '3rem', left: '50%', transform: 'translateX(-50%)', width: '100%', color: 'white' }}>
                     <button
-                        onClick={fetchAiStory}
-                        disabled={aiLoading}
-                        style={{ backgroundColor: 'var(--color-secondary)', color: 'white', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '6px', cursor: 'pointer' }}
+                        onClick={() => navigate(-1)}
+                        className="btn"
+                        style={{
+                            color: 'white',
+                            backgroundColor: 'rgba(255,255,255,0.2)',
+                            backdropFilter: 'blur(5px)',
+                            marginBottom: '1.5rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.5rem 1rem',
+                            fontSize: '0.9rem'
+                        }}
                     >
-                        {aiLoading ? 'Generating...' : 'Tell me a story'}
+                        <ArrowLeft size={16} /> Back
                     </button>
-                )}
-            </div>
-                </div >
-
-    {/* Sidebar */ }
-    < div style = {{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-
-
-
-                        // Sidebar - Safety Badge
-                    const currentScore = safetyData?.score ?? site.safety_score ?? 8;
-const advisory = safetyData?.details?.advisory || 'Standard Advisory';
-
-return (
-    <div style={{ padding: '1.5rem', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <Shield color={currentScore >= 8 ? 'green' : currentScore >= 5 ? 'orange' : 'red'} />
-            <h3>Safety Readiness (Live)</h3>
-        </div>
-        <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: currentScore >= 8 ? 'green' : currentScore >= 5 ? 'orange' : 'red' }}>
-            {currentScore}/10
-        </div>
-        <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#666' }}>
-            {advisory}
-        </p>
-
-        {safetyData?.details && (
-            <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#f0f0f0', borderRadius: '4px', fontSize: '0.8rem' }}>
-                <p style={{ margin: 0 }}><strong>Weather:</strong> {safetyData.details.weather}</p>
-                <p style={{ margin: 0 }}><strong>Recent Reports:</strong> {safetyData.details.reports}</p>
-            </div>
-        )}
-
-        {/* Fallback Static Details */}
-        {!safetyData && site.safety_details && (
-            <div style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
-                {Object.entries(site.safety_details).map(([key, val]: any) => (
-                    <div key={key} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
-                        <span style={{ textTransform: 'capitalize', color: '#888' }}>{key}:</span>
-                        <span>{val}</span>
+                    <h1 style={{ fontSize: '3.5rem', marginBottom: '0.5rem' }}>{site.name}</h1>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem', opacity: 0.9 }}>
+                        <MapPin size={20} />
+                        <span>{site.location}</span>
                     </div>
-                ))}
+                </div>
             </div>
-        )}
-    </div>
 
-                    {/* AR Info */ }
-<div style={{ padding: '1.5rem', backgroundColor: '#eef2f5', borderRadius: '12px', color: '#444' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-        <Smartphone />
-        <h3 style={{ margin: 0 }}>AR Experience</h3>
-    </div>
-    {site.ar_content_available ? (
-        <div>
-            <p>Immersive 3D content available.</p>
-            <button style={{ marginTop: '0.5rem', width: '100%', padding: '0.5rem', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '4px' }}>Launch AR View</button>
+            <div className="container" style={{ padding: '3rem 2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '4rem' }} className="grid-responsive-layout">
+                    {/* Main Content */}
+                    <div>
+                        <section style={{ marginBottom: '3rem' }}>
+                            <h2 style={{ fontSize: '2rem', marginBottom: '1.5rem', color: 'var(--color-primary)' }}>About the Site</h2>
+                            <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'var(--color-text-primary)' }}>
+                                {site.description}
+                            </p>
+                            <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'var(--color-text-primary)', marginTop: '1rem' }}>
+                                {site.history}
+                            </p>
+                        </section>
+
+                        <section>
+                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Gallery</h3>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                                {[1, 2, 3].map((i) => (
+                                    <div key={i} style={{ height: '150px', borderRadius: '8px', overflow: 'hidden' }}>
+                                        <img
+                                            src={`https://source.unsplash.com/random/400x300?ruins&sig=${i}`}
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            alt="Gallery"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    </div>
+
+                    {/* Sidebar Info */}
+                    <div className="sidebar">
+                        <div className="card" style={{ padding: '2rem', position: 'sticky', top: '100px' }}>
+                            <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Visitor Info</h3>
+
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--color-secondary)' }}>
+                                    <Clock size={20} />
+                                    <span style={{ fontWeight: 600 }}>Timings</span>
+                                </div>
+                                <p style={{ marginLeft: '2rem', color: 'var(--color-text-secondary)' }}>{site.timings}</p>
+                            </div>
+
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--color-secondary)' }}>
+                                    <Info size={20} />
+                                    <span style={{ fontWeight: 600 }}>Entry Fee</span>
+                                </div>
+                                <p style={{ marginLeft: '2rem', color: 'var(--color-text-secondary)' }}>{site.entry_fee}</p>
+                            </div>
+
+                            <button className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }}>
+                                Add to Trip
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>{`
+                @media (max-width: 900px) {
+                    .grid-responsive-layout {
+                        grid-template-columns: 1fr !important;
+                    }
+                     .sidebar {
+                        order: -1;
+                        margin-bottom: 2rem;
+                    }
+                }
+            `}</style>
         </div>
-    ) : (
-        <p style={{ fontSize: '0.9rem', fontStyle: 'italic' }}>AR reconstruction coming soon for this site.</p>
-    )}
-</div>
-
-{/* Quick Facts */ }
-<div style={{ padding: '1.5rem', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-    <h3>Quick Facts</h3>
-    <ul style={{ listStyle: 'none', padding: 0, marginTop: '1rem' }}>
-        <li style={{ padding: '0.5rem 0', borderBottom: '1px solid #eee' }}><strong>Entry:</strong> ₹{site.entry_fee}</li>
-        <li style={{ padding: '0.5rem 0', borderBottom: '1px solid #eee' }}><strong>Time:</strong> {site.avg_visit_time_mins} mins</li>
-        <li style={{ padding: '0.5rem 0', borderBottom: '1px solid #eee' }}><strong>Type:</strong> {site.type}</li>
-    </ul>
-</div>
-
-                </div >
-
-            </div >
-        </>
     );
 };
 
