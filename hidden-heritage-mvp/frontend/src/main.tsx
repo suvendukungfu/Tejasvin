@@ -11,6 +11,8 @@ import Feedback from './pages/Feedback';
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Register from './pages/Register';
+import Bookings from './pages/Bookings';
 import AdminDashboard from './pages/AdminDashboard';
 import Pricing from './pages/Pricing';
 import './index.css';
@@ -25,6 +27,7 @@ const App = () => {
                     <Route path="/region/:slug" element={<RegionDetail />} />
                     <Route path="/site/:slug" element={<SiteDetail />} />
                     <Route path="/book" element={<TripBuilder />} />
+                    <Route path="/bookings" element={<Bookings />} />
                     <Route path="/feedback" element={<Feedback />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<Login />} />
