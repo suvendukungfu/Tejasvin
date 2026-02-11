@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar';
 import MapPreview from '../components/MapPreview';
 import { getSites } from '../services/api';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, Plus, Check } from 'lucide-react';
+import { Calendar, Check } from 'lucide-react';
 
 const RegionDetail = () => {
     const { slug } = useParams();
@@ -62,7 +62,8 @@ const RegionDetail = () => {
             }}>
                 <div style={{
                     position: 'absolute',
-                    top: 0, 0: 0,
+                    top: 0,
+                    left: 0,
                     width: '100%',
                     height: '100%',
                     backgroundImage: 'url(https://images.unsplash.com/photo-1596525737222-77742d069909?q=80&w=2070&auto=format&fit=crop)',
