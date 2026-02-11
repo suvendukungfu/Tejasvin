@@ -11,7 +11,6 @@ import Feedback from './pages/Feedback';
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Register from './pages/Register';
 import Bookings from './pages/Bookings';
 import AdminDashboard from './pages/AdminDashboard';
 import Pricing from './pages/Pricing';

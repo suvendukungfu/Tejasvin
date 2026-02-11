@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import NavBar from '../components/NavBar';
-import { useAuth } from '../context/AuthContext';
-import { Calendar, MapPin, Clock, MoreVertical, Eye, XCircle } from 'lucide-react';
+import { Calendar, Eye, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Bookings = () => {
@@ -32,16 +31,6 @@ const Bookings = () => {
             image: 'https://images.unsplash.com/photo-1629219663738-92f588c7f21e?q=80&w=2070&auto=format&fit=crop'
         }
     ]);
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'Confirmed': return 'bg-green-100 text-green-800 border-green-200';
-            case 'Pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-            case 'Completed': return 'bg-gray-100 text-gray-800 border-gray-200';
-            case 'Cancelled': return 'bg-red-100 text-red-800 border-red-200';
-            default: return 'bg-gray-100 text-gray-800';
-        }
-    };
 
     // Helper for inline styles since we can't use tailwind status classes directly if not configured
     const getStatusStyle = (status: string) => {
