@@ -1,6 +1,6 @@
 import NavBar from '../components/NavBar';
 import { useState } from 'react';
-import { submitFeedback } from '../services/api';
+// import { submitFeedback } from '../services/api';
 import { Star, Send, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
