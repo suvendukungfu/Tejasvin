@@ -15,6 +15,7 @@ import Bookings from './pages/Bookings';
 import AdminDashboard from './pages/AdminDashboard';
 import Pricing from './pages/Pricing';
 import './index.css';
+import 'leaflet/dist/leaflet.css';
 
 const App = () => {
     return (

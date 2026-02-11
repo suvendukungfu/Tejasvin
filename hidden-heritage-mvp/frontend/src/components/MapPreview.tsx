@@ -1,4 +1,19 @@
-import { MapPin, Navigation } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css'; 
+
+// Fix Leaflet's default icon path issues with Webpack/Vite
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+const DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 interface Site {
     id: number;
@@ -6,6 +21,7 @@ interface Site {
     latitude: number;
     longitude: number;
     type: string;
+    slug?: string;
 }
 
 interface MapPreviewProps {
@@ -13,64 +29,46 @@ interface MapPreviewProps {
 }
 
 const MapPreview = ({ sites }: MapPreviewProps) => {
-    // For MVP/Demo, we are replacing the heavy Leaflet map with a stylized static preview
-    // that still indicates function but looks better and is less error-prone for this stage.
+    // Default center if no sites (Chambal region approx)
+    const defaultCenter: [number, number] = [26.6500, 78.3000]; 
     
-    // Calculate center or use default
-    const centerSite = sites[0] || { latitude: 20.5937, longitude: 78.9629 };
+    // Determine center based on first site or default
+    const center: [number, number] = sites.length > 0 
+        ? [sites[0].latitude, sites[0].longitude] 
+        : defaultCenter;
 
     return (
-        <div 
-            className="card"
-            style={{ 
-                height: '500px', 
-                backgroundColor: '#e5e7eb', 
-                position: 'relative', 
-                overflow: 'hidden',
-                padding: 0,
-                border: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}
+        <MapContainer 
+            center={center} 
+            zoom={9} 
+            scrollWheelZoom={false} 
+            style={{ height: '100%', width: '100%', borderRadius: '12px' }}
         >
-             {/* Simulated Map Background */}
-             <div style={{ 
-                width: '100%', 
-                height: '100%', 
-                backgroundImage: 'url("https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                opacity: 0.5,
-                position: 'absolute',
-                inset: 0
-            }} />
-
-            <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '2rem', backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '12px', boxShadow: 'var(--shadow-md)' }}>
-                <h3 style={{ marginBottom: '1rem', color: 'var(--color-primary)' }}>Interactive Map</h3>
-                <p style={{ marginBottom: '1.5rem', color: 'var(--color-text-secondary)' }}>
-                    Map view is currently optimized for desktop. <br/>
-                    {sites.length} sites available in this region.
-                </p>
-                
-                <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    {sites.slice(0, 3).map(site => (
-                         <div key={site.id} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.8rem', padding: '0.25rem 0.5rem', backgroundColor: 'white', borderRadius: '50px', border: '1px solid #ddd' }}>
-                            <MapPin size={12} color="var(--color-primary)" /> {site.name}
-                         </div>
-                    ))}
-                    {sites.length > 3 && <span style={{ fontSize: '0.8rem', alignSelf: 'center' }}>+{sites.length - 3} more</span>}
-                </div>
-
-                <button 
-                    className="btn btn-outline"
-                    style={{ marginTop: '1.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
-                    onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${centerSite.latitude},${centerSite.longitude}`, '_blank')}
+            <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {sites.map(site => (
+                <Marker 
+                    key={site.id} 
+                    position={[site.latitude, site.longitude]}
                 >
-                    <Navigation size={16} /> Open in Google Maps
-                </button>
-            </div>
-        </div>
+                    <Popup>
+                        <div style={{ textAlign: 'center' }}>
+                            <strong>{site.name}</strong><br />
+                            <span style={{ fontSize: '0.8rem', color: '#666' }}>{site.type}</span>
+                            {site.slug && (
+                                <div style={{ marginTop: '0.5rem' }}>
+                                    <a href={`/site/${site.slug}`} style={{ color: '#d97706', fontWeight: 500, textDecoration: 'none' }}>
+                                        View Details
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    </Popup>
+                </Marker>
+            ))}
+        </MapContainer>
     );
 };
 
