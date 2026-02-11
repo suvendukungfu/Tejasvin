@@ -10,11 +10,9 @@ interface Site {
 
 interface MapPreviewProps {
     sites: Site[];
-    selectedSites: number[];
-    onSiteSelect: (id: number) => void;
 }
 
-const MapPreview = ({ sites, selectedSites, onSiteSelect }: MapPreviewProps) => {
+const MapPreview = ({ sites }: MapPreviewProps) => {
     // For MVP/Demo, we are replacing the heavy Leaflet map with a stylized static preview
     // that still indicates function but looks better and is less error-prone for this stage.
     

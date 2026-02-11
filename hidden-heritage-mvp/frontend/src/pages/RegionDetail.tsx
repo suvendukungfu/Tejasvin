@@ -183,7 +183,7 @@ const RegionDetail = () => {
                     <div className="sidebar" style={{ minWidth: '300px' }}>
                         <div style={{ position: 'sticky', top: '100px' }}>
                             <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: '1.5rem', height: '250px' }}>
-                                <MapPreview sites={sites} selectedSites={selectedSites} onSiteSelect={toggleSite} />
+                                <MapPreview sites={sites} />
                             </div>
 
                             <div className="card" style={{ padding: '1.5rem' }}>
