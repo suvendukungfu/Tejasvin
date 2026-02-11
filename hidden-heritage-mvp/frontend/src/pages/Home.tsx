@@ -1,19 +1,158 @@
 import NavBar from '../components/NavBar';
 import Hero from '../components/Hero';
+import { Map, Compass, Shield, ChevronRight, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+    const navigate = useNavigate();
+
+    const features = [
+        {
+            icon: <Compass size={32} color="var(--color-secondary)" />,
+            title: "Uncharted Locations",
+            desc: "Access sites that aren't on Google Maps. We work with local archaeologists to map the unknown."
+        },
+        {
+            icon: <Shield size={32} color="var(--color-secondary)" />,
+            title: "Safe & Guided",
+            desc: "Verified local guides accompany every trip. Your safety in remote areas is our top priority."
+        },
+        {
+            icon: <Map size={32} color="var(--color-secondary)" />,
+            title: "Curated Itineraries",
+            desc: "Don't just visit; experience. Our partial-day and full-day plans are optimized for discovery."
+        }
+    ];
+
+    const destinations = [
+        {
+            title: "Bateshwar Temples",
+            location: "Morena, Chambal",
+            img: "https://images.unsplash.com/photo-1644903526978-0cb9947849aa?q=80&w=800&auto=format&fit=crop",
+            desc: "A cluster of 200 sandstone temples restored from ruins."
+        },
+        {
+            title: "Garh Kundar",
+            location: "Tikamgarh",
+            img: "https://images.unsplash.com/photo-1596525737222-77742d069909?q=80&w=800&auto=format&fit=crop",
+            desc: "A hill fort with a mysterious past and breathtaking views."
+        },
+        {
+            title: "Mitawali & Padavali",
+            location: "Morena",
+            img: "https://images.unsplash.com/photo-1544211186-0775d729864d?q=80&w=800&auto=format&fit=crop",
+            desc: "The circular temple that inspired the Indian Parliament."
+        }
+    ];
+
     return (
-        <>
+        <div className="min-h-screen bg-bg-body">
             <NavBar />
             <Hero />
-            <section style={{ padding: '4rem 2rem', textAlign: 'center' }}>
-                <h2>Welcome to Hidden Heritage</h2>
-                <p style={{ maxWidth: '700px', margin: '1rem auto' }}>
-                    We curate journeys to the most unexplored and breathtaking historical sites in India.
-                    Starting with the mystical Chambal region, discover stories that time forgot.
-                </p>
+
+            {/* Features Section */}
+            <section className="container" style={{ padding: '5rem 2rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Why Travel with Us?</h2>
+                    <p style={{ color: 'var(--color-text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
+                        We don't just show you places; we connect you with the soul of India's forgotten history.
+                    </p>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                    {features.map((f, i) => (
+                        <div key={i} className="card" style={{ textAlign: 'center', padding: '2.5rem' }}>
+                            <div style={{
+                                display: 'inline-flex',
+                                padding: '1rem',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(216, 67, 21, 0.1)',
+                                marginBottom: '1.5rem'
+                            }}>
+                                {f.icon}
+                            </div>
+                            <h3 style={{ marginBottom: '1rem' }}>{f.title}</h3>
+                            <p style={{ color: 'var(--color-text-secondary)' }}>{f.desc}</p>
+                        </div>
+                    ))}
+                </div>
             </section>
-        </>
+
+            {/* Featured Destinations */}
+            <section style={{ backgroundColor: 'var(--color-bg-alt)', padding: '5rem 0' }}>
+                <div className="container" style={{ padding: '0 2rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '3rem' }}>
+                        <div>
+                            <span style={{ color: 'var(--color-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Trending</span>
+                            <h2 style={{ fontSize: '2.5rem', marginTop: '0.5rem' }}>Hidden Gems</h2>
+                        </div>
+                        <button
+                            className="btn btn-outline"
+                            onClick={() => navigate('/explore')}
+                            style={{ display: 'none', gap: '0.5rem' }} // Hidden on mobile via CSS ideally, but simplified here
+                        >
+                            View All <ChevronRight size={18} />
+                        </button>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+                        {destinations.map((d, i) => (
+                            <div key={i} className="card" style={{ padding: 0, overflow: 'hidden', cursor: 'pointer' }} onClick={() => navigate('/explore')}>
+                                <div style={{ height: '240px', overflow: 'hidden' }}>
+                                    <img
+                                        src={d.img}
+                                        alt={d.title}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                    />
+                                </div>
+                                <div style={{ padding: '1.5rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                        <span style={{ fontSize: '0.85rem', color: 'var(--color-secondary)', fontWeight: 600 }}>{d.location}</span>
+                                        <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
+                                            <Star size={14} fill="#FFC107" color="#FFC107" />
+                                            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>4.8</span>
+                                        </div>
+                                    </div>
+                                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>{d.title}</h3>
+                                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>{d.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => navigate('/explore')}
+                            style={{ padding: '1rem 3rem', borderRadius: '50px' }}
+                        >
+                            Explore All Destinations
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Newsletter / CTA */}
+            <section style={{ padding: '6rem 2rem', textAlign: 'center', background: 'var(--color-primary)', color: 'white' }}>
+                <div className="container">
+                    <h2 style={{ color: 'white', fontSize: '2.5rem', marginBottom: '1.5rem' }}>Ready to uncover the past?</h2>
+                    <p style={{ maxWidth: '600px', margin: '0 auto 2.5rem auto', opacity: 0.9, fontSize: '1.2rem' }}>
+                        Join 2,000+ explorers discovering the real India. Sign up for our newsletter to get weekly curated stories.
+                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                        <button
+                            className="btn"
+                            style={{ backgroundColor: 'white', color: 'var(--color-primary)', padding: '1rem 2.5rem' }}
+                            onClick={() => navigate('/register')}
+                        >
+                            Get Started
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
     );
 };
 
