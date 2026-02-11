@@ -18,10 +18,16 @@ const SortableItem = ({ id, site, onRemove }: { id: number, site: any, onRemove:
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
+        padding: '1rem', 
+        marginBottom: '1rem', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between', 
+        cursor: 'default'
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="card" style={{ padding: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'default' }}>
+        <div ref={setNodeRef} style={style} className="card">
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div {...attributes} {...listeners} style={{ cursor: 'grab', color: 'var(--color-text-secondary)', padding: '0.5rem' }}>
                     <GripVertical size={20} />
@@ -153,24 +159,6 @@ const TripBuilder = () => {
                         </div>
 
                         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                            <SortableContext items={selectedSiteIds} strategy={verticalListSortingStrategy}>
-                                {selectedSitesData.map((site) => (
-                                    <div key={site.id} className="card" style={{ padding: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                         {/* We need to use SortableItem component to properly hook into dnd-kit. 
-                                             Swapping the div above for the SortableItem component defined earlier. 
-                                             Note: The styling in SortableItem needs to match the card class.
-                                         */}
-                                        <SortableItem id={site.id} site={site} onRemove={handleRemove} />
-                                    </div>
-                                ))}
-                            </SortableContext>
-                        </DndContext>
-                        
-                        {/* Fix: SortableItem needs to be direct child? No, SortableContext needs items. 
-                            The map above wraps SortableItem in a div which might break ref.
-                            Actually, let's just render SortableItem directly in the map.
-                        */}
-                         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                             <SortableContext items={selectedSiteIds} strategy={verticalListSortingStrategy}>
                                 {selectedSitesData.map((site) => (
                                     <SortableItem key={site.id} id={site.id} site={site} onRemove={handleRemove} />
