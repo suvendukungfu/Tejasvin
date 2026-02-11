@@ -42,25 +42,74 @@ const MapPreview = ({ sites, selectedSites, onSiteSelect }: MapProps) => {
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+        <div 
+            className="card"
+            style={{ 
+                height: '100%', 
+                minHeight: '400px', 
+                backgroundColor: '#e5e7eb', 
+                position: 'relative', 
+                overflow: 'hidden',
+                padding: 0,
+                border: 'none'
+            }}
+        >
+            {/* Simulated Map Background */}
+            <div style={{ 
+                width: '100%', 
+                height: '100%', 
+                backgroundImage: 'url("https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop")', // Abstract map texture
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                opacity: 0.6
+            }} />
+            
+            {/* Map Marker */}
+            <div style={{ 
+                position: 'absolute', 
+                top: '50%', 
+                left: '50%', 
+                transform: 'translate(-50%, -50%)',
+                textAlign: 'center'
+            }}>
+                <div style={{ 
+                    color: 'var(--color-primary)', 
+                    filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))',
+                    animation: 'bounce 2s infinite'
+                }}>
+                    <MapPin size={48} fill="var(--color-primary)" color="white" />
+                </div>
+                <div style={{ 
+                    backgroundColor: 'white', 
+                    padding: '0.5rem 1rem', 
+                    borderRadius: '50px', 
+                    marginTop: '0.5rem',
+                    boxShadow: 'var(--shadow-md)',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                    whiteSpace: 'nowrap'
+                }}>
+                    {name}
+                </div>
+            </div>
 
-                {sites.map(site => (
-                    <Marker key={site.id} position={[site.latitude, site.longitude]}>
-                        <Popup>
-                            <strong>{site.name}</strong><br />
-                            {site.type}<br />
-                            <button onClick={() => onSiteSelect(site.id)}>
-                                {selectedSites.includes(site.id) ? 'Remove' : 'Add to Trip'}
-                            </button>
-                        </Popup>
-                    </Marker>
-                ))}
+            {/* Controls Overlay */}
+            <div style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', display: 'flex', gap: '0.5rem' }}>
+                <button 
+                    className="btn btn-primary"
+                    style={{ borderRadius: '50px', padding: '0.6rem 1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}
+                    onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank')}
+                >
+                    <Navigation size={16} /> Get Directions
+                </button>
+            </div>
 
-                {selectedSites.length >= 2 && (
-                    <Polyline positions={polylinePositions} color="var(--color-secondary)" />
-                )}
-            </MapContainer>
+            <style>{`
+                @keyframes bounce {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-10px); }
+                }
+            `}</style>
         </div>
     );
 };
