@@ -210,6 +210,52 @@ button {
 }
 
 
+/* Form Elements */
+.modern-input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+.modern-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(44, 36, 32, 0.1);
+  background: #ffffff;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-label {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  pointer-events: none;
+  transition: 0.2s ease all;
+  color: var(--color-text-secondary);
+  background: transparent;
+}
+
+.modern-input:focus ~ .floating-label,
+.modern-input:not(:placeholder-shown) ~ .floating-label {
+  top: -0.6rem;
+  left: 0.8rem;
+  font-size: 0.85rem;
+  background: white;
+  padding: 0 0.4rem;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
 /* Responsive Utilities */
 .desktop-table-container {
   display: block;
