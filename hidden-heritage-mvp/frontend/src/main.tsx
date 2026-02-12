@@ -14,6 +14,7 @@ import Register from './pages/Register';
 import Bookings from './pages/Bookings';
 import AdminDashboard from './pages/AdminDashboard';
 import Pricing from './pages/Pricing';
+import AntigravityPage from './pages/AntigravityPage';
 import './index.css';
 import 'leaflet/dist/leaflet.css';
 
@@ -34,6 +35,7 @@ const App = () => {
                     <Route path="/register" element={<Register />} />
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/antigravity" element={<AntigravityPage />} />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>
