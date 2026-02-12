@@ -26,6 +26,7 @@ const Hero = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
+                backgroundColor: '#2C2420', // Fallback color
                 backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -37,7 +38,7 @@ const Hero = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7))',
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.8))', // Darker overlay for better contrast
                 zIndex: -1
             }} />
 
@@ -50,28 +51,30 @@ const Hero = () => {
                     <span style={{
                         display: 'inline-block',
                         padding: '0.5rem 1rem',
-                        backgroundColor: 'rgba(255,255,255,0.2)',
+                        backgroundColor: 'rgba(255,255,255,0.15)',
                         backdropFilter: 'blur(5px)',
                         borderRadius: '50px',
                         marginBottom: '1.5rem',
                         fontSize: '0.9rem',
                         fontWeight: 600,
                         letterSpacing: '1px',
-                        textTransform: 'uppercase'
+                        textTransform: 'uppercase',
+                        border: '1px solid rgba(255,255,255,0.2)'
                     }}>
                         Discover the Undiscovered
                     </span>
                     <h1 style={{
+                        color: 'var(--color-text-inverse)', // Override global h1 color
                         fontSize: 'clamp(3rem, 6vw, 5.5rem)',
                         marginBottom: '1.5rem',
                         lineHeight: 1.1,
-                        textShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                        textShadow: '0 4px 30px rgba(0,0,0,0.8)', // Stronger shadow
                         fontWeight: 700,
                         fontFamily: 'var(--font-heading)',
                         letterSpacing: '-0.02em'
                     }}>
                         Explore India's <br />
-                        <span style={{ color: 'var(--color-accent)', fontStyle: 'italic' }}>Hidden Heritage</span>
+                        <span style={{ color: 'var(--color-accent)', fontStyle: 'italic', textShadow: '0 4px 30px rgba(0,0,0,1)' }}>Hidden Heritage</span>
                     </h1>
                 </motion.div>
 
@@ -85,8 +88,9 @@ const Hero = () => {
                         maxWidth: '700px',
                         marginLeft: 'auto',
                         marginRight: 'auto',
-                        color: 'rgba(255,255,255,0.9)',
-                        lineHeight: 1.6
+                        color: 'rgba(255,255,255,1)', // Full opacity
+                        lineHeight: 1.6,
+                        textShadow: '0 2px 4px rgba(0,0,0,0.6)' // Added shadow for readability
                     }}
                 >
                     Uncover ancient temples, mystical ravines, and timeless rock art in the heart of Chambal.

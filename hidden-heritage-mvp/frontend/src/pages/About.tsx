@@ -12,6 +12,7 @@ const About = () => {
                 <div 
                     className="absolute inset-0 z-0" 
                     style={{ 
+                        backgroundColor: '#2C2420', // Fallback color
                         backgroundImage: 'url("https://www.mptourism.com/web/images/about/history-banner-new.jpg")', 
                         backgroundSize: 'cover', 
                         backgroundPosition: 'center',
@@ -22,7 +23,7 @@ const About = () => {
                     <motion.h1 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                        style={{ fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', textShadow: '0 2px 4px rgba(0,0,0,0.3)', color: 'var(--color-text-inverse)' }}
                     >
                         Uncovering the Unseen
                     </motion.h1>
@@ -30,7 +31,7 @@ const About = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        style={{ fontSize: '1.2rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
+                        style={{ fontSize: '1.2rem', lineHeight: 1.6, color: 'rgba(255,255,255,1)', textShadow: '0 2px 4px rgba(0,0,0,0.6)' }}
                     >
                         Hidden Heritage is dedicated to shining a light on the forgotten architectural marvels of India. 
                         We believe that every stone has a story, and every ruined pillar whispers the secrets of the past.
