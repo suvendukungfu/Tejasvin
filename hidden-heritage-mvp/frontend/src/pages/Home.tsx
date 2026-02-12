@@ -28,19 +28,19 @@ const Home = () => {
         {
             title: "Bateshwar Temples",
             location: "Morena, Chambal",
-            img: "https://images.unsplash.com/photo-1644903526978-0cb9947849aa?q=80&w=800&auto=format&fit=crop",
+            img: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Bateshwar_Group_of_Temples%2C_Morena%2C_Near_Gwalior.jpg",
             desc: "A cluster of 200 sandstone temples restored from ruins."
         },
         {
             title: "Garh Kundar",
             location: "Tikamgarh",
-            img: "https://images.unsplash.com/photo-1596525737222-77742d069909?q=80&w=800&auto=format&fit=crop",
+            img: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG",
             desc: "A hill fort with a mysterious past and breathtaking views."
         },
         {
             title: "Mitawali & Padavali",
             location: "Morena",
-            img: "https://images.unsplash.com/photo-1544211186-0775d729864d?q=80&w=800&auto=format&fit=crop",
+            img: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg",
             desc: "The circular temple that inspired the Indian Parliament."
         }
     ];
@@ -61,7 +61,7 @@ const Home = () => {
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                     {features.map((f, i) => (
-                        <div key={i} className="card" style={{ textAlign: 'center', padding: '2.5rem' }}>
+                        <div key={i} className="card glass" style={{ textAlign: 'center', padding: '3rem', border: '1px solid rgba(255,255,255,0.5)' }}>
                             <div style={{
                                 display: 'inline-flex',
                                 padding: '1rem',
@@ -71,8 +71,8 @@ const Home = () => {
                             }}>
                                 {f.icon}
                             </div>
-                            <h3 style={{ marginBottom: '1rem' }}>{f.title}</h3>
-                            <p style={{ color: 'var(--color-text-secondary)' }}>{f.desc}</p>
+                            <h3 style={{ marginBottom: '1rem', fontFamily: 'var(--font-heading)', fontSize: '1.5rem' }}>{f.title}</h3>
+                            <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.05rem' }}>{f.desc}</p>
                         </div>
                     ))}
                 </div>
@@ -83,8 +83,8 @@ const Home = () => {
                 <div className="container" style={{ padding: '0 2rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '3rem' }}>
                         <div>
-                            <span style={{ color: 'var(--color-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Trending</span>
-                            <h2 style={{ fontSize: '2.5rem', marginTop: '0.5rem' }}>Hidden Gems</h2>
+                            <span style={{ color: 'var(--color-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem' }}>Trending</span>
+                            <h2 style={{ fontSize: '3rem', marginTop: '0.5rem', fontFamily: 'var(--font-heading)' }}>Hidden Gems</h2>
                         </div>
                         <button
                             className="btn btn-outline"
@@ -109,14 +109,14 @@ const Home = () => {
                                 </div>
                                 <div style={{ padding: '1.5rem' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                                        <span style={{ fontSize: '0.85rem', color: 'var(--color-secondary)', fontWeight: 600 }}>{d.location}</span>
+                                        <span style={{ fontSize: '0.85rem', color: 'var(--color-secondary)', fontWeight: 600, letterSpacing: '0.5px' }}>{d.location}</span>
                                         <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
-                                            <Star size={14} fill="#FFC107" color="#FFC107" />
+                                            <Star size={14} fill="#D4AF37" color="#D4AF37" />
                                             <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>4.8</span>
                                         </div>
                                     </div>
-                                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>{d.title}</h3>
-                                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>{d.desc}</p>
+                                    <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>{d.title}</h3>
+                                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', lineHeight: 1.6 }}>{d.desc}</p>
                                 </div>
                             </div>
                         ))}
@@ -135,10 +135,13 @@ const Home = () => {
             </section>
 
             {/* Newsletter / CTA */}
-            <section style={{ padding: '6rem 2rem', textAlign: 'center', background: 'var(--color-primary)', color: 'white' }}>
-                <div className="container">
-                    <h2 style={{ color: 'white', fontSize: '2.5rem', marginBottom: '1.5rem' }}>Ready to uncover the past?</h2>
-                    <p style={{ maxWidth: '600px', margin: '0 auto 2.5rem auto', opacity: 0.9, fontSize: '1.2rem' }}>
+            <section style={{ padding: '8rem 2rem', textAlign: 'center', background: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+                {/* Background Pattern */}
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.05, backgroundImage: 'radial-gradient(#D4AF37 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+                
+                <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+                    <h2 style={{ color: 'var(--color-accent)', fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)' }}>Ready to uncover the past?</h2>
+                    <p style={{ maxWidth: '600px', margin: '0 auto 3rem auto', opacity: 0.9, fontSize: '1.25rem', fontWeight: 300 }}>
                         Join 2,000+ explorers discovering the real India. Sign up for our newsletter to get weekly curated stories.
                     </p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
