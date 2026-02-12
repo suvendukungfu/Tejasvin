@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'; 
 
@@ -43,6 +43,7 @@ const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
 };
 
 const MapPreview = ({ sites }: MapPreviewProps) => {
+    const [selectedSiteIds, setSelectedSiteIds] = useState<number[]>([]);
     const [optimizedRoute, setOptimizedRoute] = useState<Site[] | null>(null);
 
     // Default center if no sites (Chambal region approx)
@@ -53,12 +54,28 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
         ? [sites[0].latitude, sites[0].longitude] 
         : defaultCenter;
 
+    const toggleSiteSelection = (id: number) => {
+        setOptimizedRoute(null); // Reset route when selection changes
+        setSelectedSiteIds(prev => 
+            prev.includes(id) ? prev.filter(siteId => siteId !== id) : [...prev, id]
+        );
+    };
+
     const handlePlanRoute = () => {
-        if (sites.length < 2) return;
+        // Use selected sites, or if none selected, warn user
+        const sitesToRoute = selectedSiteIds.length > 0 
+            ? sites.filter(s => selectedSiteIds.includes(s.id))
+            : []; 
+
+        if (sitesToRoute.length < 2) {
+            alert("Please select at least 2 locations to plan a route.");
+            return;
+        }
 
         // Greedy TSP Algorithm
-        let unvisited = [...sites];
-        let current = unvisited[0]; // Start with the first site
+        let unvisited = [...sitesToRoute];
+        // Start with the first site in the list (simplification)
+        let current = unvisited[0]; 
         const route = [current];
         unvisited = unvisited.filter(s => s.id !== current.id);
 
@@ -82,28 +99,42 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
         setOptimizedRoute(route);
     };
 
-    // Custom numbered icon for route
+    // Custom Icons
     const createNumberedIcon = (number: number) => {
         return L.divIcon({
             className: 'custom-icon',
             html: `<div style="background-color: #d97706; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">${number}</div>`,
             iconSize: [24, 24],
             iconAnchor: [12, 12]
-        });
+        }) as L.DivIcon;
+    };
+
+    const createSelectedIcon = () => {
+        return L.divIcon({
+            className: 'custom-icon-selected',
+            html: `<div style="background-color: #2e7d32; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 0 8px #2e7d32;">✓</div>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+        }) as L.DivIcon;
     };
 
     return (
         <div style={{ position: 'relative', height: '100%', width: '100%' }}>
             
-            {/* Route Button */}
-            <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
+            {/* Control Panel */}
+            <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '5px' }}>
+                <div style={{ background: 'white', padding: '5px 10px', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                    {selectedSiteIds.length} sites selected
+                </div>
                 <button 
                     onClick={handlePlanRoute}
                     className="btn btn-primary"
                     style={{ 
                         boxShadow: '0 4px 6px rgba(0,0,0,0.1)', 
                         fontSize: '0.9rem',
-                        padding: '0.5rem 1rem'
+                        padding: '0.5rem 1rem',
+                        opacity: selectedSiteIds.length < 2 ? 0.7 : 1,
+                        cursor: selectedSiteIds.length < 2 ? 'not-allowed' : 'pointer'
                     }}
                 >
                     📍 Plan Shortest Route
@@ -125,35 +156,67 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                 {optimizedRoute && (
                     <Polyline 
                         positions={optimizedRoute.map(site => [site.latitude, site.longitude])}
-                        color="#d97706" // Amber-600
+                        color="#d97706" 
                         dashArray="10, 10" 
                         weight={4}
                     />
                 )}
 
-                {/* Render Markers (Use Optimized Order if available, else default list) */}
-                {(optimizedRoute || sites).map((site, index) => (
-                    <Marker 
-                        key={site.id} 
-                        position={[site.latitude, site.longitude]}
-                        icon={optimizedRoute ? createNumberedIcon(index + 1) : DefaultIcon}
-                    >
-                        <Popup>
-                            <div style={{ textAlign: 'center' }}>
-                                <strong>{site.name}</strong><br />
-                                <span style={{ fontSize: '0.8rem', color: '#666' }}>{site.type}</span>
-                                {optimizedRoute && <div style={{marginTop: '0.25rem', fontWeight: 'bold', color: '#d97706'}}>Stop #{index + 1}</div>}
-                                {site.slug && (
-                                    <div style={{ marginTop: '0.5rem' }}>
-                                        <a href={`/site/${site.slug}`} style={{ color: '#d97706', fontWeight: 500, textDecoration: 'none' }}>
-                                            View Details
-                                        </a>
+                {/* Render Markers */}
+                {sites.map((site) => {
+                    // Determine Icon
+                    let icon = DefaultIcon;
+                    if (optimizedRoute) {
+                        const index = optimizedRoute.findIndex(s => s.id === site.id);
+                        if (index !== -1) icon = createNumberedIcon(index + 1) as any;
+                    } else if (selectedSiteIds.includes(site.id)) {
+                        icon = createSelectedIcon() as any;
+                    }
+
+                    return (
+                        <Marker 
+                            key={site.id} 
+                            position={[site.latitude, site.longitude]}
+                            icon={icon as any}
+                        >
+                            <Popup>
+                                <div style={{ textAlign: 'center', minWidth: '150px' }}>
+                                    <strong>{site.name}</strong><br />
+                                    <span style={{ fontSize: '0.8rem', color: '#666' }}>{site.type}</span>
+                                    
+                                    {optimizedRoute && (
+                                        <div style={{marginTop: '0.25rem', fontWeight: 'bold', color: '#d97706'}}>
+                                            Stop #{optimizedRoute.findIndex(s => s.id === site.id) + 1}
+                                        </div>
+                                    )}
+
+                                    <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        <button 
+                                            onClick={() => toggleSiteSelection(site.id)}
+                                            style={{
+                                                background: selectedSiteIds.includes(site.id) ? '#ef4444' : '#2e7d32',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '4px 8px',
+                                                borderRadius: '4px',
+                                                cursor: 'pointer',
+                                                fontSize: '0.8rem'
+                                            }}
+                                        >
+                                            {selectedSiteIds.includes(site.id) ? 'Remove from Route' : 'Add to Route'}
+                                        </button>
+                                        
+                                        {site.slug && (
+                                            <a href={`/site/${site.slug}`} style={{ color: '#d97706', fontWeight: 500, textDecoration: 'none', fontSize: '0.85rem' }}>
+                                                View Details
+                                            </a>
+                                        )}
                                     </div>
-                                )}
-                            </div>
-                        </Popup>
-                    </Marker>
-                ))}
+                                </div>
+                            </Popup>
+                        </Marker>
+                    );
+                })}
             </MapContainer>
         </div>
     );
