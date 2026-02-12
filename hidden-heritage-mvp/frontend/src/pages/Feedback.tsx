@@ -32,7 +32,7 @@ const Feedback = () => {
             <NavBar />
             
             <div className="container" style={{ padding: '4rem 2rem', maxWidth: '800px' }}>
-                <div className="card" style={{ padding: '3rem' }}>
+                <div className="card glass" style={{ padding: '3rem', border: '1px solid rgba(255,255,255,0.6)' }}>
                     
                     <AnimatePresence mode="wait">
                         {sent ? (
