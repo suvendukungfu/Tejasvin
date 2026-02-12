@@ -18,15 +18,7 @@ const NavBar = () => {
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     return (
-        <nav className="glass" style={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 1000,
-            height: '80px',
-            display: 'flex',
-            alignItems: 'center',
-            transition: 'all 0.3s ease'
-        }}>
+        <nav className="glass navbar">
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                 <div
                     onClick={() => navigate('/')}
@@ -52,6 +44,7 @@ const NavBar = () => {
                     <NavLink onClick={() => navigate('/explore')}>Explore</NavLink>
                     <NavLink onClick={() => navigate('/book')}>Bookings</NavLink>
                     <NavLink onClick={() => navigate('/about')}>About</NavLink>
+                    <NavLink onClick={() => navigate('/pricing')}>Pricing</NavLink>
 
                     {auth.user ? (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', paddingLeft: '1.5rem', borderLeft: '1px solid rgba(0,0,0,0.1)' }}>
@@ -90,17 +83,7 @@ const NavBar = () => {
 const NavLink = ({ children, onClick }: { children: React.ReactNode, onClick: () => void }) => (
     <button
         onClick={onClick}
-        style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            fontWeight: 500,
-            color: 'var(--color-text-secondary)',
-            transition: 'color 0.2s'
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
-        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-text-secondary)'}
+        className="nav-link"
     >
         {children}
     </button>
