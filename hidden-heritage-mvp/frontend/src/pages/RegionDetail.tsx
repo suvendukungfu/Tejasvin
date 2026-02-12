@@ -66,7 +66,7 @@ const RegionDetail = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundImage: 'url(https://images.unsplash.com/photo-1596525737222-77742d069909?q=80&w=2070&auto=format&fit=crop)',
+                    backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     zIndex: -2

@@ -10,7 +10,15 @@ const SiteDetail = () => {
     const site = {
         name: slug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
         description: "A breathtaking example of medieval architecture, standing testament to the region's rich history. Explore the intricate carvings, vast courtyards, and panoramic views from the ramparts.",
-        image: "https://images.unsplash.com/photo-1644903526978-0cb9947849aa?q=80&w=2070&auto=format&fit=crop",
+        image: (() => {
+            const images: Record<string, string> = {
+                'bateshwar-temples': 'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg',
+                'mitawali-padavali': 'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg',
+                'gwalior-fort': 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg',
+                'garh-kundar': 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG'
+            };
+            return images[slug || ''] || "https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg";
+        })(),
         location: "Morena District, Madhya Pradesh",
         timings: "Sunrise to Sunset",
         entry_fee: "₹25 (Indians), ₹300 (Foreigners)",
@@ -81,15 +89,46 @@ const SiteDetail = () => {
                         <section>
                             <h3 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Gallery</h3>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                                {[1, 2, 3].map((i) => (
-                                    <div key={i} style={{ height: '150px', borderRadius: '8px', overflow: 'hidden' }}>
-                                        <img
-                                            src={`https://source.unsplash.com/random/400x300?ruins&sig=${i}`}
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                            alt="Gallery"
-                                        />
-                                    </div>
-                                ))}
+                                {(() => {
+                                    const galleryImages: Record<string, string[]> = {
+                                        'bateshwar-temples': [
+                                            'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg',
+                                            'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg', 
+                                            'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg' // Nearby context
+                                        ],
+                                        'mitawali-padavali': [
+                                            'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg',
+                                            'https://upload.wikimedia.org/wikipedia/commons/7/78/Chausath_Yogini_Temple_%2816313518811%29.jpg',
+                                            'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg'
+                                        ],
+                                        'gwalior-fort': [
+                                            'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg',
+                                            'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg',
+                                            'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg'
+                                        ],
+                                        'garh-kundar': [
+                                            'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
+                                            'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
+                                            'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'
+                                        ]
+                                    };
+                                    
+                                    const images = galleryImages[slug || ''] || [
+                                        'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
+                                        'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg',
+                                        'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg'
+                                    ];
+
+                                    return images.map((img, i) => (
+                                        <div key={i} style={{ height: '150px', borderRadius: '8px', overflow: 'hidden' }}>
+                                            <img
+                                                src={img}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                alt="Gallery"
+                                            />
+                                        </div>
+                                    ));
+                                })()}
                             </div>
                         </section>
                     </div>

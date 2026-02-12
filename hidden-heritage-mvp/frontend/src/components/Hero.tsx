@@ -26,7 +26,7 @@ const Hero = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundImage: 'url(https://images.unsplash.com/photo-1598555232938-161d989f61b0?q=80&w=2070&auto=format&fit=crop)',
+                backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 zIndex: -2
@@ -145,19 +145,29 @@ const Hero = () => {
             }}>
                 <div style={{ display: 'flex', gap: '1rem', animation: 'scroll 40s linear infinite' }}>
                     {/* Duplicated for seamless loop */}
-                    {[...Array(20)].map((_, i) => (
+                    {/* Duplicated for seamless loop */}
+                    {[...Array(20)].map((_, i) => {
+                        const images = [
+                            'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg',
+                            'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
+                            'https://upload.wikimedia.org/wikipedia/commons/7/78/Chausath_Yogini_Temple_%2816313518811%29.jpg'
+                        ];
+                        return (
                         <div key={i} style={{
                             minWidth: '200px',
                             height: '120px',
                             backgroundColor: 'rgba(255,255,255,0.1)',
                             borderRadius: 'var(--border-radius-md)',
-                            backgroundImage: `url(https://source.unsplash.com/random/300x200?ancient,ruins&sig=${i})`,
+                            backgroundImage: `url(${images[i % images.length]})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
                             border: '1px solid rgba(255,255,255,0.2)'
                         }} />
-                    ))}
+                    )})}
                 </div>
             </div>
 

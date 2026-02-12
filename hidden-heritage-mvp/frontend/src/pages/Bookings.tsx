@@ -12,7 +12,7 @@ const Bookings = () => {
             date: '2023-11-15',
             amount: 4500,
             status: 'Completed',
-            image: 'https://images.unsplash.com/photo-1644903526978-0cb9947849aa?q=80&w=2070&auto=format&fit=crop'
+            image: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg'
         },
         {
             id: 'BK-2024-042',
@@ -20,7 +20,7 @@ const Bookings = () => {
             date: '2024-03-20',
             amount: 3200,
             status: 'Confirmed',
-            image: 'https://images.unsplash.com/photo-1596525737222-77742d069909?q=80&w=2070&auto=format&fit=crop'
+            image: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg'
         },
         {
             id: 'BK-2024-055',
@@ -28,7 +28,7 @@ const Bookings = () => {
             date: '2024-04-10',
             amount: 2800,
             status: 'Pending',
-            image: 'https://images.unsplash.com/photo-1629219663738-92f588c7f21e?q=80&w=2070&auto=format&fit=crop'
+            image: 'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg'
         }
     ]);
 
