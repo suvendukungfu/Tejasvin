@@ -56,7 +56,7 @@ const Bookings = () => {
                     </div>
                 </header>
 
-                <div className="card glass" style={{ overflow: 'hidden', padding: 0, border: '1px solid rgba(255,255,255,0.6)' }}>
+                <div className="card glass desktop-table-container" style={{ overflow: 'hidden', padding: 0, border: '1px solid rgba(255,255,255,0.6)' }}>
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
                             <thead style={{ backgroundColor: 'rgba(93, 64, 55, 0.05)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
@@ -76,7 +76,7 @@ const Bookings = () => {
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         style={{ borderBottom: '1px solid #eee' }}
-                                        whileHover={{ backgroundColor: '#fafafa' }}
+                                        whileHover={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
                                     >
                                         <td style={{ padding: '1rem 1.5rem' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -122,6 +122,57 @@ const Bookings = () => {
                             </tbody>
                         </table>
                     </div>
+                </div>
+
+                {/* Mobile View */}
+                <div className="mobile-bookings-list">
+
+                    {bookings.map((booking) => (
+                        <motion.div
+                            key={`mobile-${booking.id}`}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="card glass"
+                            style={{ padding: '1.25rem', border: '1px solid rgba(255,255,255,0.6)' }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                                <img 
+                                    src={booking.image} 
+                                    alt={booking.destination} 
+                                    style={{ width: '64px', height: '64px', borderRadius: '12px', objectFit: 'cover' }} 
+                                />
+                                <div>
+                                    <h3 style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>{booking.destination}</h3>
+                                    <span style={getStatusStyle(booking.status)}>{booking.status}</span>
+                                </div>
+                            </div>
+                            
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                                <div>
+                                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.8rem' }}>Date</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                        <Calendar size={14} />
+                                        {booking.date}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.8rem' }}>Amount</div>
+                                    <div style={{ fontWeight: 600 }}>₹{booking.amount}</div>
+                                </div>
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                                <button className="btn btn-outline" style={{ flex: 1, borderRadius: '8px', padding: '0.6rem' }}>
+                                    View Details
+                                </button>
+                                {booking.status === 'Pending' && (
+                                    <button className="btn btn-outline" style={{ borderRadius: '8px', padding: '0.6rem', color: 'var(--color-error)', borderColor: 'var(--color-error)' }}>
+                                        Cancel
+                                    </button>
+                                )}
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </div>
