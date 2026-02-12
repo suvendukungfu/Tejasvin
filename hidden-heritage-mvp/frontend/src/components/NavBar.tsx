@@ -18,46 +18,48 @@ const NavBar = () => {
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     return (
-        <nav style={{
-            backgroundColor: 'var(--color-bg-surface)',
-            borderBottom: '1px solid rgba(0,0,0,0.05)',
+        <nav className="glass" style={{
             position: 'sticky',
             top: 0,
             zIndex: 1000,
-            boxShadow: 'var(--shadow-sm)'
+            height: '80px',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'all 0.3s ease'
         }}>
-            <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '70px' }}>
+            <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                 <div
                     onClick={() => navigate('/')}
                     style={{
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.5rem',
+                        gap: '0.75rem',
                         color: 'var(--color-primary)',
                         fontWeight: 700,
-                        fontSize: '1.5rem',
-                        fontFamily: 'var(--font-heading)'
+                        fontSize: '1.75rem',
+                        fontFamily: 'var(--font-heading)',
+                        letterSpacing: '-0.02em'
                     }}
                 >
-                    <Compass size={28} />
+                    <Compass size={32} color="var(--color-secondary)" />
                     <span>Hidden Heritage</span>
                 </div>
 
                 {/* Desktop Menu */}
-                <div className="desktop-menu" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+                <div className="desktop-menu" style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
                     <NavLink onClick={() => navigate('/')}>Home</NavLink>
                     <NavLink onClick={() => navigate('/explore')}>Explore</NavLink>
                     <NavLink onClick={() => navigate('/book')}>Bookings</NavLink>
                     <NavLink onClick={() => navigate('/about')}>About</NavLink>
 
                     {auth.user ? (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', paddingLeft: '1rem', borderLeft: '1px solid #eee' }}>
-                            <span style={{ fontWeight: 500, color: 'var(--color-primary)' }}>Hi, {auth.user.name.split(' ')[0]}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', paddingLeft: '1.5rem', borderLeft: '1px solid rgba(0,0,0,0.1)' }}>
+                            <span style={{ fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.95rem' }}>Hi, {auth.user.name.split(' ')[0]}</span>
                             <button
                                 onClick={auth.logout}
                                 className="btn-outline"
-                                style={{ fontSize: '0.85rem', padding: '0.25rem 0.75rem', borderColor: 'var(--color-error)', color: 'var(--color-error)' }}
+                                style={{ fontSize: '0.85rem', padding: '0.4rem 1rem', borderColor: 'var(--color-error)', color: 'var(--color-error)', borderRadius: '20px' }}
                             >
                                 Logout
                             </button>
@@ -66,6 +68,7 @@ const NavBar = () => {
                         <button
                             className="btn btn-primary"
                             onClick={() => navigate('/login')}
+                            style={{ padding: '0.6rem 1.5rem', fontSize: '0.95rem' }}
                         >
                             Login
                         </button>
@@ -73,19 +76,13 @@ const NavBar = () => {
                 </div>
 
                 {/* Mobile Menu Toggle */}
-                <button className="mobile-toggle" onClick={toggleMenu} style={{ display: 'none' }}>
-                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                <button className="mobile-toggle" onClick={toggleMenu} style={{ display: 'none', color: 'var(--color-primary)' }}>
+                    {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
             </div>
 
             {/* Mobile Menu Dropdown (Placeholder for responsiveness) */}
-            {/* Note: Actual mobile responsiveness would require media queries in CSS for .desktop-menu and .mobile-toggle */}
-            <style>{`
-                @media (max-width: 768px) {
-                    .desktop-menu { display: none !important; }
-                    .mobile-toggle { display: block !important; }
-                }
-            `}</style>
+            {/* ... styles ... */}
         </nav>
     );
 };

@@ -16,8 +16,8 @@ const Hero = () => {
             justifyContent: 'center',
             color: 'var(--color-text-inverse)',
             textAlign: 'center',
-            marginTop: '-70px', // Pull behind transparent nav if we want that effect, but for now standard
-            paddingTop: '70px'
+            marginTop: '-80px', // Match new nav height
+            paddingTop: '80px'
         }}>
             {/* Background Image with Overlay */}
             <div style={{
@@ -62,14 +62,16 @@ const Hero = () => {
                         Discover the Undiscovered
                     </span>
                     <h1 style={{
-                        fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+                        fontSize: 'clamp(3rem, 6vw, 5.5rem)',
                         marginBottom: '1.5rem',
                         lineHeight: 1.1,
-                        textShadow: '0 2px 10px rgba(0,0,0,0.3)',
-                        fontWeight: 800
+                        textShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                        fontWeight: 700,
+                        fontFamily: 'var(--font-heading)',
+                        letterSpacing: '-0.02em'
                     }}>
                         Explore India's <br />
-                        <span style={{ color: 'var(--color-accent)' }}>Hidden Heritage</span>
+                        <span style={{ color: 'var(--color-accent)', fontStyle: 'italic' }}>Hidden Heritage</span>
                     </h1>
                 </motion.div>
 
