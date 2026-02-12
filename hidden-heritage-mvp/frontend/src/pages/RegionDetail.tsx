@@ -81,8 +81,8 @@ const RegionDetail = () => {
                     zIndex: -1
                 }} />
                 <div className="container" style={{ textAlign: 'center', zIndex: 1 }}>
-                    <h1 style={{ fontSize: '3.5rem', textTransform: 'capitalize', marginBottom: '0.5rem' }}>{slug?.replace('-', ' ')} Region</h1>
-                    <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto' }}>
+                    <h1 style={{ fontSize: '4rem', textTransform: 'capitalize', marginBottom: '1rem', fontFamily: 'var(--font-heading)', textShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>{slug?.replace('-', ' ')} Region</h1>
+                    <p style={{ fontSize: '1.3rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto', fontWeight: 300 }}>
                         Discover ancient history hidden in the landscape.
                     </p>
                 </div>
@@ -107,13 +107,14 @@ const RegionDetail = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.05 }}
-                                    className="card"
+                                    className="card glass"
                                     style={{
                                         padding: 0,
                                         overflow: 'hidden',
                                         cursor: 'pointer',
-                                        border: selectedSites.includes(site.id) ? '2px solid var(--color-secondary)' : '1px solid rgba(0,0,0,0.05)',
-                                        position: 'relative'
+                                        border: selectedSites.includes(site.id) ? '2px solid var(--color-secondary)' : '1px solid rgba(255,255,255,0.5)',
+                                        position: 'relative',
+                                        transition: 'transform 0.3s ease, border-color 0.3s ease'
                                     }}
                                     whileHover={{ y: -5 }}
                                 >
@@ -140,7 +141,7 @@ const RegionDetail = () => {
                                     </div>
                                     <div style={{ padding: '1.25rem' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '0.5rem' }}>
-                                            <h4 style={{ fontSize: '1.1rem', margin: 0 }}>{site.name}</h4>
+                                            <h4 style={{ fontSize: '1.2rem', margin: 0, fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>{site.name}</h4>
                                             <span style={{
                                                 fontSize: '0.75rem',
                                                 backgroundColor: 'var(--color-bg-alt)',

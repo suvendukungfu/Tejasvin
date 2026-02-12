@@ -21,8 +21,8 @@ const Explore = () => {
             id: 1,
             name: 'Chambal Region',
             slug: 'chambal',
-            description: 'A land of mystery, deep ravines, and forgotten history. Home to the Bataeshwar temples.',
-            banner_image: 'https://images.unsplash.com/photo-1519955025118-477af2a3e915?q=80&w=2070&auto=format&fit=crop',
+            description: 'A land of mystery, deep ravines, and forgotten history. Home to the Bateshwar temples.',
+            banner_image: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
             sites_count: 12
         },
         {
@@ -30,7 +30,7 @@ const Explore = () => {
             name: 'Bundelkhand',
             slug: 'bundelkhand',
             description: 'Famous for its forts and palaces, including the hidden gems of Orchha and Datia.',
-            banner_image: 'https://images.unsplash.com/photo-1596525737222-77742d069909?q=80&w=800&auto=format&fit=crop',
+            banner_image: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
             sites_count: 8
         },
         {
@@ -38,7 +38,7 @@ const Explore = () => {
             name: 'Malwa Plateau',
             slug: 'malwa',
             description: 'A region rich in culture and history, featuring the ancient city of Mandu.',
-            banner_image: 'https://images.unsplash.com/photo-1544211186-0775d729864d?q=80&w=800&auto=format&fit=crop',
+            banner_image: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/A_beautiful_Jahaz_Mahal.jpg',
             sites_count: 15
         }
     ];
@@ -47,9 +47,9 @@ const Explore = () => {
         <div className="min-h-screen bg-bg-body">
             <NavBar />
 
-            <header className="container" style={{ padding: '4rem 2rem 2rem 2rem', textAlign: 'center' }}>
-                <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>Explore Regions</h1>
-                <p style={{ color: 'var(--color-text-secondary)', maxWidth: '700px', margin: '0 auto' }}>
+            <header className="container" style={{ padding: '6rem 2rem 3rem 2rem', textAlign: 'center' }}>
+                <h1 style={{ fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Explore Regions</h1>
+                <p style={{ color: 'var(--color-text-secondary)', maxWidth: '700px', margin: '0 auto', fontSize: '1.2rem', lineHeight: 1.6 }}>
                     Dive deep into the heart of India. Select a region to discover its hidden monuments, temples, and stories.
                 </p>
             </header>
@@ -63,8 +63,15 @@ const Explore = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -8 }}
-                            className="card"
-                            style={{ padding: 0, overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+                            className="card glass"
+                            style={{ 
+                                padding: 0, 
+                                overflow: 'hidden', 
+                                cursor: 'pointer', 
+                                display: 'flex', 
+                                flexDirection: 'column',
+                                border: '1px solid rgba(255,255,255,0.6)'
+                            }}
                             onClick={() => navigate(`/region/${region.slug}`)}
                         >
                             <div style={{ height: '240px', overflow: 'hidden', position: 'relative' }}>
@@ -91,15 +98,15 @@ const Explore = () => {
                                 </div>
                             </div>
                             <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>{region.name}</h3>
-                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1.5rem', fontSize: '0.95rem', flex: 1, lineHeight: 1.6 }}>
+                                <h3 style={{ fontSize: '1.75rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>{region.name}</h3>
+                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1.5rem', fontSize: '1rem', flex: 1, lineHeight: 1.6 }}>
                                     {region.description}
                                 </p>
                                 <button
                                     className="btn btn-outline"
-                                    style={{ alignSelf: 'start', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem' }}
+                                    style={{ alignSelf: 'start', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.5rem', borderRadius: '50px' }}
                                 >
-                                    View Details <ArrowRight size={16} />
+                                    View Details <ArrowRight size={18} />
                                 </button>
                             </div>
                         </motion.div>
