@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import AntigravityScene from '../components/AntigravityScene';
 import { ArrowLeft } from 'lucide-react';
@@ -13,18 +13,23 @@ const AntigravityPage = () => {
                 <button 
                     onClick={() => navigate(-1)}
                     style={{ 
-                        background: 'rgba(0,0,0,0.5)', 
+                        background: 'rgba(255,255,255,0.15)', 
+                        backdropFilter: 'blur(10px)',
                         color: 'white', 
-                        border: 'none', 
-                        padding: '10px 15px', 
-                        borderRadius: '8px', 
+                        border: '1px solid rgba(255,255,255,0.2)', 
+                        padding: '10px 20px', 
+                        borderRadius: '50px', 
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '8px'
+                        gap: '8px',
+                        fontSize: '0.95rem',
+                        transition: 'all 0.3s ease'
                     }}
+                    onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.25)'}
+                    onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
                 >
-                    <ArrowLeft size={20} /> Back
+                    <ArrowLeft size={20} /> Back to Reality
                 </button>
             </div>
 
