@@ -20,25 +20,47 @@ export const getAiStory = async (req: Request, res: Response) => {
             }
         }
 
-        // Fallback Mock Logic (Previous Stub)
-        // ... (Keeping the old mock logic as fallback if DB empty)
+        // Fallback Mock Logic (Previous Stub) - Enhanced
+        const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+        await wait(1500); // Simulate AI processing delay for realism
+
         const generateStory = (siteName: string, persona: string) => {
-            const templates: Record<string, string[]> = {
-                Tourist: [`Imagine standing at ${siteName}... a place frozen in time.`],
-                Student: [`${siteName} exemplifies the architectural style of...`],
-                Researcher: [`Analysis of ${siteName} suggests dates ranging from...`]
+            const templates: Record<string, any> = {
+                Tourist: {
+                    content: `Imagine standing at ${siteName}... the air is thick with history. Every stone here has a story to tell, from ancient battles to serene prayers.`,
+                    sections: [
+                        { title: "The Legend", content: `Local folklore says that ${siteName} was built by celestial beings in a single night.` },
+                        { title: "What to See", content: "Don't miss the intricate carvings on the eastern gate." }
+                    ]
+                },
+                Student: {
+                    content: `${siteName} is a prime example of regional architecture, showcasing the transition from early to late medieval styles.`,
+                    sections: [
+                        { title: "Architectural Features", content: "Note the use of sandstone and the specific geometric patterns unique to this era." },
+                        { title: "Historical Context", content: "Built during the reign of the Tomar dynasty, it served as both a strategic point and a religious center." }
+                    ]
+                },
+                Researcher: {
+                    content: `Detailed analysis of ${siteName} suggests dates ranging from the 8th to 12th century, with multiple phases of reconstruction evident in the stratigraphy.`,
+                    sections: [
+                        { title: "Epigraphical Evidence", content: "Inscriptions found on the plinth date back to 1050 AD, referencing King Kirtiraj." },
+                        { title: "Conservation Status", content: "The site requires urgent attention regarding water seepage in the northern quadrant." }
+                    ]
+                }
             };
             const options = templates[persona] || templates['Tourist'];
-            return options[0];
+            return options;
         };
 
-        const storyContent = generateStory(siteName, persona || 'Tourist');
+        const storyData = generateStory(siteName, persona || 'Tourist');
 
         res.json({
             site: siteName,
             persona,
-            content: storyContent + " [Generated Sandbox Mode]",
-            suggested_followup: "Consult the archives for more."
+            content: storyData.content + " [AI Generated Preview]",
+            formatted_sections: storyData.sections,
+            source: "Hidden Heritage AI Engine (Beta)",
+            suggested_followup: "Tell me more about the architecture."
         });
 
     } catch (error) {

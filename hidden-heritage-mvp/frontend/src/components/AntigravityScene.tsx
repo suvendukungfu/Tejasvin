@@ -15,7 +15,7 @@ const PlaceholderModel = (props: any) => {
   const [active, setActive] = useState(false);
   
   // Rotate mesh every frame, this is outside of React without overhead
-  useFrame((state, delta) => (meshRef.current.rotation.x += delta));
+  useFrame((_, delta) => (meshRef.current.rotation.x += delta));
 
   return (
     <mesh

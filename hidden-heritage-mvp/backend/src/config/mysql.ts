@@ -10,13 +10,23 @@ export const mysqlPool = mysql.createPool({
     queueLimit: 0
 });
 
-export const connectMysql = async () => {
-    try {
-        const connection = await mysqlPool.getConnection();
-        console.log('MySQL Connected successfully');
-        connection.release();
-    } catch (error) {
-        console.error('MySQL Connection failed:', error);
-        throw error;
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+export const connectMysql = async (retries = 5, delay = 2000) => {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const connection = await mysqlPool.getConnection();
+            console.log('MySQL Connected successfully');
+            connection.release();
+            return;
+        } catch (error) {
+            console.error(`MySQL Connection failed (Attempt ${i + 1}/${retries}):`, (error as any).message);
+            if (i < retries - 1) {
+                await wait(delay);
+            } else {
+                console.error('Max retries reached. Could not connect to MySQL.');
+                throw error;
+            }
+        }
     }
 };

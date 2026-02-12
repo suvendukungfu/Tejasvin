@@ -24,12 +24,16 @@ export const calculateSafetyScore = (factors: scoreFactors): number => {
 };
 
 export const getLiveSafetyData = async (siteId: number) => {
-    // Mock Data Fetching layer (would call external APIs)
-    const mockWeather = ['Clear', 'Rain', 'Clear', 'Storm'][Math.floor(Math.random() * 4)];
-    const mockReports = Math.floor(Math.random() * 10);
+    // Mock Data Fetching layer (deterministic but varied based on siteId)
+    // We use siteId to select a "random" weather condition to make it consistent per site
+    const weatherConditions = ['Clear', 'Rain', 'Storm', 'Cloudy', 'Windy'];
+    const mockWeather = weatherConditions[siteId % weatherConditions.length];
+    
+    // Varied reports based on siteId
+    const mockReports = (siteId * 3) % 12; 
 
-    // Base rating from DB logic would go here, assuming 8 for now
-    const baseInfra = 8;
+    // Base rating varies slightly by siteId
+    const baseInfra = 7 + (siteId % 4); // 7 to 10
 
     const dynamicScore = calculateSafetyScore({
         weatherCondition: mockWeather,
@@ -42,8 +46,8 @@ export const getLiveSafetyData = async (siteId: number) => {
         details: {
             weather: mockWeather,
             reports: mockReports,
-            advisory: dynamicScore < 5 ? 'Travel with Caution' : 'Safe to Visit'
-        },
-        lastUpdated: new Date().toISOString()
+            advisory: dynamicScore < 5 ? 'Travel with Caution' : 'Safe to Visit',
+            lastUpdated: new Date().toISOString()
+        }
     };
 };
