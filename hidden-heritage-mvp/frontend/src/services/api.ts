@@ -20,7 +20,7 @@ const MOCK_SITES = [
         longitude: 78.1729,
         entry_fee: 0,
         avg_visit_time_mins: 90,
-        image_url: 'https://images.unsplash.com/photo-1643486379965-c720df54f15d?q=80&w=2070&auto=format&fit=crop',
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Bateshwar_Group_of_Temples%2C_Morena%2C_Near_Gwalior.jpg',
         safety_score: 8,
         safety_details: { accessibility: "Moderate", terrain: "Uneven steps", network: "Good" },
         ar_content_available: true
@@ -36,7 +36,7 @@ const MOCK_SITES = [
         longitude: 78.3000,
         entry_fee: 500,
         avg_visit_time_mins: 120,
-        image_url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2132&auto=format&fit=crop',
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
         safety_score: 6,
         safety_details: { accessibility: "Low", terrain: "Rugged", network: "Poor" },
         ar_content_available: false
@@ -51,7 +51,7 @@ const MOCK_SITES = [
         longitude: 78.2045,
         entry_fee: 25,
         avg_visit_time_mins: 60,
-        image_url: 'https://images.unsplash.com/photo-1596568192800-47b744d2d48c?q=80&w=2070&auto=format&fit=crop',
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg',
         safety_score: 9,
         safety_details: { accessibility: "High", terrain: "Steps", network: "Good" },
         ar_content_available: true
