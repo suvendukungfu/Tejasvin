@@ -51,28 +51,35 @@ const Home = () => {
             <Hero />
 
             {/* Features Section */}
-            <section className="container" style={{ padding: '5rem 2rem' }}>
-                <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Why Travel with Us?</h2>
-                    <p style={{ color: 'var(--color-text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
-                        We don't just show you places; we connect you with the soul of India's forgotten history.
+            <section className="container" style={{ padding: '8rem 2rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+                    <h2 style={{ fontSize: '3rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Why Travel with Us?</h2>
+                    <p style={{ color: 'var(--color-text-secondary)', maxWidth: '650px', margin: '0 auto', fontSize: '1.25rem', lineHeight: 1.8, fontWeight: 300 }}>
+                        We don't just show you places; we connect you with the soul of India's forgotten history through immersive and curated experiences.
                     </p>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem' }}>
                     {features.map((f, i) => (
-                        <div key={i} className="card glass" style={{ textAlign: 'center', padding: '3rem', border: '1px solid rgba(255,255,255,0.5)' }}>
+                        <div key={i} className="card glass" style={{ 
+                            textAlign: 'center', 
+                            padding: '3.5rem 2rem', 
+                            border: '1px solid rgba(255,255,255,0.6)',
+                            borderRadius: 'var(--border-radius-lg)',
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                        }}>
                             <div style={{
                                 display: 'inline-flex',
-                                padding: '1rem',
+                                padding: '1.25rem',
                                 borderRadius: '50%',
-                                backgroundColor: 'rgba(216, 67, 21, 0.1)',
-                                marginBottom: '1.5rem'
+                                backgroundColor: 'rgba(193, 127, 89, 0.1)',
+                                marginBottom: '2rem',
+                                color: 'var(--color-secondary)'
                             }}>
                                 {f.icon}
                             </div>
-                            <h3 style={{ marginBottom: '1rem', fontFamily: 'var(--font-heading)', fontSize: '1.5rem' }}>{f.title}</h3>
-                            <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.05rem' }}>{f.desc}</p>
+                            <h3 style={{ marginBottom: '1rem', fontFamily: 'var(--font-heading)', fontSize: '1.75rem', color: 'var(--color-primary)' }}>{f.title}</h3>
+                            <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem', lineHeight: 1.6 }}>{f.desc}</p>
                         </div>
                     ))}
                 </div>
@@ -95,38 +102,59 @@ const Home = () => {
                         </button>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '2.5rem' }}>
                         {destinations.map((d, i) => (
-                            <div key={i} className="card" style={{ padding: 0, overflow: 'hidden', cursor: 'pointer' }} onClick={() => navigate('/explore')}>
-                                <div style={{ height: '240px', overflow: 'hidden' }}>
+                            <div 
+                                key={i} 
+                                className="card" 
+                                style={{ 
+                                    padding: 0, 
+                                    overflow: 'hidden', 
+                                    cursor: 'pointer',
+                                    borderRadius: 'var(--border-radius-lg)',
+                                    border: 'none',
+                                    boxShadow: '0 10px 25px rgba(0,0,0,0.05)',
+                                    transition: 'all 0.4s ease'
+                                }} 
+                                onClick={() => navigate('/explore')}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-10px)';
+                                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.1)';
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.05)';
+                                }}
+                            >
+                                <div style={{ height: '260px', overflow: 'hidden' }}>
                                     <img
                                         src={d.img}
                                         alt={d.title}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
                                         onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                                         onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                                     />
                                 </div>
-                                <div style={{ padding: '1.5rem' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                                        <span style={{ fontSize: '0.85rem', color: 'var(--color-secondary)', fontWeight: 600, letterSpacing: '0.5px' }}>{d.location}</span>
-                                        <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
-                                            <Star size={14} fill="#D4AF37" color="#D4AF37" />
-                                            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>4.8</span>
+                                <div style={{ padding: '2rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', alignItems: 'center' }}>
+                                        <span style={{ fontSize: '0.8rem', color: 'var(--color-secondary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>{d.location}</span>
+                                        <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center', backgroundColor: '#FFF8E1', padding: '4px 8px', borderRadius: '12px' }}>
+                                            <Star size={14} fill="#FFB300" color="#FFB300" />
+                                            <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#FFB300' }}>4.8</span>
                                         </div>
                                     </div>
-                                    <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>{d.title}</h3>
-                                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', lineHeight: 1.6 }}>{d.desc}</p>
+                                    <h3 style={{ fontSize: '1.75rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>{d.title}</h3>
+                                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.05rem', lineHeight: 1.6 }}>{d.desc}</p>
                                 </div>
                             </div>
                         ))}
                     </div>
 
-                    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                    <div style={{ textAlign: 'center', marginTop: '5rem' }}>
                         <button
                             className="btn btn-primary"
                             onClick={() => navigate('/explore')}
-                            style={{ padding: '1rem 3rem', borderRadius: '50px' }}
+                            style={{ padding: '1.2rem 3.5rem', borderRadius: '50px', fontSize: '1.1rem' }}
                         >
                             Explore All Destinations
                         </button>

@@ -18,8 +18,15 @@ const NavBar = () => {
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     return (
-        <nav className="glass navbar">
-            <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+        <nav className="glass navbar" style={{ 
+            borderBottom: '1px solid rgba(255,255,255,0.1)',
+            background: 'rgba(255, 255, 255, 0.8)', // Slightly more opaque for better readability
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.05)',
+            zIndex: 1000
+        }}>
+            <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '80px' }}>
                 <div
                     onClick={() => navigate('/')}
                     style={{
@@ -28,23 +35,33 @@ const NavBar = () => {
                         alignItems: 'center',
                         gap: '0.75rem',
                         color: 'var(--color-primary)',
-                        fontWeight: 700,
-                        fontSize: '1.75rem',
+                        fontWeight: 800,
+                        fontSize: '1.8rem',
                         fontFamily: 'var(--font-heading)',
-                        letterSpacing: '-0.02em'
+                        letterSpacing: '-0.03em'
                     }}
                 >
-                    <Compass size={32} color="var(--color-secondary)" />
+                    <div style={{
+                        background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%)',
+                        padding: '8px',
+                        borderRadius: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 4px 10px rgba(216, 67, 21, 0.2)'
+                    }}>
+                        <Compass size={24} color="white" strokeWidth={2.5} />
+                    </div>
                     <span>Hidden Heritage</span>
                 </div>
 
                 {/* Desktop Menu */}
-                <div className="desktop-menu" style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
+                <div className="desktop-menu" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
                     <NavLink onClick={() => navigate('/')}>Home</NavLink>
                     <NavLink onClick={() => navigate('/explore')}>Explore</NavLink>
                     <NavLink onClick={() => navigate('/book')}>Bookings</NavLink>
                     <NavLink onClick={() => navigate('/about')}>About</NavLink>
-                    <NavLink onClick={() => navigate('/pricing')}>Pricing</NavLink>
+                    {/* <NavLink onClick={() => navigate('/pricing')}>Pricing</NavLink> */}
 
                     {auth.user ? (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', paddingLeft: '1.5rem', borderLeft: '1px solid rgba(0,0,0,0.1)' }}>
@@ -52,7 +69,7 @@ const NavBar = () => {
                             <button
                                 onClick={auth.logout}
                                 className="btn-outline"
-                                style={{ fontSize: '0.85rem', padding: '0.4rem 1rem', borderColor: 'var(--color-error)', color: 'var(--color-error)', borderRadius: '20px' }}
+                                style={{ fontSize: '0.85rem', padding: '0.5rem 1.2rem', borderColor: 'var(--color-error)', color: 'var(--color-error)', borderRadius: '50px', fontWeight: 600 }}
                             >
                                 Logout
                             </button>
@@ -61,7 +78,7 @@ const NavBar = () => {
                         <button
                             className="btn btn-primary"
                             onClick={() => navigate('/login')}
-                            style={{ padding: '0.6rem 1.5rem', fontSize: '0.95rem' }}
+                            style={{ padding: '0.7rem 1.8rem', fontSize: '0.95rem', borderRadius: '50px', fontWeight: 600, boxShadow: '0 4px 15px rgba(216, 67, 21, 0.25)' }}
                         >
                             Login
                         </button>
@@ -84,6 +101,18 @@ const NavLink = ({ children, onClick }: { children: React.ReactNode, onClick: ()
     <button
         onClick={onClick}
         className="nav-link"
+        style={{
+            fontSize: '1rem',
+            fontWeight: 500,
+            color: 'var(--color-text-main)',
+            transition: 'color 0.2s ease',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '0.5rem'
+        }}
+        onMouseOver={(e) => e.currentTarget.style.color = 'var(--color-secondary)'}
+        onMouseOut={(e) => e.currentTarget.style.color = 'var(--color-text-main)'}
     >
         {children}
     </button>

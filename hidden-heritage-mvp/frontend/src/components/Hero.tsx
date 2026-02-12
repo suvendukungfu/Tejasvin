@@ -46,35 +46,36 @@ const Hero = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                 >
                     <span style={{
                         display: 'inline-block',
-                        padding: '0.5rem 1rem',
-                        backgroundColor: 'rgba(255,255,255,0.15)',
-                        backdropFilter: 'blur(5px)',
+                        padding: '0.6rem 1.25rem',
+                        backgroundColor: 'rgba(255,255,255,0.1)',
+                        backdropFilter: 'blur(8px)',
                         borderRadius: '50px',
-                        marginBottom: '1.5rem',
-                        fontSize: '0.9rem',
+                        marginBottom: '2rem',
+                        fontSize: '0.85rem',
                         fontWeight: 600,
-                        letterSpacing: '1px',
+                        letterSpacing: '2px',
                         textTransform: 'uppercase',
-                        border: '1px solid rgba(255,255,255,0.2)'
+                        border: '1px solid rgba(255,255,255,0.25)',
+                        color: 'rgba(255,255,255,0.9)'
                     }}>
                         Discover the Undiscovered
                     </span>
                     <h1 style={{
-                        color: 'var(--color-text-inverse)', // Override global h1 color
-                        fontSize: 'clamp(3rem, 6vw, 5.5rem)',
+                        color: '#FFFFFF',
+                        fontSize: 'clamp(3.5rem, 7vw, 6rem)',
                         marginBottom: '1.5rem',
                         lineHeight: 1.1,
-                        textShadow: '0 4px 30px rgba(0,0,0,0.8)', // Stronger shadow
+                        textShadow: '0 10px 30px rgba(0,0,0,0.5)',
                         fontWeight: 700,
                         fontFamily: 'var(--font-heading)',
-                        letterSpacing: '-0.02em'
+                        letterSpacing: '-0.01em'
                     }}>
                         Explore India's <br />
-                        <span style={{ color: 'var(--color-accent)', fontStyle: 'italic', textShadow: '0 4px 30px rgba(0,0,0,1)' }}>Hidden Heritage</span>
+                        <span style={{ color: 'var(--color-secondary)', fontStyle: 'italic', textShadow: '0 10px 30px rgba(0,0,0,0.8)' }}>Hidden Heritage</span>
                     </h1>
                 </motion.div>
 
@@ -83,14 +84,15 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                     style={{
-                        fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-                        marginBottom: '2.5rem',
-                        maxWidth: '700px',
+                        fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+                        marginBottom: '3rem',
+                        maxWidth: '750px',
                         marginLeft: 'auto',
                         marginRight: 'auto',
-                        color: 'rgba(255,255,255,1)', // Full opacity
-                        lineHeight: 1.6,
-                        textShadow: '0 2px 4px rgba(0,0,0,0.6)' // Added shadow for readability
+                        color: 'rgba(255,255,255,0.95)',
+                        lineHeight: 1.7,
+                        fontWeight: 300,
+                        textShadow: '0 2px 10px rgba(0,0,0,0.5)'
                     }}
                 >
                     Uncover ancient temples, mystical ravines, and timeless rock art in the heart of Chambal.
@@ -101,19 +103,21 @@ const Hero = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
-                    style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
+                    style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}
                 >
                     <button
                         onClick={() => navigate('/explore')}
                         className="btn btn-secondary"
                         style={{
-                            padding: '1rem 2.5rem',
+                            padding: '1.1rem 2.8rem',
                             fontSize: '1.1rem',
                             borderRadius: '50px',
-                            boxShadow: '0 10px 20px rgba(216, 67, 21, 0.3)',
+                            boxShadow: '0 15px 30px rgba(193, 127, 89, 0.4)',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '0.5rem'
+                            gap: '0.5rem',
+                            fontWeight: 600,
+                            letterSpacing: '0.5px'
                         }}
                     >
                         Start Exploring <ChevronRight size={20} />
@@ -122,13 +126,15 @@ const Hero = () => {
                         onClick={() => navigate('/about')}
                         className="btn"
                         style={{
-                            padding: '1rem 2.5rem',
+                            padding: '1.1rem 2.8rem',
                             fontSize: '1.1rem',
                             borderRadius: '50px',
                             backgroundColor: 'rgba(255,255,255,0.1)',
                             backdropFilter: 'blur(10px)',
-                            border: '1px solid rgba(255,255,255,0.3)',
-                            color: 'white'
+                            border: '1px solid rgba(255,255,255,0.4)',
+                            color: 'white',
+                            fontWeight: 500,
+                            letterSpacing: '0.5px'
                         }}
                     >
                         Learn More
