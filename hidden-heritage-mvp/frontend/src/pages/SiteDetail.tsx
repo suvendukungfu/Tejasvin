@@ -29,7 +29,7 @@ const SiteDetail = () => {
         <div className="min-h-screen bg-bg-body">
             <NavBar />
 
-            <div style={{ position: 'relative', height: '60vh' }}>
+            <div style={{ position: 'relative', height: '70vh' }}>
                 <img
                     src={site.image}
                     alt={site.name}
@@ -41,32 +41,43 @@ const SiteDetail = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8))'
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%)'
                 }} />
 
-                <div className="container" style={{ position: 'absolute', bottom: '3rem', left: '50%', transform: 'translateX(-50%)', width: '100%', color: 'white' }}>
+                <div className="container" style={{ position: 'absolute', bottom: '4rem', left: '50%', transform: 'translateX(-50%)', width: '100%', color: 'white', zIndex: 2 }}>
                     <button
                         onClick={() => navigate(-1)}
                         className="btn"
                         style={{
                             color: 'white',
-                            backgroundColor: 'rgba(255,255,255,0.2)',
-                            backdropFilter: 'blur(8px)',
-                            marginBottom: '1.5rem',
+                            backgroundColor: 'rgba(255,255,255,0.15)',
+                            backdropFilter: 'blur(12px)',
+                            marginBottom: '2rem',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '0.5rem',
-                            padding: '0.6rem 1.25rem',
+                            padding: '0.7rem 1.5rem',
                             fontSize: '0.95rem',
                             border: '1px solid rgba(255,255,255,0.3)',
-                            borderRadius: '50px'
+                            borderRadius: '50px',
+                            transition: 'all 0.3s ease'
                         }}
                     >
-                        <ArrowLeft size={18} /> Back
+                        <ArrowLeft size={18} /> Back to Region
                     </button>
-                    <h1 style={{ fontSize: '4rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', textShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>{site.name}</h1>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.2rem', opacity: 0.9 }}>
-                        <MapPin size={20} />
+                    <h1 style={{ 
+                        fontSize: 'clamp(3rem, 6vw, 5.5rem)', 
+                        marginBottom: '1rem', 
+                        fontFamily: 'var(--font-heading)', 
+                        textShadow: '0 10px 30px rgba(0,0,0,0.3)',
+                        fontWeight: 600,
+                        letterSpacing: '0.02em',
+                        lineHeight: 1.1
+                    }}>
+                        {site.name}
+                    </h1>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.25rem', opacity: 0.95, fontWeight: 300 }}>
+                        <MapPin size={22} color="var(--color-secondary)" />
                         <span>{site.location}</span>
                     </div>
                 </div>
@@ -76,12 +87,13 @@ const SiteDetail = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '4rem' }} className="grid-responsive-layout">
                     {/* Main Content */}
                     <div>
-                        <section style={{ marginBottom: '3rem' }}>
-                            <h2 style={{ fontSize: '2.25rem', marginBottom: '1.5rem', color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>About the Site</h2>
-                            <p style={{ fontSize: '1.15rem', lineHeight: 1.8, color: 'var(--color-text-main)', opacity: 0.9 }}>
+                        <section style={{ marginBottom: '4rem' }}>
+                            <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>About the Site</h2>
+                            <p style={{ fontSize: '1.2rem', lineHeight: 1.9, color: 'var(--color-text-main)', opacity: 0.9, marginBottom: '2rem' }}>
                                 {site.description}
                             </p>
-                            <p style={{ fontSize: '1.15rem', lineHeight: 1.8, color: 'var(--color-text-main)', marginTop: '1.5rem', opacity: 0.9 }}>
+                            <h3 style={{ fontSize: '1.8rem', marginBottom: '1rem', color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>Historical Significance</h3>
+                            <p style={{ fontSize: '1.2rem', lineHeight: 1.9, color: 'var(--color-text-main)', opacity: 0.9 }}>
                                 {site.history}
                             </p>
                         </section>

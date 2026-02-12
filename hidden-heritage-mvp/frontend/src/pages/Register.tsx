@@ -19,7 +19,7 @@ const Register = () => {
         setError('');
 
         try {
-            await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
+            await axios.post('http://localhost:5001/api/auth/register', { name, email, password });
             // Auto login after register? or redirect to login.
             alert('Registration Successful! Please login.');
             navigate('/login');

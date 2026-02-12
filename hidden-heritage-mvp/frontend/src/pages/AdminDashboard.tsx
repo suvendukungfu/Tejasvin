@@ -14,13 +14,13 @@ const AdminDashboard = () => {
 
     const fetchData = async () => {
         try {
-            const statsRes = await axios.get('http://localhost:5000/api/admin/stats');
+            const statsRes = await axios.get('http://localhost:5001/api/admin/stats');
             setStats(statsRes.data);
 
-            const reviewsRes = await axios.get('http://localhost:5000/api/admin/reviews');
+            const reviewsRes = await axios.get('http://localhost:5001/api/admin/reviews');
             setReviews(reviewsRes.data);
 
-            const payoutsRes = await axios.get('http://localhost:5000/api/admin/payouts');
+            const payoutsRes = await axios.get('http://localhost:5001/api/admin/payouts');
             setPayouts(payoutsRes.data);
         } catch (e) {
             console.error(e);

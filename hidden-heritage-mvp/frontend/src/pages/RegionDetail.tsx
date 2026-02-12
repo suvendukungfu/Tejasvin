@@ -38,6 +38,15 @@ const RegionDetail = () => {
         navigate('/book', { state: { initialSelection: selectedSites } });
     };
 
+    // Dynamic Background Images based on slug
+    const regionImages: Record<string, string> = {
+        'chambal': 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
+        'bundelkhand': 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
+        'malwa': 'https://upload.wikimedia.org/wikipedia/commons/0/0c/A_beautiful_Jahaz_Mahal.jpg'
+    };
+
+    const heroImage = regionImages[slug?.toLowerCase() || ''] || regionImages['chambal'];
+
     if (loading) return (
         <div className="min-h-screen bg-bg-body flex-center">
             <div className="spinner">Loading...</div> {/* Add spinner CSS later if needed */}
@@ -50,7 +59,7 @@ const RegionDetail = () => {
 
             {/* Region Hero */}
             <div style={{
-                height: '40vh',
+                height: '60vh',
                 position: 'relative',
                 display: 'flex',
                 alignItems: 'center',
@@ -66,25 +75,57 @@ const RegionDetail = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg)',
+                    backgroundImage: `url(${heroImage})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    zIndex: -2
+                    zIndex: -2,
+                    filter: 'brightness(0.9)',
+                    transition: 'background-image 0.5s ease-in-out'
                 }} />
+                {/* Professional Gradient Overlay - Clean & Premium */}
                 <div style={{
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8))',
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.9) 100%)',
                     zIndex: -1
                 }} />
-                <div className="container" style={{ textAlign: 'center', zIndex: 1 }}>
-                    <h1 style={{ fontSize: '4rem', textTransform: 'capitalize', marginBottom: '1rem', fontFamily: 'var(--font-heading)', textShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>{slug?.replace('-', ' ')} Region</h1>
-                    <p style={{ fontSize: '1.3rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto', fontWeight: 300 }}>
-                        Discover ancient history hidden in the landscape.
-                    </p>
+                
+                <div className="container" style={{ textAlign: 'center', zIndex: 1, paddingTop: '4rem' }}>
+                     <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                     >
+                        <h1 style={{ 
+                            fontSize: 'clamp(3.5rem, 8vw, 7rem)', 
+                            textTransform: 'uppercase', 
+                            letterSpacing: '0.1em',
+                            marginBottom: '1rem', 
+                            fontFamily: 'var(--font-heading)', 
+                            color: '#FFFFFF',
+                            textShadow: '0 10px 30px rgba(0,0,0,0.3)',
+                            fontWeight: 600
+                        }}>
+                            {slug?.replace('-', ' ')}
+                        </h1>
+                        <div style={{ width: '80px', height: '4px', background: 'var(--color-secondary)', margin: '0 auto 2rem auto', borderRadius: '2px' }} />
+                        <p style={{ 
+                            fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', 
+                            opacity: 0.95, 
+                            maxWidth: '650px', 
+                            margin: '0 auto', 
+                            fontWeight: 400,
+                            lineHeight: 1.8,
+                            letterSpacing: '0.02em',
+                            fontFamily: 'var(--font-heading)',
+                            fontStyle: 'italic'
+                        }}>
+                            "Discover ancient history hidden in the landscape."
+                        </p>
+                    </motion.div>
                 </div>
             </div>
 
@@ -112,11 +153,14 @@ const RegionDetail = () => {
                                         padding: 0,
                                         overflow: 'hidden',
                                         cursor: 'pointer',
-                                        border: selectedSites.includes(site.id) ? '2px solid var(--color-secondary)' : '1px solid rgba(255,255,255,0.5)',
+                                        borderRadius: 'var(--border-radius-lg)',
+                                        border: selectedSites.includes(site.id) ? '2px solid var(--color-secondary)' : '1px solid rgba(255,255,255,0.8)',
                                         position: 'relative',
-                                        transition: 'transform 0.3s ease, border-color 0.3s ease'
+                                        transition: 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)',
+                                        background: 'white',
+                                        boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
                                     }}
-                                    whileHover={{ y: -5 }}
+                                    whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
                                 >
                                     {selectedSites.includes(site.id) && (
                                         <div style={{
@@ -132,12 +176,22 @@ const RegionDetail = () => {
                                             <Check size={16} />
                                         </div>
                                     )}
-                                    <div style={{ height: '160px', overflow: 'hidden' }}>
+                                    <div style={{ height: '200px', overflow: 'hidden', position: 'relative' }}>
                                         <img
-                                            src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'}
+                                            src={site.image_url || heroImage}
                                             alt={site.name}
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                                            className="card-image"
                                         />
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '40%',
+                                            background: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)',
+                                            zIndex: 1
+                                        }} />
                                     </div>
                                     <div style={{ padding: '1.25rem' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '0.5rem' }}>
