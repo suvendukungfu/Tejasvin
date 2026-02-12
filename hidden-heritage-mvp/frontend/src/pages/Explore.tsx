@@ -108,24 +108,24 @@ const Explore = () => {
                 
                 <div style={{ marginTop: '4rem', textAlign: 'center' }}>
                     <div className="card" style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 100%)', color: 'white', border: '1px solid rgba(255,255,255,0.1)' }}>
-                        <h2 style={{ color: '#fff', fontSize: '2rem', marginBottom: '1rem' }}>Experience Heritage Like Never Before</h2>
+                        <h2 style={{ color: '#fff', fontSize: '2rem', marginBottom: '1rem' }}>AR/VR Experience Zone</h2>
                         <p style={{ color: '#ccc', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
-                            Switch to our experimental 3D Antigravity Mode to explore sites from a floating perspective with AR capabilities.
+                            Switch to our immersive AR/VR Section to explore sites from a floating perspective with Augmented Reality capabilities.
                         </p>
                         <button 
                             onClick={() => navigate('/antigravity')} 
                             className="btn"
                             style={{ 
-                                background: 'linear-gradient(45deg, #ff6b6b, #fca311)', 
+                                background: 'linear-gradient(45deg, #9c27b0, #673ab7)', 
                                 color: 'white', 
                                 border: 'none',
                                 padding: '1rem 2.5rem',
                                 fontSize: '1.1rem',
                                 fontWeight: 'bold',
-                                boxShadow: '0 4px 15px rgba(252, 163, 17, 0.3)'
+                                boxShadow: '0 4px 15px rgba(103, 58, 183, 0.3)'
                             }}
                         >
-                            🚀 Enter Antigravity Mode
+                            🕶️ Enter AR/VR Section
                         </button>
                     </div>
                 </div>

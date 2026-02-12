@@ -47,7 +47,7 @@ const AntigravityScene: React.FC = () => {
                     <PlaceholderModel position={[1.2, 0, 0]} />
 
                     <Text position={[0, 1.5, 0]} fontSize={0.5} color="white">
-                        Antigravity Mode
+                        AR/VR Experience
                     </Text>
                     
                     <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
