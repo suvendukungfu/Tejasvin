@@ -69,9 +69,9 @@ const About = () => {
                         {/* Team Member 1 */}
                         <div className="card glass" style={{ overflow: 'hidden', border: '1px solid rgba(255,255,255,0.6)' }}>
                             <img 
-                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop" 
+                                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/India_-_Delhi_portrait_of_a_man_-_4780.jpg" 
                                 alt="Arjun Verma" 
-                                style={{ width: '100%', height: '320px', objectFit: 'cover' }}
+                                style={{ width: '100%', height: '320px', objectFit: 'cover', objectPosition: 'top' }}
                             />
                             <div style={{ padding: '1.75rem' }}>
                                 <h3 style={{ fontSize: '1.5rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Arjun Verma</h3>
@@ -85,9 +85,9 @@ const About = () => {
                         {/* Team Member 2 */}
                         <div className="card glass" style={{ overflow: 'hidden', border: '1px solid rgba(255,255,255,0.6)' }}>
                             <img 
-                                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" 
+                                src="https://upload.wikimedia.org/wikipedia/commons/3/33/Indian_woman_portrait.jpg" 
                                 alt="Priya Singh" 
-                                style={{ width: '100%', height: '320px', objectFit: 'cover' }}
+                                style={{ width: '100%', height: '320px', objectFit: 'cover', objectPosition: 'top' }}
                             />
                             <div style={{ padding: '1.75rem' }}>
                                 <h3 style={{ fontSize: '1.5rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Priya Singh</h3>
@@ -101,9 +101,9 @@ const About = () => {
                         {/* Team Member 3 */}
                         <div className="card glass" style={{ overflow: 'hidden', border: '1px solid rgba(255,255,255,0.6)' }}>
                             <img 
-                                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop" 
+                                src="https://upload.wikimedia.org/wikipedia/commons/d/db/Indian_male_portrait.jpg" 
                                 alt="Rahul Mehta" 
-                                style={{ width: '100%', height: '320px', objectFit: 'cover' }}
+                                style={{ width: '100%', height: '320px', objectFit: 'cover', objectPosition: 'top' }}
                             />
                             <div style={{ padding: '1.75rem' }}>
                                 <h3 style={{ fontSize: '1.5rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Rahul Mehta</h3>

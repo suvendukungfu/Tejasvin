@@ -28,7 +28,7 @@ const Home = () => {
         {
             title: "Bateshwar Temples",
             location: "Morena, Chambal",
-            img: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Bateshwar_Group_of_Temples%2C_Morena%2C_Near_Gwalior.jpg",
+            img: "https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg",
             desc: "A cluster of 200 sandstone temples restored from ruins."
         },
         {
@@ -40,7 +40,7 @@ const Home = () => {
         {
             title: "Mitawali & Padavali",
             location: "Morena",
-            img: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg",
+            img: "https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg",
             desc: "The circular temple that inspired the Indian Parliament."
         }
     ];

@@ -32,7 +32,7 @@ const SortableItem = ({ id, site, onRemove }: { id: number, site: any, onRemove:
                 <div {...attributes} {...listeners} style={{ cursor: 'grab', color: 'var(--color-text-secondary)', padding: '0.5rem' }}>
                     <GripVertical size={20} />
                 </div>
-                <img src={site.image_url || 'https://placehold.co/100x100'} alt={site.name} style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
+                <img src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'} alt={site.name} style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
                 <div>
                     <h4 style={{ margin: 0, fontSize: '1rem' }}>{site.name}</h4>
                     <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>Est. {site.avg_visit_time_mins} mins</span>

@@ -20,7 +20,7 @@ const MOCK_SITES = [
         longitude: 78.1729,
         entry_fee: 0,
         avg_visit_time_mins: 90,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Bateshwar_Group_of_Temples%2C_Morena%2C_Near_Gwalior.jpg',
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg',
         safety_score: 8,
         safety_details: { accessibility: "Moderate", terrain: "Uneven steps", network: "Good" },
         ar_content_available: true
@@ -51,9 +51,39 @@ const MOCK_SITES = [
         longitude: 78.2045,
         entry_fee: 25,
         avg_visit_time_mins: 60,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg',
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg',
         safety_score: 9,
         safety_details: { accessibility: "High", terrain: "Steps", network: "Good" },
+        ar_content_available: true
+    },
+    {
+        id: 4,
+        name: 'Garh Kundar',
+        slug: 'garh-kundar',
+        type: 'fort',
+        short_description: 'A mysterious fort perched on a hill, known for its complex architecture.',
+        latitude: 25.4833,
+        longitude: 78.9333,
+        entry_fee: 0,
+        avg_visit_time_mins: 120,
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
+        safety_score: 7,
+        safety_details: { accessibility: "Moderate", terrain: "Hilly", network: "Average" },
+        ar_content_available: false
+    },
+    {
+        id: 5,
+        name: 'Kakanmath Temple',
+        slug: 'kakanmath-temple',
+        type: 'temple',
+        short_description: 'A towering 11th-century Shiva temple built without lime or cement.',
+        latitude: 26.6333,
+        longitude: 78.0833,
+        entry_fee: 0,
+        avg_visit_time_mins: 45,
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Kakanmath_Temple%2C_Morena.jpg',
+        safety_score: 8,
+        safety_details: { accessibility: "Moderate", terrain: "Open", network: "Good" },
         ar_content_available: true
     }
 ];

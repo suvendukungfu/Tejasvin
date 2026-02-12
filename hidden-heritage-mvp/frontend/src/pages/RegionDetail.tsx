@@ -134,7 +134,7 @@ const RegionDetail = () => {
                                     )}
                                     <div style={{ height: '160px', overflow: 'hidden' }}>
                                         <img
-                                            src={site.image_url || 'https://placehold.co/600x400'}
+                                            src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'}
                                             alt={site.name}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
