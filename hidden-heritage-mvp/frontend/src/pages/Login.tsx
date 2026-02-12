@@ -49,12 +49,17 @@ const Login = () => {
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="card" 
-                    style={{ width: '100%', maxWidth: '450px', padding: '3rem' }}
+                    className="card glass" 
+                    style={{ 
+                        width: '100%', 
+                        maxWidth: '450px', 
+                        padding: '3rem',
+                        border: '1px solid rgba(255,255,255,0.6)'
+                    }}
                 >
                     <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Welcome Back</h1>
-                        <p style={{ color: 'var(--color-text-secondary)' }}>Sign in to continue your journey.</p>
+                        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Welcome Back</h1>
+                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.05rem' }}>Sign in to continue your journey.</p>
                     </div>
 
                     {error && (

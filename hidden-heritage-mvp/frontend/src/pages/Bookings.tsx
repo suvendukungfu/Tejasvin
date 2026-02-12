@@ -49,24 +49,24 @@ const Bookings = () => {
             <NavBar />
             
             <div className="container" style={{ padding: '3rem 2rem' }}>
-                <header style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Bookings</h1>
-                        <p style={{ color: 'var(--color-text-secondary)' }}>Track your past and upcoming journeys.</p>
+                        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>My Bookings</h1>
+                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem' }}>Track your past and upcoming journeys.</p>
                     </div>
                 </header>
 
-                <div className="card" style={{ overflow: 'hidden', padding: 0 }}>
+                <div className="card glass" style={{ overflow: 'hidden', padding: 0, border: '1px solid rgba(255,255,255,0.6)' }}>
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
-                            <thead style={{ backgroundColor: 'var(--color-bg-alt)', borderBottom: '1px solid #eee' }}>
+                            <thead style={{ backgroundColor: 'rgba(93, 64, 55, 0.05)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                                 <tr>
-                                    <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Destination</th>
-                                    <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Date</th>
-                                    <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Booking ID</th>
-                                    <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Amount</th>
-                                    <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Status</th>
-                                    <th style={{ padding: '1rem 1.5rem', textAlign: 'right', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Actions</th>
+                                    <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Destination</th>
+                                    <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Date</th>
+                                    <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Booking ID</th>
+                                    <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Amount</th>
+                                    <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Status</th>
+                                    <th style={{ padding: '1.25rem 1.5rem', textAlign: 'right', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
