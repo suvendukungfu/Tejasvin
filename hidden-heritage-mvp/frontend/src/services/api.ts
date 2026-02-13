@@ -138,6 +138,11 @@ export const saveTrip = (data: any) => fetchWithFallback(
     { success: true, message: 'Trip saved (Mock)', id: Math.floor(Math.random() * 1000) }
 );
 
+export const getTripsByUser = (userId: number | string) => fetchWithFallback(
+    () => api.get(`/trips/user/${userId}`),
+    [] // Return empty array as fallback if backend fails
+);
+
 export const submitFeedback = (data: any) => fetchWithFallback(
     () => api.post('/feedback', data),
     { success: true, message: 'Feedback received (Mock)' }

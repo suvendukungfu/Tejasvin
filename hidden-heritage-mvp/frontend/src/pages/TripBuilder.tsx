@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import { estimateTrip, getGuides, getSites } from '../services/api';
+import { estimateTrip, getGuides, getSites, saveTrip } from '../services/api';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -141,10 +141,31 @@ const TripBuilder = () => {
                 isOpen={showPayment}
                 onClose={() => setShowPayment(false)}
                 amount={estimate?.totalCost || 0}
-                onSuccess={() => {
-                    setShowPayment(false);
-                    alert('Trip Successfully Booked!');
-                    navigate('/'); // Or to a 'My Trips' page
+                onSuccess={async () => {
+                    try {
+                        // Call Backend
+                        const response = await saveTrip({
+                            userId: 1, // specific user ID or from context often better
+                            name: `My Trip to ${selectedSitesData[0]?.name || 'History'}`,
+                            totalCost: estimate?.totalCost,
+                            totalTime: estimate?.totalTimeMinutes,
+                            siteIds: selectedSiteIds,
+                            guideId: input.guideId ? Number(input.guideId) : null
+                        });
+
+                        setShowPayment(false);
+                        if (response.data && (response.data.success || response.data.tripId)) {
+                            alert('Trip Successfully Booked and Saved!');
+                            navigate('/bookings'); // Navigate to Bookings page
+                        } else {
+                            // Fallback for mock if needed
+                            alert('Trip Booked! (Mock Saved)');
+                            navigate('/');
+                        }
+                    } catch (err) {
+                        console.error("Failed to save trip:", err);
+                        alert('Payment successful, but failed to save trip details. Please contact support.');
+                    }
                 }}
             />
             

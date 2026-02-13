@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import NavBar from '../components/NavBar';
 import { MapPin, ArrowRight } from 'lucide-react';
+import { getRegions } from '../services/api';
 
 interface Region {
     id: number;
@@ -14,34 +16,34 @@ interface Region {
 
 const Explore = () => {
     const navigate = useNavigate();
+    const [regions, setRegions] = useState<Region[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    // Mock data - would ideally come from an API
-    const regions: Region[] = [
-        {
-            id: 1,
-            name: 'Chambal Region',
-            slug: 'chambal',
-            description: 'A land of echoes and deep ravines. Home to the silent sentinels of Bateshwar.',
-            banner_image: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
-            sites_count: 12
-        },
-        {
-            id: 2,
-            name: 'Bundelkhand',
-            slug: 'bundelkhand',
-            description: 'Where stone speaks. Discover the resilient forts and hidden palaces of a warrior land.',
-            banner_image: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
-            sites_count: 8
-        },
-        {
-            id: 3,
-            name: 'Malwa Plateau',
-            slug: 'malwa',
-            description: 'The soul of central India. Walk the paths of emperors in the city of joy, Mandu.',
-            banner_image: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/A_beautiful_Jahaz_Mahal.jpg',
-            sites_count: 15
-        }
-    ];
+    useEffect(() => {
+        const fetchRegions = async () => {
+            try {
+                const response = await getRegions();
+                setRegions(response.data || []);
+            } catch (error) {
+                console.error('Failed to fetch regions', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchRegions();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-bg-body">
+                <NavBar />
+                <div style={{ paddingTop: '10rem', textAlign: 'center', color: '#fff' }}>
+                    Loading regions...
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-bg-body">

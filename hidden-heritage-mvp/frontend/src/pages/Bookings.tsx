@@ -1,36 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import { Calendar, Eye, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { getTripsByUser } from '../services/api';
 
 const Bookings = () => {
-    // Mock Data
-    const [bookings] = useState([
-        {
-            id: 'SCR-2023-001',
-            destination: 'Gwalior Fort',
-            date: '2023-11-15',
-            amount: 4500,
-            status: 'Completed',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg'
-        },
-        {
-            id: 'SCR-2024-042',
-            destination: 'Mitawali & Padavali',
-            date: '2024-03-20',
-            amount: 3200,
-            status: 'Confirmed',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg'
-        },
-        {
-            id: 'SCR-2024-055',
-            destination: 'Bateshwar Temples',
-            date: '2024-04-10',
-            amount: 2800,
-            status: 'Pending',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg'
-        }
-    ]);
+    // State for bookings
+    const [bookings, setBookings] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchBookings = async () => {
+            try {
+                // Hardcoded user ID for MVP. In prod, get from AuthContext
+                const res = await getTripsByUser(1); 
+                
+                // Transform backend data to UI format if needed, or use directly
+                // Assuming backend returns: { id, name, total_cost, created_at, ... }
+                const formatted = (res.data || []).map((trip: any) => ({
+                    id: `TRIP-${trip.id.toString().padStart(3, '0')}`,
+                    destination: trip.name,
+                    date: new Date(trip.created_at).toLocaleDateString(),
+                    amount: trip.total_cost,
+                    status: 'Confirmed', // Default for now
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg' // Placeholder or derived from site_ids
+                }));
+                setBookings(formatted);
+            } catch (err) {
+                console.error("Failed to fetch bookings", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBookings();
+    }, []);
 
     // Helper for inline styles since we can't use tailwind status classes directly if not configured
     const getStatusStyle = (status: string) => {
@@ -74,6 +78,11 @@ const Bookings = () => {
 
                 <div className="card glass desktop-table-container" style={{ overflow: 'hidden', padding: 0, border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
                     <div style={{ overflowX: 'auto' }}>
+                        {bookings.length === 0 && !loading ? (
+                            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
+                                <p>No journeys recorded yet. Start your adventure today.</p>
+                            </div>
+                        ) : (
                         <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
                             <thead style={{ backgroundColor: 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                                 <tr>
@@ -137,6 +146,7 @@ const Bookings = () => {
                                 ))}
                             </tbody>
                         </table>
+                        )}
                     </div>
                 </div>
 

@@ -31,3 +31,19 @@ export const saveTrip = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Error saving trip', error });
     }
 };
+
+export const getTripsByUser = async (req: Request, res: Response) => {
+    try {
+        const { userId } = req.params;
+        // In a real app, userId would come from the auth token (req.user)
+        
+        const [rows] = await mysqlPool.query(
+            'SELECT * FROM trips WHERE user_id = ? ORDER BY created_at DESC',
+            [userId]
+        );
+
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching trips', error });
+    }
+};

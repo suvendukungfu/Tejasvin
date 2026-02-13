@@ -2,28 +2,45 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import MapPreview from '../components/MapPreview';
-import { getSites } from '../services/api';
+import { getSites, getRegionBySlug } from '../services/api';
 import { motion } from 'framer-motion';
 import { Calendar, Check } from 'lucide-react';
 
 const RegionDetail = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
+    const [region, setRegion] = useState<any>(null);
     const [sites, setSites] = useState<any[]>([]);
     const [selectedSites, setSelectedSites] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // In real app, fetch region by slug first to get ID, then sites
-        getSites()
-            .then(res => {
-                setSites(res.data);
+        const fetchData = async () => {
+            if (!slug) return;
+            setLoading(true);
+            try {
+                // 1. Fetch Region Details
+                const regionRes = await getRegionBySlug(slug);
+                const regionData = regionRes.data || regionRes || {};
+                setRegion(regionData);
+
+                // 2. Fetch Sites for this Region if we have an ID
+                if (regionData && regionData.id) {
+                    const sitesRes = await getSites(regionData.id);
+                    setSites(sitesRes.data || sitesRes || []);
+                } else {
+                    // Fallback to all sites if region lookup failed (or mock)
+                     const sitesRes = await getSites();
+                     setSites(sitesRes.data || []);
+                }
+            } catch (err) {
+                console.error("Failed to fetch region data", err);
+            } finally {
                 setLoading(false);
-            })
-            .catch(err => {
-                console.error(err);
-                setLoading(false);
-            });
+            }
+        };
+
+        fetchData();
     }, [slug]);
 
     const toggleSite = (id: number) => {
@@ -38,18 +55,15 @@ const RegionDetail = () => {
         navigate('/book', { state: { initialSelection: selectedSites } });
     };
 
-    // Dynamic Background Images based on slug
-    const regionImages: Record<string, string> = {
-        'chambal': 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
-        'bundelkhand': 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
-        'malwa': 'https://upload.wikimedia.org/wikipedia/commons/0/0c/A_beautiful_Jahaz_Mahal.jpg'
-    };
-
-    const heroImage = regionImages[slug?.toLowerCase() || ''] || regionImages['chambal'];
+    // Fallback image if region doesn't have one
+    const heroImage = region?.banner_image || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg';
 
     if (loading) return (
-        <div className="min-h-screen bg-bg-body flex-center">
-            <div className="spinner">Loading...</div> {/* Add spinner CSS later if needed */}
+        <div className="min-h-screen bg-bg-body">
+            <NavBar />
+            <div style={{ display: 'flex', height: '80vh', alignItems: 'center', justifyContent: 'center', color: 'var(--color-primary)' }}>
+                Loading Region Details...
+            </div>
         </div>
     );
 
@@ -109,7 +123,7 @@ const RegionDetail = () => {
                             textShadow: '0 4px 30px rgba(0,0,0,0.9)',
                             fontWeight: 600
                         }}>
-                            {slug?.replace('-', ' ')}
+                            {region?.name || slug?.replace('-', ' ')}
                         </h1>
                         <div style={{ width: '80px', height: '4px', background: 'var(--color-secondary)', margin: '0 auto 2rem auto', borderRadius: '2px', boxShadow: '0 2px 10px rgba(0,0,0,0.5)' }} />
                         <p style={{ 
@@ -124,7 +138,7 @@ const RegionDetail = () => {
                             fontStyle: 'italic',
                             textShadow: '0 2px 10px rgba(0,0,0,0.8)'
                         }}>
-                            "Listen to the stories carved in stone."
+                            "{region?.description || "Listen to the stories carved in stone."}"
                         </p>
                     </motion.div>
                 </div>
