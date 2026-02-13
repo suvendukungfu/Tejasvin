@@ -91,8 +91,8 @@ const Login = () => {
                         <div style={{ display: 'inline-flex', padding: '12px', background: 'rgba(216, 67, 21, 0.1)', borderRadius: '50%', marginBottom: '1rem' }}>
                             <Lock size={32} color="var(--color-primary)" />
                         </div>
-                        <h1 style={{ fontSize: '2.2rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Welcome Back</h1>
-                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1rem' }}>Sign in to continue your journey.</p>
+                        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Welcome Back</h1>
+                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem' }}>Sign in to continue your journey.</p>
                     </div>
 
                     {error && (
@@ -168,7 +168,7 @@ const Login = () => {
 
                     <div style={{ marginTop: '2.5rem', textAlign: 'center', fontSize: '0.95rem' }}>
                         <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1.5rem' }}>
-                            Don't have an account? <Link to="/register" style={{ color: 'var(--color-secondary)', fontWeight: 600, textDecoration: 'none' }}>Create Account</Link>
+                            New here? <Link to="/register" style={{ color: 'var(--color-secondary)', fontWeight: 600, textDecoration: 'none' }}>Join the Guild</Link>
                         </p>
                         <div style={{ padding: '1rem', backgroundColor: 'rgba(0,0,0,0.03)', borderRadius: '8px', fontSize: '0.85rem', border: '1px solid rgba(0,0,0,0.05)' }}>
                             <strong style={{ display: 'block', marginBottom: '0.25rem', color: 'var(--color-primary)' }}>Demo Credentials:</strong>

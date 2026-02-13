@@ -85,8 +85,8 @@ const Register = () => {
                          <div style={{ display: 'inline-flex', padding: '12px', background: 'rgba(216, 67, 21, 0.1)', borderRadius: '50%', marginBottom: '1rem' }}>
                             <UserPlus size={32} color="var(--color-primary)" />
                         </div>
-                        <h1 style={{ fontSize: '2.2rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Create Account</h1>
-                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1rem' }}>Join us to uncover hidden heritage.</p>
+                        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Create Account</h1>
+                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem' }}>Join us to uncover hidden heritage.</p>
                     </div>
 
                     {error && (

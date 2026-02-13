@@ -12,9 +12,9 @@ const Pricing = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                 >
-                    <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Unlock the Full History</h1>
+                    <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>Membership Plans</h1>
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)', marginBottom: '4rem', maxWidth: '600px', margin: '0 auto 4rem' }}>
-                        Choose the plan that fits your exploration style. Support preservation while discovering the unseen.
+                        Your contribution directly supports the mapping and preservation of India's forgotten heritage.
                     </p>
                 </motion.div>
 
@@ -34,9 +34,9 @@ const Pricing = () => {
                             flexDirection: 'column'
                         }}
                     >
-                        <h2 style={{ color: 'var(--color-text-secondary)', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Explorer</h2>
-                        <div style={{ fontSize: '3rem', fontWeight: 700, margin: '1rem 0', color: 'var(--color-primary)' }}>₹0</div>
-                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>Perfect for casual travelers getting started.</p>
+                        <h2 style={{ color: 'var(--color-text-secondary)', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Seeker</h2>
+                        <div style={{ fontSize: '3rem', fontWeight: 700, margin: '1rem 0', color: 'var(--color-primary)' }}>Free</div>
+                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>Begin your journey into the past.</p>
                         
                         <div style={{ flex: 1 }}>
                             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0' }}>
@@ -88,12 +88,12 @@ const Pricing = () => {
                         </div>
                         
                         <h2 style={{ color: 'var(--color-primary)', fontSize: '1.5rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            Heritage Guardian <Shield size={20} fill="var(--color-secondary)" color="var(--color-secondary)" />
+                            Keeper of Secrets <Shield size={20} fill="var(--color-secondary)" color="var(--color-secondary)" />
                         </h2>
                         <div style={{ fontSize: '3rem', fontWeight: 700, margin: '1rem 0', color: 'var(--color-primary)' }}>
                             ₹499<span style={{ fontSize: '1.1rem', fontWeight: 'normal', color: 'var(--color-text-secondary)', marginLeft: '0.25rem' }}>/mo</span>
                         </div>
-                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>For enthusiasts who want the deepest connection.</p>
+                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>For those who wish to go deeper.</p>
                         
                         <div style={{ flex: 1 }}>
                             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0' }}>
@@ -128,7 +128,7 @@ const Pricing = () => {
                                 boxShadow: '0 8px 20px -4px rgba(193, 127, 89, 0.4)'
                             }}
                         >
-                            Upgrade Now
+                            Become a Keeper
                         </button>
                     </motion.div>
 

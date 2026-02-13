@@ -62,20 +62,20 @@ const Hero = () => {
                         border: '1px solid rgba(255,255,255,0.25)',
                         color: 'rgba(255,255,255,0.9)'
                     }}>
-                        Discover the Undiscovered
+                        Every Ruin Has a Story
                     </span>
                     <h1 style={{
                         color: '#FFFFFF',
                         fontSize: 'clamp(3.5rem, 7vw, 6rem)',
                         marginBottom: '1.5rem',
                         lineHeight: 1.1,
-                        textShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                        textShadow: '0 4px 30px rgba(0,0,0,0.9)',
                         fontWeight: 700,
                         fontFamily: 'var(--font-heading)',
                         letterSpacing: '-0.01em'
                     }}>
-                        Explore India's <br />
-                        <span style={{ color: 'var(--color-secondary)', fontStyle: 'italic', textShadow: '0 10px 30px rgba(0,0,0,0.8)' }}>Hidden Heritage</span>
+                        Listen to the <br />
+                        <span style={{ color: 'var(--color-secondary)', fontStyle: 'italic', textShadow: '0 4px 30px rgba(0,0,0,0.9)' }}>Whispers of Chambal</span>
                     </h1>
                 </motion.div>
 
@@ -89,14 +89,14 @@ const Hero = () => {
                         maxWidth: '750px',
                         marginLeft: 'auto',
                         marginRight: 'auto',
-                        color: 'rgba(255,255,255,0.95)',
+                        color: '#FFFFFF',
                         lineHeight: 1.7,
-                        fontWeight: 300,
-                        textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+                        fontWeight: 400,
+                        textShadow: '0 2px 10px rgba(0,0,0,0.8)'
                     }}
                 >
-                    Uncover ancient temples, mystical ravines, and timeless rock art in the heart of Chambal.
-                    Journey beyond the guidebooks and experience history firsthand.
+                    Stand amidst the echoes of ancient temples and forgotten fortresses. 
+                    We guide you to places where history breathes, far beyond the pages of a textbook.
                 </motion.p>
 
                 <motion.div
@@ -120,7 +120,7 @@ const Hero = () => {
                             letterSpacing: '0.5px'
                         }}
                     >
-                        Start Exploring <ChevronRight size={20} />
+                        Begin The Journey <ChevronRight size={20} />
                     </button>
                     <button
                         onClick={() => navigate('/about')}

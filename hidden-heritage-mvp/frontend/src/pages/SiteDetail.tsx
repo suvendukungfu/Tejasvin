@@ -102,7 +102,8 @@ const SiteDetail = () => {
                             fontSize: 'clamp(3rem, 6vw, 5.5rem)', 
                             marginBottom: '1rem', 
                             fontFamily: 'var(--font-heading)', 
-                            textShadow: '0 10px 30px rgba(0,0,0,0.3)',
+                            color: '#FFFFFF',
+                            textShadow: '0 4px 30px rgba(0,0,0,0.9)',
                             fontWeight: 600,
                             letterSpacing: '0.02em',
                             lineHeight: 1.1
@@ -110,7 +111,7 @@ const SiteDetail = () => {
                     >
                         {site.name}
                     </motion.h1>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.25rem', opacity: 0.95, fontWeight: 300 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.25rem', opacity: 1, fontWeight: 400, color: '#FFFFFF', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
                         <MapPin size={22} color="var(--color-secondary)" />
                         <span>Morena District, Madhya Pradesh</span>
                     </div>
@@ -122,7 +123,7 @@ const SiteDetail = () => {
                     {/* Main Content */}
                     <div>
                         <section style={{ marginBottom: '4rem' }}>
-                            <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>About the Site</h2>
+                            <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>The Legend</h2>
                             <p style={{ fontSize: '1.2rem', lineHeight: 1.8, color: 'var(--color-text-main)', opacity: 0.9, marginBottom: '2rem' }}>
                                 {site.full_description || site.description}
                             </p>
@@ -155,7 +156,7 @@ const SiteDetail = () => {
                          )}
 
                          <section style={{ marginBottom: '4rem' }} id="gallery">
-                             <h3 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Gallery</h3>
+                             <h3 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Visual Memories</h3>
                              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
                                 {/* Gallery placeholder or dynamic images if available */}
                                 <div style={{ height: '200px', borderRadius: '12px', overflow: 'hidden' }}>
@@ -171,7 +172,7 @@ const SiteDetail = () => {
                     {/* Sidebar Info */}
                     <div className="sidebar">
                         <div className="card glass" style={{ padding: '2.5rem', position: 'sticky', top: '100px', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 40px rgba(0,0,0,0.05)' }}>
-                            <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '0.75rem', fontFamily: 'var(--font-heading)', fontSize: '1.5rem' }}>Visitor Info</h3>
+                            <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '0.75rem', fontFamily: 'var(--font-heading)', fontSize: '1.5rem' }}>Plan Your Visit</h3>
 
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--color-secondary)' }}>

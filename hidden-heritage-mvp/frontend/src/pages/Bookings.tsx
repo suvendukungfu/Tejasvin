@@ -7,7 +7,7 @@ const Bookings = () => {
     // Mock Data
     const [bookings] = useState([
         {
-            id: 'BK-2023-001',
+            id: 'SCR-2023-001',
             destination: 'Gwalior Fort',
             date: '2023-11-15',
             amount: 4500,
@@ -15,7 +15,7 @@ const Bookings = () => {
             image: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Gwalior_Fort_%28sunset%29.jpg'
         },
         {
-            id: 'BK-2024-042',
+            id: 'SCR-2024-042',
             destination: 'Mitawali & Padavali',
             date: '2024-03-20',
             amount: 3200,
@@ -23,7 +23,7 @@ const Bookings = () => {
             image: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg'
         },
         {
-            id: 'BK-2024-055',
+            id: 'SCR-2024-055',
             destination: 'Bateshwar Temples',
             date: '2024-04-10',
             amount: 2800,
@@ -62,9 +62,9 @@ const Bookings = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                 >
-                    <h1 style={{ fontSize: '3rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)' }}>My Journeys</h1>
-                    <p style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.9)', maxWidth: '600px', margin: '0 auto' }}>
-                        Track your upcoming adventures and relive past memories.
+                    <h1 style={{ fontSize: '3rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)', color: '#FFFFFF', textShadow: '0 4px 30px rgba(0,0,0,0.9)' }}>My Bookings</h1>
+                    <p style={{ fontSize: '1.2rem', color: '#FFFFFF', maxWidth: '600px', margin: '0 auto', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
+                        A record of your steps through time.
                     </p>
                 </motion.div>
             </div>
@@ -82,7 +82,7 @@ const Bookings = () => {
                                     <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Booking ID</th>
                                     <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Amount</th>
                                     <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Status</th>
-                                    <th style={{ padding: '1.25rem 1.5rem', textAlign: 'right', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Actions</th>
+                                    <th style={{ padding: '1.25rem 1.5rem', textAlign: 'right', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Options</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,25 +165,25 @@ const Bookings = () => {
                             
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem', fontSize: '0.9rem' }}>
                                 <div>
-                                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.8rem' }}>Date</div>
+                                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.8rem' }}>Written On</div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                                         <Calendar size={14} />
                                         {booking.date}
                                     </div>
                                 </div>
                                 <div>
-                                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.8rem' }}>Amount</div>
+                                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.8rem' }}>Tribute</div>
                                     <div style={{ fontWeight: 600 }}>₹{booking.amount}</div>
                                 </div>
                             </div>
 
                             <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
                                 <button className="btn btn-outline" style={{ flex: 1, borderRadius: '8px', padding: '0.6rem' }}>
-                                    View Details
+                                    Read Scroll
                                 </button>
                                 {booking.status === 'Pending' && (
                                     <button className="btn btn-outline" style={{ borderRadius: '8px', padding: '0.6rem', color: 'var(--color-error)', borderColor: 'var(--color-error)' }}>
-                                        Cancel
+                                        Annul
                                     </button>
                                 )}
                             </div>

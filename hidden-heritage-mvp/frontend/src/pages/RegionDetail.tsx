@@ -106,24 +106,25 @@ const RegionDetail = () => {
                             marginBottom: '1rem', 
                             fontFamily: 'var(--font-heading)', 
                             color: '#FFFFFF',
-                            textShadow: '0 10px 30px rgba(0,0,0,0.3)',
+                            textShadow: '0 4px 30px rgba(0,0,0,0.9)',
                             fontWeight: 600
                         }}>
                             {slug?.replace('-', ' ')}
                         </h1>
-                        <div style={{ width: '80px', height: '4px', background: 'var(--color-secondary)', margin: '0 auto 2rem auto', borderRadius: '2px' }} />
+                        <div style={{ width: '80px', height: '4px', background: 'var(--color-secondary)', margin: '0 auto 2rem auto', borderRadius: '2px', boxShadow: '0 2px 10px rgba(0,0,0,0.5)' }} />
                         <p style={{ 
                             fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', 
-                            opacity: 0.95, 
+                            color: '#FFFFFF', 
                             maxWidth: '650px', 
                             margin: '0 auto', 
                             fontWeight: 400,
                             lineHeight: 1.8,
                             letterSpacing: '0.02em',
                             fontFamily: 'var(--font-heading)',
-                            fontStyle: 'italic'
+                            fontStyle: 'italic',
+                            textShadow: '0 2px 10px rgba(0,0,0,0.8)'
                         }}>
-                            "Discover ancient history hidden in the landscape."
+                            "Listen to the stories carved in stone."
                         </p>
                     </motion.div>
                 </div>
@@ -135,9 +136,9 @@ const RegionDetail = () => {
                     {/* List of Sites */}
                     <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 style={{ fontSize: '1.8rem' }}>Available Sites ({sites.length})</h2>
+                            <h2 style={{ fontSize: '1.8rem' }}>Chapters of History ({sites.length})</h2>
                             <div style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>
-                                Select sites to build your itinerary
+                                Collect stories to build your journey
                             </div>
                         </div>
 
@@ -214,7 +215,7 @@ const RegionDetail = () => {
                                                 className={`btn ${selectedSites.includes(site.id) ? 'btn-secondary' : 'btn-outline'}`}
                                                 style={{ flex: 1, padding: '0.5rem', fontSize: '0.9rem' }}
                                             >
-                                                {selectedSites.includes(site.id) ? 'Selected' : 'Add to Trip'}
+                                                {selectedSites.includes(site.id) ? 'Collected' : 'Collect'}
                                             </button>
                                             <button
                                                 onClick={() => navigate(`/site/${site.slug}`)}

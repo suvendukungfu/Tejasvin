@@ -103,16 +103,24 @@ const NavLink = ({ children, onClick }: { children: React.ReactNode, onClick: ()
         className="nav-link"
         style={{
             fontSize: '1rem',
-            fontWeight: 500,
-            color: 'var(--color-text-main)',
+            fontWeight: 600,
+            color: 'var(--color-primary)',
             transition: 'color 0.2s ease',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
-            padding: '0.5rem'
+            padding: '0.5rem',
+            textShadow: '0 1px 2px rgba(0,0,0,0.05)'
         }}
-        onMouseOver={(e) => e.currentTarget.style.color = 'var(--color-secondary)'}
-        onMouseOut={(e) => e.currentTarget.style.color = 'var(--color-text-main)'}
+        onMouseOver={(e) => {
+            e.currentTarget.style.color = 'var(--color-secondary)';
+            e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)';
+            e.currentTarget.style.borderRadius = '8px';
+        }}
+        onMouseOut={(e) => {
+            e.currentTarget.style.color = 'var(--color-primary)';
+            e.currentTarget.style.backgroundColor = 'transparent';
+        }}
     >
         {children}
     </button>

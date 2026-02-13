@@ -70,9 +70,9 @@ const Feedback = () => {
                                 exit={{ opacity: 0 }}
                             >
                                 <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                                    <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>We Value Your Feedback</h1>
+                                    <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>We Value Your Feedback</h1>
                                     <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem' }}>
-                                        Help us improve Hidden Heritage for everyone.
+                                        Your stories help us weave a better tapestry for future travelers.
                                     </p>
                                 </div>
 
@@ -163,7 +163,7 @@ const Feedback = () => {
                                             'Sending...'
                                         ) : (
                                             <>
-                                                Submit Feedback <Send size={18} />
+                                                Send to the Guild <Send size={18} />
                                             </>
                                         )}
                                     </button>

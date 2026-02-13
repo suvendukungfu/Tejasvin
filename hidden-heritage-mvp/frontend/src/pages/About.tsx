@@ -23,18 +23,18 @@ const About = () => {
                     <motion.h1 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', textShadow: '0 2px 4px rgba(0,0,0,0.3)', color: 'var(--color-text-inverse)' }}
+                        style={{ fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', textShadow: '0 4px 30px rgba(0,0,0,0.9)', color: '#FFFFFF' }}
                     >
-                        Uncovering the Unseen
+                        About Hidden Heritage
                     </motion.h1>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        style={{ fontSize: '1.2rem', lineHeight: 1.6, color: 'rgba(255,255,255,1)', textShadow: '0 2px 4px rgba(0,0,0,0.6)' }}
+                        style={{ fontSize: '1.2rem', lineHeight: 1.6, color: '#FFFFFF', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
                     >
-                        Hidden Heritage is dedicated to shining a light on the forgotten architectural marvels of India. 
-                        We believe that every stone has a story, and every ruined pillar whispers the secrets of the past.
+                        We are more than a travel platform. We are a collective dedicated to keeping the echoes of history alive. 
+                        Every stone has a voice, and we are here to listen.
                     </motion.p>
                 </div>
             </div>
@@ -53,7 +53,7 @@ const About = () => {
                         <div style={{ color: 'var(--color-primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
                             <Globe size={48} strokeWidth={1.5} />
                         </div>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Preservation</h3>
+                        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Legacy</h3>
                         <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>Documenting sites before they are lost to time, creating a digital archive for future generations.</p>
                     </motion.div>
                     
@@ -68,7 +68,7 @@ const About = () => {
                         <div style={{ color: 'var(--color-primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
                             <Heart size={48} strokeWidth={1.5} />
                         </div>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Passion</h3>
+                        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Devotion</h3>
                         <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>Fueled by a deep love for history and culture, ensuring the narratives of the past remain vibrant.</p>
                     </motion.div>
                     
@@ -92,7 +92,7 @@ const About = () => {
                 <div style={{ marginBottom: '4rem' }}>
                     <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                         <span style={{ color: 'var(--color-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.9rem' }}>The Minds Behind</span>
-                        <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', marginTop: '0.5rem' }}>Meet the Team</h2>
+                        <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', marginTop: '0.5rem' }}>Our Team</h2>
                     </div>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>

@@ -21,7 +21,7 @@ const Explore = () => {
             id: 1,
             name: 'Chambal Region',
             slug: 'chambal',
-            description: 'A land of mystery, deep ravines, and forgotten history. Home to the Bateshwar temples.',
+            description: 'A land of echoes and deep ravines. Home to the silent sentinels of Bateshwar.',
             banner_image: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
             sites_count: 12
         },
@@ -29,7 +29,7 @@ const Explore = () => {
             id: 2,
             name: 'Bundelkhand',
             slug: 'bundelkhand',
-            description: 'Famous for its forts and palaces, including the hidden gems of Orchha and Datia.',
+            description: 'Where stone speaks. Discover the resilient forts and hidden palaces of a warrior land.',
             banner_image: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
             sites_count: 8
         },
@@ -37,7 +37,7 @@ const Explore = () => {
             id: 3,
             name: 'Malwa Plateau',
             slug: 'malwa',
-            description: 'A region rich in culture and history, featuring the ancient city of Mandu.',
+            description: 'The soul of central India. Walk the paths of emperors in the city of joy, Mandu.',
             banner_image: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/A_beautiful_Jahaz_Mahal.jpg',
             sites_count: 15
         }
@@ -94,19 +94,21 @@ const Explore = () => {
                             fontFamily: 'var(--font-heading)', 
                             fontWeight: 700,
                             letterSpacing: '0.05em',
-                            textShadow: '0 4px 20px rgba(0,0,0,0.3)' 
+                            color: '#ffffff',
+                            textShadow: '0 4px 30px rgba(0,0,0,0.8)' 
                         }}>
-                            Explore Hidden India
+                            Where Legends Sleep
                         </h1>
                         <p style={{ 
-                            color: 'rgba(255,255,255,0.9)', 
+                            color: '#ffffff', 
                             maxWidth: '700px', 
                             margin: '0 auto', 
                             fontSize: '1.25rem', 
                             lineHeight: 1.6,
-                            fontWeight: 300 
+                            fontWeight: 400,
+                            textShadow: '0 2px 10px rgba(0,0,0,0.8)'
                         }}>
-                             Journey beyond the ordinary. Discover the forgotten monuments, ancient temples, and untold stories of the heartland.
+                             Wander through the mists of time. Uncover the forgotten monuments, ancient temples, and untold whispers of the heartland.
                         </p>
                     </motion.div>
                 </div>
@@ -179,9 +181,9 @@ const Explore = () => {
                 
                 <div style={{ marginTop: '4rem', textAlign: 'center' }}>
                     <div className="card" style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 100%)', color: 'white', border: '1px solid rgba(255,255,255,0.1)' }}>
-                        <h2 style={{ color: '#fff', fontSize: '2rem', marginBottom: '1rem' }}>AR/VR Experience Zone</h2>
+                        <h2 style={{ color: '#fff', fontSize: '2rem', marginBottom: '1rem' }}>Step Through the Portal</h2>
                         <p style={{ color: '#ccc', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
-                            Switch to our immersive AR/VR Section to explore sites from a floating perspective with Augmented Reality capabilities.
+                            Experience history as if you were there. Enter our Immersive Zone to see ruins rebuilt before your eyes.
                         </p>
                         <button 
                             onClick={() => navigate('/antigravity')} 

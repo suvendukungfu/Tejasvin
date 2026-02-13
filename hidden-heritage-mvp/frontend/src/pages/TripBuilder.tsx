@@ -150,8 +150,8 @@ const TripBuilder = () => {
             
             <div className="container" style={{ padding: '3rem 2rem' }}>
                 <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
-                    <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Plan Your Journey</h1>
-                    <p style={{ color: 'var(--color-text-secondary)' }}>Customize your itinerary, get cost estimates, and book local guides.</p>
+                    <h1 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>Plan Your Trip</h1>
+                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.2rem' }}>Curate your path through history. Collect stories, not just souvenirs.</p>
                 </header>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '3rem' }} className="trip-builder-grid">
@@ -197,12 +197,12 @@ const TripBuilder = () => {
                                 borderRadius: '12px',
                                 backgroundColor: 'rgba(0,0,0,0.02)'
                             }}>
-                                <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem', color: 'var(--color-text-secondary)' }}>No sites selected for your trip yet.</p>
+                                <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem', color: 'var(--color-text-secondary)' }}>Your chronicle is waiting to be written.</p>
                                 <button 
                                     onClick={() => navigate('/explore')} 
                                     className="btn btn-outline"
                                 >
-                                    Browse Sites to Add
+                                    Explore & Collect Stories
                                 </button>
                             </div>
                         )}
@@ -247,7 +247,7 @@ const TripBuilder = () => {
                     {/* Right Column: Controls & Estimate */}
                     <div style={{ height: 'fit-content', position: 'sticky', top: '100px' }}>
                          <div className="card glass" style={{ padding: '2.5rem', border: '1px solid rgba(255,255,255,0.6)' }}>
-                            <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Trip Settings</h3>
+                            <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Trip Details</h3>
 
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>

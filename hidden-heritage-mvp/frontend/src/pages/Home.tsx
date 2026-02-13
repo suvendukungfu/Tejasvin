@@ -10,17 +10,17 @@ const Home = () => {
     const features = [
         {
             icon: <Compass size={32} color="var(--color-secondary)" />,
-            title: "Uncharted Locations",
-            desc: "Access sites that aren't on Google Maps. We work with local archaeologists to map the unknown."
+            title: "Forgotten Realms",
+            desc: "Access sites that aren't on Google Maps. We work with local historians to map the unknown."
         },
         {
             icon: <Shield size={32} color="var(--color-secondary)" />,
-            title: "Safe & Guided",
-            desc: "Verified local guides accompany every trip. Your safety in remote areas is our top priority."
+            title: "Guardian Guides",
+            desc: "Verified local storytellers accompany every trip. Your safety and immersion are our priority."
         },
         {
             icon: <Map size={32} color="var(--color-secondary)" />,
-            title: "Curated Itineraries",
+            title: "Crafted Narratives",
             desc: "Don't just visit; experience. Our partial-day and full-day plans are optimized for discovery."
         }
     ];
@@ -54,7 +54,7 @@ const Home = () => {
             {/* Features Section */}
             <section className="container" style={{ padding: '8rem 2rem' }}>
                 <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-                    <h2 style={{ fontSize: '3rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Why Travel with Us?</h2>
+                    <h2 style={{ fontSize: '3rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Our Promise</h2>
                     <p style={{ color: 'var(--color-text-secondary)', maxWidth: '650px', margin: '0 auto', fontSize: '1.25rem', lineHeight: 1.8, fontWeight: 300 }}>
                         We don't just show you places; we connect you with the soul of India's forgotten history through immersive and curated experiences.
                     </p>
@@ -93,8 +93,8 @@ const Home = () => {
                 <div className="container" style={{ padding: '0 2rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '3rem' }}>
                         <div>
-                            <span style={{ color: 'var(--color-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem' }}>Trending</span>
-                            <h2 style={{ fontSize: '3rem', marginTop: '0.5rem', fontFamily: 'var(--font-heading)' }}>Hidden Gems</h2>
+                            <span style={{ color: 'var(--color-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem' }}>Curated for You</span>
+                            <h2 style={{ fontSize: '3rem', marginTop: '0.5rem', fontFamily: 'var(--font-heading)' }}>Timeless Destinations</h2>
                         </div>
                         <button
                             className="btn btn-outline"
@@ -171,8 +171,8 @@ const Home = () => {
                 <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.05, backgroundImage: 'radial-gradient(#D4AF37 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
                 
                 <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-                    <h2 style={{ color: 'var(--color-accent)', fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)' }}>Ready to uncover the past?</h2>
-                    <p style={{ maxWidth: '600px', margin: '0 auto 3rem auto', opacity: 0.9, fontSize: '1.25rem', fontWeight: 300 }}>
+                    <h2 style={{ color: 'var(--color-accent)', fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>Ready to uncover the past?</h2>
+                    <p style={{ maxWidth: '600px', margin: '0 auto 3rem auto', color: '#FFFFFF', fontSize: '1.25rem', fontWeight: 400, textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
                         Join 2,000+ explorers discovering the real India. Sign up for our newsletter to get weekly curated stories.
                     </p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
