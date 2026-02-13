@@ -7,8 +7,9 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import { CSS } from '@dnd-kit/utilities';
 import PaymentModal from '../components/PaymentModal';
 import { useAuth } from '../context/AuthContext';
-import { GripVertical, Trash2, Plus, Calendar, IndianRupee, User, Info, MapPin } from 'lucide-react';
+import { GripVertical, Trash2, Plus, Calendar, IndianRupee, User, Info, Map as MapIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import MapPreview from '../components/MapPreview';
 
 // --- Components ---
 
@@ -60,6 +61,7 @@ const TripBuilder = () => {
     const navigate = useNavigate();
 
     // State
+    const [showMap, setShowMap] = useState(false);
     const [selectedSiteIds, setSelectedSiteIds] = useState<number[]>(location.state?.initialSelection || []);
     const [allSites, setAllSites] = useState<any[]>([]);
     const [guides, setGuides] = useState<any[]>([]);
@@ -157,9 +159,26 @@ const TripBuilder = () => {
                     {/* Left Column: Itinerary Builder */}
                     <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 style={{ fontSize: '1.5rem' }}>Your Itinerary</h2>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                <h2 style={{ fontSize: '1.5rem', margin: 0 }}>Your Itinerary</h2>
+                                {selectedSiteIds.length > 0 && (
+                                    <button 
+                                        onClick={() => setShowMap(!showMap)}
+                                        className="btn btn-outline"
+                                        style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}
+                                    >
+                                        <MapIcon size={16} /> {showMap ? 'Hide Map' : 'View Map'}
+                                    </button>
+                                )}
+                            </div>
                             <span style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>Drag to reorder</span>
                         </div>
+
+                        {showMap && selectedSiteIds.length > 0 && (
+                            <div style={{ height: '350px', marginBottom: '1.5rem', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.1)' }}>
+                                <MapPreview sites={selectedSitesData} />
+                            </div>
+                        )}
 
                         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                             <SortableContext items={selectedSiteIds} strategy={verticalListSortingStrategy}>
