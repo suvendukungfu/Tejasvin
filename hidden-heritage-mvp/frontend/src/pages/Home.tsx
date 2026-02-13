@@ -1,5 +1,6 @@
 import NavBar from '../components/NavBar';
 import Hero from '../components/Hero';
+import ARVRHero from '../components/ARVRHero';
 import { Map, Compass, Shield, ChevronRight, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -84,6 +85,8 @@ const Home = () => {
                     ))}
                 </div>
             </section>
+
+            <ARVRHero />
 
             {/* Featured Destinations */}
             <section style={{ backgroundColor: 'var(--color-bg-alt)', padding: '5rem 0' }}>
