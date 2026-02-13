@@ -48,18 +48,34 @@ const Bookings = () => {
         <div className="min-h-screen bg-bg-body">
             <NavBar />
             
-            <div className="container" style={{ padding: '3rem 2rem' }}>
-                <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>My Bookings</h1>
-                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem' }}>Track your past and upcoming journeys.</p>
-                    </div>
-                </header>
+            {/* Hero Section */}
+            <div style={{ 
+                background: 'linear-gradient(rgba(44, 36, 32, 0.9), rgba(44, 36, 32, 0.8)), url("https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                padding: '6rem 2rem 4rem',
+                color: 'white',
+                textAlign: 'center',
+                marginBottom: '2rem'
+            }}>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    <h1 style={{ fontSize: '3rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)' }}>My Journeys</h1>
+                    <p style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.9)', maxWidth: '600px', margin: '0 auto' }}>
+                        Track your upcoming adventures and relive past memories.
+                    </p>
+                </motion.div>
+            </div>
+            
+            <div className="container" style={{ padding: '0 2rem 4rem' }}>
 
-                <div className="card glass desktop-table-container" style={{ overflow: 'hidden', padding: 0, border: '1px solid rgba(255,255,255,0.6)' }}>
+
+                <div className="card glass desktop-table-container" style={{ overflow: 'hidden', padding: 0, border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
-                            <thead style={{ backgroundColor: 'rgba(93, 64, 55, 0.05)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                            <thead style={{ backgroundColor: 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                                 <tr>
                                     <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Destination</th>
                                     <th style={{ padding: '1.25rem 1.5rem', textAlign: 'left', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Date</th>

@@ -7,7 +7,7 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import { CSS } from '@dnd-kit/utilities';
 import PaymentModal from '../components/PaymentModal';
 import { useAuth } from '../context/AuthContext';
-import { GripVertical, Trash2, Plus, Calendar, IndianRupee, User, Info } from 'lucide-react';
+import { GripVertical, Trash2, Plus, Calendar, IndianRupee, User, Info, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // --- Components ---
@@ -18,30 +18,33 @@ const SortableItem = ({ id, site, onRemove }: { id: number, site: any, onRemove:
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        padding: '1rem', 
+        padding: '1.25rem', 
         marginBottom: '1rem', 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'space-between', 
-        cursor: 'default'
+        cursor: 'default',
+        border: '1px solid rgba(255,255,255,0.6)'
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="card">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div {...attributes} {...listeners} style={{ cursor: 'grab', color: 'var(--color-text-secondary)', padding: '0.5rem' }}>
-                    <GripVertical size={20} />
+        <div ref={setNodeRef} style={style} className="card glass">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                <div {...attributes} {...listeners} style={{ cursor: 'grab', color: 'var(--color-primary)', padding: '0.5rem', opacity: 0.7 }}>
+                    <GripVertical size={22} />
                 </div>
-                <img src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'} alt={site.name} style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
+                <img src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'} alt={site.name} style={{ width: '70px', height: '70px', borderRadius: '12px', objectFit: 'cover' }} />
                 <div>
-                    <h4 style={{ margin: 0, fontSize: '1rem' }}>{site.name}</h4>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>Est. {site.avg_visit_time_mins} mins</span>
+                    <h4 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-heading)' }}>{site.name}</h4>
+                    <span style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.3rem' }}>
+                        Est. {site.avg_visit_time_mins} mins
+                    </span>
                 </div>
             </div>
             <button 
                 onClick={() => onRemove(id)} 
                 className="btn btn-outline"
-                style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)', padding: '0.4rem', borderRadius: '6px' }}
+                style={{ color: 'var(--color-error)', borderColor: 'rgba(198, 40, 40, 0.3)', padding: '0.5rem', borderRadius: '8px' }}
                 title="Remove"
             >
                 <Trash2 size={18} />
@@ -193,26 +196,27 @@ const TripBuilder = () => {
                                     .filter(s => !selectedSiteIds.includes(s.id)) // Not already selected
                                     .slice(0, 4) // Suggest 4
                                     .map(site => (
-                                        <div key={site.id} className="card" style={{
-                                            padding: '1rem',
+                                        <div key={site.id} className="card glass" style={{
+                                            padding: '1.25rem',
                                             display: 'flex', 
                                             justifyContent: 'space-between', 
                                             alignItems: 'center',
-                                            gap: '1rem'
+                                            gap: '1rem',
+                                            border: '1px solid rgba(255,255,255,0.7)'
                                         }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                                <img src={site.image_url} style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
+                                                <img src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'} alt={site.name} style={{ width: '70px', height: '70px', borderRadius: '12px', objectFit: 'cover' }} />
                                                 <div>
-                                                    <h4 style={{ margin: 0, fontSize: '1rem' }}>{site.name}</h4>
-                                                    <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{site.type}</p>
+                                                    <h4 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-heading)' }}>{site.name}</h4>
+                                                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{site.type}</p>
                                                 </div>
                                             </div>
                                             <button
                                                 onClick={() => setSelectedSiteIds([...selectedSiteIds, site.id])}
-                                                className="btn btn-outline"
-                                                style={{ padding: '0.4rem 0.8rem', borderRadius: '50px', fontSize: '0.9rem' }}
+                                                className="btn btn-primary"
+                                                style={{ padding: '0.5rem 1rem', borderRadius: '50px', fontSize: '0.85rem' }}
                                             >
-                                                <Plus size={16} />
+                                                <Plus size={18} /> Add
                                             </button>
                                         </div>
                                     ))}
@@ -223,60 +227,42 @@ const TripBuilder = () => {
 
                     {/* Right Column: Controls & Estimate */}
                     <div style={{ height: 'fit-content', position: 'sticky', top: '100px' }}>
-                         <div className="card" style={{ padding: '2rem' }}>
-                            <h3 style={{ marginBottom: '1.5rem', fontSize: '1.3rem' }}>Trip Settings</h3>
+                         <div className="card glass" style={{ padding: '2.5rem', border: '1px solid rgba(255,255,255,0.6)' }}>
+                            <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Trip Settings</h3>
 
-                            <div style={{ marginBottom: '1.25rem' }}>
-                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: 500, color: 'var(--color-text-secondary)' }}>
-                                    <IndianRupee size={14} style={{ display: 'inline', marginRight: '4px' }}/> Total Budget
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+                                    <IndianRupee size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }}/> Total Budget
                                 </label>
                                 <input
                                     type="number"
                                     value={input.budget}
                                     onChange={e => setInput({ ...input, budget: Number(e.target.value) })}
-                                    style={{ 
-                                        width: '100%', 
-                                        padding: '0.8rem', 
-                                        borderRadius: '6px', 
-                                        border: '1px solid #ddd',
-                                        fontSize: '1rem'
-                                    }}
+                                    className="modern-input"
                                 />
                             </div>
 
-                            <div style={{ marginBottom: '1.25rem' }}>
-                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: 500, color: 'var(--color-text-secondary)' }}>
-                                    <Calendar size={14} style={{ display: 'inline', marginRight: '4px' }}/> Duration (Days)
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+                                    <Calendar size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }}/> Duration (Days)
                                 </label>
                                 <input
                                     type="number"
                                     value={input.days}
                                     onChange={e => setInput({ ...input, days: Number(e.target.value) })}
-                                    style={{ 
-                                        width: '100%', 
-                                        padding: '0.8rem', 
-                                        borderRadius: '6px', 
-                                        border: '1px solid #ddd',
-                                        fontSize: '1rem'
-                                    }}
+                                    className="modern-input"
                                 />
                             </div>
 
-                            <div style={{ marginBottom: '1.25rem' }}>
-                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: 500, color: 'var(--color-text-secondary)' }}>
-                                    <User size={14} style={{ display: 'inline', marginRight: '4px' }}/> Local Guide
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+                                    <User size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }}/> Local Guide
                                 </label>
                                 <select
                                     value={input.guideId}
                                     onChange={e => setInput({ ...input, guideId: e.target.value })}
-                                    style={{ 
-                                        width: '100%', 
-                                        padding: '0.8rem', 
-                                        borderRadius: '6px', 
-                                        border: '1px solid #ddd',
-                                        fontSize: '1rem',
-                                        backgroundColor: 'white'
-                                    }}
+                                    className="modern-input"
+                                    style={{ appearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232C2420' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1em' }}
                                 >
                                     <option value="">No Guide</option>
                                     {guides.map(g => (
@@ -285,38 +271,39 @@ const TripBuilder = () => {
                                 </select>
                             </div>
 
-                            <hr style={{ margin: '1.5rem 0', border: 'none', borderTop: '1px solid #eee' }} />
+                            <hr style={{ margin: '2rem 0', border: 'none', borderTop: '1px solid rgba(0,0,0,0.1)' }} />
 
-                            {loading && <div style={{ color: 'var(--color-text-secondary)', textAlign: 'center' }}>Calculating best plan...</div>}
+                            {loading && <div style={{ color: 'var(--color-text-secondary)', textAlign: 'center', fontStyle: 'italic' }}>Calculating best plan...</div>}
 
                             {estimate && (
-                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '0.95rem' }}>
+                                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '1rem' }}>
                                         <span style={{ color: 'var(--color-text-secondary)' }}>Entry Fees</span>
-                                        <span>₹{estimate.breakdown.entryFees}</span>
+                                        <span style={{ fontWeight: 500 }}>₹{estimate.breakdown.entryFees}</span>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '0.95rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '1rem' }}>
                                         <span style={{ color: 'var(--color-text-secondary)' }}>Guide</span>
-                                        <span>₹{estimate.breakdown.guideCost}</span>
+                                        <span style={{ fontWeight: 500 }}>₹{estimate.breakdown.guideCost}</span>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '0.95rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '1rem' }}>
                                         <span style={{ color: 'var(--color-text-secondary)' }}>Food & Stay (Est.)</span>
-                                        <span>₹{estimate.breakdown.food + estimate.breakdown.accommodation}</span>
+                                        <span style={{ fontWeight: 500 }}>₹{estimate.breakdown.food + estimate.breakdown.accommodation}</span>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '0.95rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '1rem' }}>
                                         <span style={{ color: 'var(--color-text-secondary)' }}>Transport (Est.)</span>
-                                        <span>₹{estimate.breakdown.transport}</span>
+                                        <span style={{ fontWeight: 500 }}>₹{estimate.breakdown.transport}</span>
                                     </div>
 
                                     <div style={{ 
                                         display: 'flex', 
                                         justifyContent: 'space-between', 
                                         marginTop: '1.5rem', 
-                                        paddingTop: '1rem',
-                                        borderTop: '1px dashed #ddd',
-                                        fontWeight: 700, 
-                                        fontSize: '1.3rem',
-                                        color: estimate.isWithinBudget ? 'var(--color-success)' : 'var(--color-error)'
+                                        paddingTop: '1.5rem',
+                                        borderTop: '2px dashed rgba(0,0,0,0.1)',
+                                        fontWeight: 800, 
+                                        fontSize: '1.5rem',
+                                        color: estimate.isWithinBudget ? 'var(--color-success)' : 'var(--color-error)',
+                                        fontFamily: 'var(--font-heading)'
                                     }}>
                                         <span>Total Est.</span>
                                         <span>₹{estimate.totalCost}</span>
