@@ -1,22 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* --- 🏛️ HERITAGE OPERATING SYSTEM (VISIONARY) --- */
+  /* --- 🏛️ HERITAGE AI-ADAPTIVE SYSTEM (FUTURE FORWARD) --- */
   
-  /* Core Palette (Deep Time) */
-  --color-sandstone: #0A0A0A;    /* Deep Void Background */
-  --color-charcoal: #FFFFFF;     /* Pure Light Text */
-  --color-gold: #D4AF37;         /* Metric Gold Accents */
+  /* Core Palette (Future Sandstone) */
+  --color-sandstone: #F9F7F2;    /* Warm Organic Background */
+  --color-charcoal: #1A1A1A;     /* Deep Editorial Text */
+  --color-gold: #C8A359;         /* Antique Gold Accents */
   
   /* Semantic Mappings */
   --color-primary: var(--color-charcoal);
   --color-accent: var(--color-gold);
   --color-bg-body: var(--color-sandstone);
   
-  /* Glass Materials (VisionOS) */
-  --color-surface-glass: rgba(255, 255, 255, 0.03);
-  --color-surface-glass-hover: rgba(255, 255, 255, 0.08);
-  --backdrop-blur: blur(40px);
+  /* AI-Adaptive Materials (Living Light) */
+  --color-surface-glass: rgba(255, 255, 255, 0.4);
+  --color-surface-glass-hover: rgba(255, 255, 255, 0.6);
+  --backdrop-blur: blur(24px);
   
   /* Typography Scale */
   --font-display: 'Playfair Display', serif;
@@ -30,7 +30,7 @@
   /* Grid & Spacing Primitives (8px System) */
   --grid-columns: 12;
   --grid-gap: 24px;
-  --container-max: 1440px; /* Wide Cinema */
+  --container-max: 1440px;
   
   --space-unit: 8px;
   --space-8: 8px;
@@ -38,28 +38,39 @@
   --space-24: 24px;
   --space-32: 32px;
   --space-64: 64px;
-  --space-120: 160px; /* Deep Spacing */
+  --space-120: 160px;
   
-  /* Cinematic Elevation (Atmospheric) */
-  --shadow-warm: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-  --shadow-portal: 0 0 120px -30px rgba(212, 175, 55, 0.15); /* Gold Glow */
-  --border-cinematic: 1px solid rgba(255, 255, 255, 0.08);
-  --border-subtle: 1px solid rgba(255, 255, 255, 0.03);
+  /* Cinematic Elevation (Organic) */
+  --shadow-warm: 0 20px 60px -10px rgba(200, 163, 89, 0.15); /* Warm Glow */
+  --shadow-portal: 0 40px 100px -20px rgba(0, 0, 0, 0.1);
+  --border-cinematic: 1px solid rgba(26, 26, 26, 0.05);
+  --border-subtle: 1px solid rgba(26, 26, 26, 0.02);
   
-  /* Inner Lighting (Inset Highlight) */
-  --highlight-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  /* Inner Lighting */
+  --highlight-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
   
   /* Radii */
   --radius-portal: 48px;
   --radius-standard: 32px;
   --radius-interactive: 120px;
 
+  /* --- SPATIAL OS PHYSICS --- */
+  --z-bedrock: -10;
+  --z-ground: 0;
+  --z-float: 10;
+  --z-hud: 100;
+  
+  --scale-inspect: 1.05;
+  --perspective-deep: 1000px;
+  
+  --ease-cam: cubic-bezier(0.45, 0, 0.55, 1); /* Cinema Camera Ease */
+
   /* Legacy Compat */
   --color-text-primary: var(--color-charcoal);
-  --color-text-secondary: rgba(255, 255, 255, 0.6);
-  --color-text-tertiary: rgba(255, 255, 255, 0.4);
-  --color-text-inverse: #000000;
-  --ease-out: cubic-bezier(0.19, 1, 0.22, 1); /* Exponential Smooth */
+  --color-text-secondary: rgba(26, 26, 26, 0.6);
+  --color-text-tertiary: rgba(26, 26, 26, 0.4);
+  --color-text-inverse: #FFFFFF;
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
   --duration-short: 300ms;
   --duration-medium: 600ms;
   --duration-long: 1000ms;
@@ -75,7 +86,6 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
-  background: #0A0A0A;
 }
 
 body {
@@ -183,7 +193,7 @@ p {
   transform: translateY(-8px) scale(1.02);
   background: var(--color-surface-glass-hover);
   box-shadow: var(--shadow-portal), var(--highlight-inner);
-  border-color: rgba(212, 175, 55, 0.3);
+  border-color: rgba(200, 163, 89, 0.3);
 }
 
 /* --- UTILITIES --- */

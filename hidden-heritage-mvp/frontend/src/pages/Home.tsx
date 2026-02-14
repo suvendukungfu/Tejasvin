@@ -6,235 +6,194 @@ import Footer from '../components/Footer';
 // Heritage Cinematic Assets
 import chambalValley from '../assets/heritage/chambal_valley.png';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Compass, PlayCircle, Globe, ArrowRight, Shield } from 'lucide-react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { Compass, ArrowRight, Shield, Zap, Layers, Box } from 'lucide-react';
 
 const Home = () => {
     const navigate = useNavigate();
     const containerRef = useRef(null);
     
+    // Global Scroll for Scene Orchestration
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
     });
 
-    const yHero = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-    const opacityHero = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+    // Smooth physics for camera movement
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20, restDelta: 0.001 });
 
     return (
-        <div ref={containerRef} style={{ background: 'var(--color-bg-body)', overflow: 'hidden', minHeight: '100vh' }}>
+        <div ref={containerRef} style={{ background: 'var(--color-bg-body)', minHeight: '400vh', perspective: 'var(--perspective-deep)' }}>
             <NavBar />
 
-            {/* --- I. ARRIVAL: THE PORTAL ENTRY --- */}
-            <section style={{ height: '100vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                <motion.div 
-                    style={{ position: 'absolute', inset: 0, scale: 1.1, y: yHero, opacity: opacityHero, zIndex: 0 }}
-                >
-                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, transparent 0%, var(--color-bg-body) 90%)', zIndex: 2 }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), var(--color-bg-body))', zIndex: 1 }} />
-                    <img 
-                        src={chambalValley} 
-                        alt="Heritage Atmosphere" 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6, filter: 'grayscale(100%) contrast(1.2)' }} 
-                    />
-                </motion.div>
+            {/* --- SCENE I: PORTAL (ARRIVAL) --- */}
+            {/* Logic: Fixed at top, fades out and scales down as user scrolls */}
+            <div style={{ height: '100vh', position: 'sticky', top: 0, overflow: 'hidden', zIndex: 10 }}>
+                <PortalScene progress={smoothProgress} />
+            </div>
 
-                <div className="container" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.9, filter: 'blur(20px)' }}
-                        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                        transition={{ duration: 2, ease: "easeOut" }}
-                    >
-                        <h1 className="text-display" style={{ 
-                            marginBottom: '2rem', 
-                            color: 'var(--color-charcoal)', 
-                            letterSpacing: '-0.03em',
-                            textShadow: '0 0 80px rgba(255,255,255,0.3)'
-                        }}>
-                            Hidden Heritage
-                        </h1>
-                        <p style={{ 
-                            fontSize: '1.125rem', 
-                            color: 'var(--color-text-secondary)', 
-                            letterSpacing: '0.2em', 
-                            textTransform: 'uppercase', 
-                            marginBottom: '4rem' 
-                        }}>
-                             Operating System v1.0
-                        </p>
-                        
-                        <motion.div 
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <button 
-                                onClick={() => navigate('/explore')} 
-                                className="glass-panel" 
-                                style={{ 
-                                    padding: '24px 64px', 
-                                    borderRadius: '100px', 
-                                    color: 'var(--color-gold)', 
-                                    fontSize: '1.25rem', 
-                                    fontWeight: 500,
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    cursor: 'pointer',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '16px'
-                                }}
-                            >
-                                Enter The Archive <ArrowRight size={20} />
-                            </button>
-                        </motion.div>
-                    </motion.div>
-                </div>
-            </section>
+            {/* --- SCENE II: STORY (UNDERSTANDING) --- */}
+            {/* Logic: Enters from bottom, becomes main focus */}
+            <div style={{ height: '100vh', position: 'sticky', top: 0, overflow: 'hidden', zIndex: 20, pointerEvents: 'none' }}>
+                <StoryScene progress={smoothProgress} />
+            </div>
 
-            {/* --- II. AWAKENING: THE NARRATIVE --- */}
-            <section style={{ padding: '200px 0', position: 'relative' }}>
-                <div className="container">
-                    <div className="grid-12">
-                        <div style={{ gridColumn: 'span 6' }}>
-                            <motion.div 
-                                initial={{ opacity: 0, x: -40 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 1.2 }}
-                            >
-                                <span style={{ color: 'var(--color-gold)', fontSize: '0.85rem', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: '32px' }}>// 01. Origin Story</span>
-                                <h2 className="text-h1" style={{ marginBottom: '40px', color: 'white' }}>
-                                    Your Memory is <br/><span style={{ color: 'var(--color-text-secondary)' }}>Deleting Itself.</span>
-                                </h2>
-                                <p style={{ fontSize: '1.5rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5, marginBottom: '48px', maxWidth: '85%' }}>
-                                    History is not stone; it is signal. Every day, centuries of data decay into silence. We built the Heritage OS to digitize, preserve, and project human legacy before the signal is lost.
-                                </p>
-                            </motion.div>
-                        </div>
-                         <div style={{ gridColumn: 'span 6', position: 'relative' }}>
-                            <motion.div 
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 1.5 }}
-                                className="glass-panel"
-                                style={{ height: '600px', borderRadius: '48px', position: 'relative', overflow: 'hidden' }}
-                            >
-                                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(45deg, rgba(212, 175, 55, 0.1), transparent)' }} />
-                                <div style={{ position: 'absolute', bottom: '40px', left: '40px', right: '40px' }}>
-                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                                        <div>
-                                            <div style={{ fontSize: '3rem', fontFamily: 'var(--font-display)', color: 'white' }}>87%</div>
-                                            <div style={{ color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Data Integrity</div>
-                                        </div>
-                                        <Globe size={48} color="var(--color-gold)" style={{ opacity: 0.5 }} />
-                                     </div>
-                                </div>
-                            </motion.div>
-                         </div>
-                    </div>
-                </div>
-            </section>
+            {/* --- SCENE III: EXPLORATION (GATEWAYS) --- */}
+            <div style={{ height: '100vh', position: 'sticky', top: 0, overflow: 'hidden', zIndex: 30, pointerEvents: 'none' }}>
+                <ExplorationScene progress={smoothProgress} navigate={navigate} />
+            </div>
 
-            {/* --- III. EXPLORATION: SPATIAL GATEWAY --- */}
-            <section style={{ padding: '200px 0', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: '20%', left: '50%', transform: 'translate(-50%, -50%)', width: '80vw', height: '80vw', background: 'radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 60%)', zIndex: 0, pointerEvents: 'none' }} />
-                
-                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '120px' }}>
-                         <span style={{ color: 'var(--color-gold)', fontSize: '0.85rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>// 02. The Interface</span>
-                         <h2 className="text-display" style={{ fontSize: '5rem', marginTop: '24px', whiteSpace: 'nowrap' }}>Spatial Discovery</h2>
-                    </div>
-
-                    <div className="grid-12">
-                        <motion.div 
-                            style={{ gridColumn: 'span 4' }}
-                            whileHover={{ y: -20 }}
-                            transition={{ duration: 0.4 }}
-                        >
-                            <div className="heritage-tile" style={{ height: '500px', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                                <div>
-                                    <Compass size={40} color="var(--color-gold)" style={{ marginBottom: '32px' }} />
-                                    <h3 style={{ fontSize: '2rem', marginBottom: '16px', color: 'white' }}>Expeditions</h3>
-                                    <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
-                                        Curated journeys through the Chambal Valley and Gwalior Fort.
-                                    </p>
-                                </div>
-                                <button onClick={() => navigate('/book')} className="btn-cinematic" style={{ background: 'rgba(255,255,255,0.05)', color: 'white' }}>Initialize <ArrowRight size={16} /></button>
-                            </div>
-                        </motion.div>
-
-                        <motion.div 
-                            style={{ gridColumn: 'span 4', marginTop: '80px' }}
-                            whileHover={{ y: -20 }}
-                            transition={{ duration: 0.4 }}
-                        >
-                            <div className="heritage-tile" style={{ height: '500px', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: 'linear-gradient(to bottom, rgba(212, 175, 55, 0.1), rgba(255,255,255,0.02))' }}>
-                                <div>
-                                    <PlayCircle size={40} color="var(--color-gold)" style={{ marginBottom: '32px' }} />
-                                    <h3 style={{ fontSize: '2rem', marginBottom: '16px', color: 'white' }}>AR / VR Core</h3>
-                                    <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
-                                        Full-scale photogrammetry scans rendered in your browser.
-                                    </p>
-                                </div>
-                                <button onClick={() => navigate('/antigravity')} className="btn-cinematic" style={{ background: 'var(--color-gold)', color: 'black' }}>Launch Viewer</button>
-                            </div>
-                        </motion.div>
-
-                        <motion.div 
-                             style={{ gridColumn: 'span 4' }}
-                             whileHover={{ y: -20 }}
-                             transition={{ duration: 0.4 }}
-                        >
-                            <div className="heritage-tile" style={{ height: '500px', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                                <div>
-                                    <Shield size={40} color="var(--color-gold)" style={{ marginBottom: '32px' }} />
-                                    <h3 style={{ fontSize: '2rem', marginBottom: '16px', color: 'white' }}>Deep Intel</h3>
-                                    <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
-                                        AI-reconstructed legendary contexts and safety matrices.
-                                    </p>
-                                </div>
-                                <button onClick={() => navigate('/explore')} className="btn-cinematic" style={{ background: 'rgba(255,255,255,0.05)', color: 'white' }}>Access Database</button>
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
-
-             {/* --- IV. MEANING: LIVING IMPACT --- */}
-             <section style={{ padding: '0 0 200px 0' }}>
-                <div className="container">
-                    <div className="glass-panel" style={{ padding: '120px 0', textAlign: 'center', borderRadius: '64px' }}>
-                        <h2 className="text-h1" style={{ marginBottom: '64px', color: 'white' }}>Global Telemetry</h2>
-                        
-                        <div className="grid-12">
-                             <div style={{ gridColumn: 'span 4', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
-                                <div style={{ fontSize: '5rem', fontFamily: 'var(--font-display)', color: 'var(--color-gold)', lineHeight: 1 }}>12k</div>
-                                <div style={{ marginTop: '16px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Explorers Active</div>
-                             </div>
-                             <div style={{ gridColumn: 'span 4', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
-                                <div style={{ fontSize: '5rem', fontFamily: 'var(--font-display)', color: 'white', lineHeight: 1 }}>850</div>
-                                <div style={{ marginTop: '16px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Sites Preserved</div>
-                             </div>
-                             <div style={{ gridColumn: 'span 4' }}>
-                                <div style={{ fontSize: '5rem', fontFamily: 'var(--font-display)', color: 'white', lineHeight: 1 }}>∞</div>
-                                <div style={{ marginTop: '16px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>History Saved</div>
-                             </div>
-                        </div>
-                    </div>
-                </div>
-             </section>
-
-            {/* --- V. TRANSFORMATION: THE CALL --- */}
-            <section style={{ padding: '0 0 100px 0', textAlign: 'center' }}>
-                <div className="container">
-                    <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.25rem', marginBottom: '32px' }}>System Access Open</p>
-                    <h2 className="text-display" style={{ fontSize: '6rem', color: 'white', marginBottom: '64px', letterSpacing: '-0.02em' }}>Begin Transmission.</h2>
-                    <button onClick={() => navigate('/register')} className="btn-cinematic" style={{ background: 'white', color: 'black', padding: '24px 80px', fontSize: '1.25rem' }}>
-                        Create Identity
-                    </button>
-                </div>
-            </section>
+             {/* --- SCENE IV: IMPACT (FINAL) --- */}
+            <div style={{ height: '100vh', position: 'sticky', top: 0, overflow: 'hidden', zIndex: 40, pointerEvents: 'none' }}>
+                <ImpactScene progress={smoothProgress} navigate={navigate} />
+            </div>
             
-            <Footer />
+            {/* Spacer to allow scrolling */}
+            <div style={{ height: '100vh' }} /> 
         </div>
+    );
+};
+
+// --- SCENE COMPONENTS ---
+
+const PortalScene = ({ progress }: { progress: any }) => {
+    const opacity = useTransform(progress, [0, 0.2], [1, 0]);
+    const scale = useTransform(progress, [0, 0.2], [1, 0.9]);
+    const y = useTransform(progress, [0, 0.2], ["0%", "-10%"]);
+
+    return (
+        <motion.section style={{ height: '100%', width: '100%', position: 'absolute', inset: 0, opacity, scale, y, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* Atmospheric Background */}
+            <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                <img src={chambalValley} alt="Atmosphere" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(249, 247, 242, 0.5), var(--color-bg-body))' }} />
+            </div>
+
+            {/* Floating Headline */}
+            <div className="container" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
+                <motion.div 
+                    initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                >
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '100px', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.4)', marginBottom: '32px' }}>
+                        <div style={{ width: '8px', height: '8px', background: 'var(--color-gold)', borderRadius: '50%' }} />
+                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-charcoal)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Spatial OS v2.0 Online</span>
+                    </div>
+                    <h1 className="text-display" style={{ color: 'var(--color-charcoal)', marginBottom: '24px' }}>Hidden Heritage</h1>
+                    <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)', letterSpacing: '0.02em' }}>The world's first spatial culture engine.</p>
+                </motion.div>
+            </div>
+        </motion.section>
+    );
+};
+
+const StoryScene = ({ progress }: { progress: any }) => {
+    // Active range: 0.2 to 0.5
+    const opacity = useTransform(progress, [0.15, 0.25, 0.45, 0.55], [0, 1, 1, 0]);
+    const scale = useTransform(progress, [0.15, 0.25, 0.45, 0.55], [0.9, 1, 1, 0.9]);
+    const pointerEvents = useTransform(progress, (v: number) => (v > 0.2 && v < 0.5 ? 'auto' : 'none'));
+
+    return (
+        <motion.section style={{ height: '100%', width: '100%', position: 'absolute', inset: 0, opacity, scale, pointerEvents, display: 'flex', alignItems: 'center', background: 'var(--color-bg-body)' }}>
+            <div className="container">
+                <div className="grid-12" style={{ alignItems: 'center' }}>
+                    <div style={{ gridColumn: 'span 5' }}>
+                        <span style={{ color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.875rem' }}>// 01. Context Layer</span>
+                        <h2 className="text-h1" style={{ marginTop: '24px', marginBottom: '32px', color: 'var(--color-charcoal)' }}>Preservation as<br/>User Interface.</h2>
+                        <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
+                            We don't just archive history; we spatialize it. Every site is reconstructed as a navigable digital object, float-locked to its original geolocation coordinates.
+                        </p>
+                    </div>
+                    <div style={{ gridColumn: '7 / span 6' }}>
+                        <div className="glass-panel" style={{ height: '500px', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-warm)' }}>
+                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(200, 163, 89, 0.1), transparent)' }} />
+                             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
+                                 <Layers size={64} color="var(--color-gold)" style={{ opacity: 0.5, marginBottom: '24px' }} />
+                                 <div style={{ fontWeight: 700, fontSize: '2rem', color: 'var(--color-charcoal)' }}>+400m Depth</div>
+                                 <div style={{ color: 'var(--color-text-secondary)' }}>Lidar Point Cloud Quality</div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </motion.section>
+    );
+};
+
+const ExplorationScene = ({ progress, navigate }: { progress: any, navigate: any }) => {
+    // Active range: 0.5 to 0.8
+    const opacity = useTransform(progress, [0.45, 0.55, 0.75, 0.85], [0, 1, 1, 0]);
+    const x = useTransform(progress, [0.45, 0.55], [100, 0]);
+    const pointerEvents = useTransform(progress, (v: number) => (v > 0.5 && v < 0.8 ? 'auto' : 'none'));
+
+    return (
+         <motion.section style={{ height: '100%', width: '100%', position: 'absolute', inset: 0, opacity, x, pointerEvents, display: 'flex', alignItems: 'center', background: 'var(--color-bg-body)' }}>
+            <div className="container">
+                <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+                     <h2 className="text-display" style={{ fontSize: '4rem', color: 'var(--color-charcoal)' }}>Active Sectors</h2>
+                </div>
+                
+                <div className="grid-12">
+                     {[
+                         { icon: Compass, label: "Expedition Mode", text: "Walk the valley.", link: "/book" },
+                         { icon: Box, label: "Object Viewer", text: "Inspect artifacts in 3D.", link: "/antigravity", highlight: true },
+                         { icon: Shield, label: "Secure Access", text: "Vault safety protocols.", link: "/explore" }
+                     ].map((item, i) => (
+                         <div key={i} style={{ gridColumn: 'span 4' }}>
+                             <motion.div 
+                                whileHover={{ y: -10, scale: 1.02 }}
+                                className="heritage-tile"
+                                style={{ 
+                                    padding: '40px', 
+                                    height: '400px', 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    justifyContent: 'space-between',
+                                    background: item.highlight ? 'var(--color-charcoal)' : 'rgba(255,255,255,0.5)'
+                                }}
+                             >
+                                 <item.icon size={32} color={item.highlight ? 'var(--color-gold)' : 'var(--color-charcoal)'} />
+                                 <div>
+                                     <h3 style={{ fontSize: '1.5rem', color: item.highlight ? 'white' : 'var(--color-charcoal)', marginBottom: '8px' }}>{item.label}</h3>
+                                     <p style={{ color: item.highlight ? 'rgba(255,255,255,0.6)' : 'var(--color-text-secondary)' }}>{item.text}</p>
+                                 </div>
+                                 <button onClick={() => navigate(item.link)} style={{ alignSelf: 'flex-start', background: 'transparent', border: 'none', color: item.highlight ? 'var(--color-gold)' : 'var(--color-charcoal)', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                     Launch <ArrowRight size={16} />
+                                 </button>
+                             </motion.div>
+                         </div>
+                     ))}
+                </div>
+            </div>
+         </motion.section>
+    );
+};
+
+const ImpactScene = ({ progress, navigate }: { progress: any, navigate: any }) => {
+    // Active range: 0.8 to 1.0
+    const opacity = useTransform(progress, [0.75, 0.85], [0, 1]);
+    const scale = useTransform(progress, [0.75, 0.85], [1.1, 1]);
+    const pointerEvents = useTransform(progress, (v: number) => (v > 0.8 ? 'auto' : 'none'));
+
+    return (
+        <motion.section style={{ height: '100%', width: '100%', position: 'absolute', inset: 0, opacity, scale, pointerEvents, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-charcoal)' }}>
+            <div className="container" style={{ textAlign: 'center', color: 'white' }}>
+                 <div style={{ marginBottom: '40px' }}>
+                    <Zap size={64} color="var(--color-gold)" style={{ margin: '0 auto 24px auto' }} />
+                    <h2 className="text-display" style={{ fontSize: '5rem', color: 'white' }}>System Ready.</h2>
+                    <p style={{ fontSize: '1.5rem', color: 'rgba(255,255,255,0.6)', maxWidth: '600px', margin: '0 auto' }}>
+                        The Heritage OS is waiting for your input.
+                    </p>
+                 </div>
+                 <button onClick={() => navigate('/register')} className="btn-cinematic" style={{ background: 'var(--color-gold)', color: 'var(--color-charcoal)', padding: '24px 64px', fontSize: '1.25rem' }}>
+                     Initialize Session
+                 </button>
+            </div>
+            <div style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+                <Footer />
+            </div>
+        </motion.section>
     );
 };
 
