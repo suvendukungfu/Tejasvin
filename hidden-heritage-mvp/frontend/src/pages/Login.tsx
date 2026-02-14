@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Mail, Lock, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -20,7 +20,6 @@ const Login = () => {
         setError('');
         
         try {
-            // Need to point to real backend, fallback to mock if demo
             const res = await axios.post('http://localhost:5001/api/auth/login', { email, password });
             login(res.data.token, res.data.user);
             navigate('/');
@@ -30,10 +29,10 @@ const Login = () => {
                 setTimeout(() => {
                      login('mock_token_123', { id: 1, name: 'Demo Traveler', email, role: 'traveler' });
                      navigate('/');
-                }, 1000);
+                }, 1500);
                 return;
             }
-            setError('Invalid credentials. Please try again.');
+            setError('The High Guild does not recognize these credentials.');
         } finally {
             if (!(email === 'user@example.com' && password === 'secret')) {
                 setLoading(false);
@@ -42,141 +41,185 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
-            {/* Background Image & Overlay */}
-            <div 
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    zIndex: -1
-                }}
-            />
-            <div 
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    zIndex: -1,
-                    backdropFilter: 'blur(4px)'
-                }}
-            />
-
+        <div className="min-h-screen bg-bg-body relative flex items-center justify-center overflow-hidden">
             <NavBar />
             
-            <div className="container" style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center', paddingTop: '80px' }}>
+            {/* Cinematic Background */}
+            <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(0,0,0,0) 0%, var(--color-bg-body) 100%)', zIndex: 1 }} />
+                <img 
+                    src="https://images.unsplash.com/photo-1548013146-72479768b8b3?auto=format&fit=crop&q=80&w=2000" 
+                    alt="Temple Gate" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4, filter: 'brightness(0.8) contrast(1.2)' }}
+                />
+            </div>
+
+            {/* Ambient Particles (Simplified as Radial Gradients) */}
+            <div style={{ position: 'absolute', top: '20%', left: '10%', width: '300px', height: '300px', background: 'var(--color-accent)', filter: 'blur(100px)', opacity: 0.1, zIndex: 0 }} />
+            <div style={{ position: 'absolute', bottom: '20%', right: '10%', width: '400px', height: '400px', background: 'var(--color-primary)', filter: 'blur(120px)', opacity: 0.05, zIndex: 0 }} />
+
+            <div className="container" style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'center' }}>
                 <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="card glass" 
+                    transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
                     style={{ 
                         width: '100%', 
                         maxWidth: '480px', 
-                        padding: '3.5rem',
-                        backgroundColor: 'rgba(255, 255, 255, 0.85)', // Slightly more opaque for readability
-                        border: '1px solid rgba(255, 255, 255, 0.4)',
-                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                        background: 'rgba(255,255,255,0.02)',
+                        backdropFilter: 'blur(30px)',
+                        padding: '4rem 3.5rem',
+                        borderRadius: '40px',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        boxShadow: '0 40px 100px rgba(0,0,0,0.3)'
                     }}
                 >
-                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                        <div style={{ display: 'inline-flex', padding: '12px', background: 'rgba(216, 67, 21, 0.1)', borderRadius: '50%', marginBottom: '1rem' }}>
-                            <Lock size={32} color="var(--color-primary)" />
-                        </div>
-                        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Welcome Back</h1>
-                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem' }}>Sign in to continue your journey.</p>
-                    </div>
-
-                    {error && (
-                        <motion.div 
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
+                    <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.3 }}
                             style={{ 
-                                backgroundColor: '#fee2e2', 
-                                color: '#991b1b', 
-                                padding: '1rem', 
-                                borderRadius: '8px', 
-                                marginBottom: '1.5rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.75rem',
-                                fontSize: '0.9rem',
-                                border: '1px solid #fca5a5'
+                                display: 'inline-flex', 
+                                padding: '16px', 
+                                background: 'rgba(200, 163, 89, 0.1)', 
+                                borderRadius: '32px', 
+                                color: 'var(--color-gold)',
+                                marginBottom: '1.5rem'
                             }}
                         >
-                            <AlertCircle size={20} />
-                            {error}
+                            <ShieldCheck size={32} />
                         </motion.div>
-                    )}
+                        <h1 className="text-display" style={{ fontSize: '2.5rem', color: 'white', marginBottom: '0.75rem', lineHeight: 1.1 }}>
+                            The Gatekeeper's <br/>
+                            <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)', fontWeight: 400, color: 'var(--color-accent)' }}>Portal.</span>
+                        </h1>
+                    </div>
 
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div className="input-group">
-                             <div style={{ position: 'relative' }}>
-                                <Mail size={20} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-secondary)' }} />
+                        <AnimatePresence>
+                            {error && (
+                                <motion.div 
+                                    initial={{ opacity: 0, height: 0, y: -10 }}
+                                    animate={{ opacity: 1, height: 'auto', y: 0 }}
+                                    exit={{ opacity: 0, height: 0, y: -10 }}
+                                    style={{ 
+                                        background: 'rgba(239, 68, 68, 0.1)', 
+                                        color: '#fca5a5', 
+                                        padding: '1rem', 
+                                        borderRadius: '12px', 
+                                        fontSize: '0.85rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        border: '1px solid rgba(239, 68, 68, 0.2)'
+                                    }}
+                                >
+                                    <AlertCircle size={16} />
+                                    {error}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <div className="floating-input-group">
+                            <div style={{ position: 'relative' }}>
+                                <Mail size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
                                 <input
-                                    type="email"
-                                    placeholder="Email Address"
-                                    value={email}
+                                    type="email" 
+                                    placeholder="Traveler's Identity (Email)"
+                                    value={email} 
                                     onChange={e => setEmail(e.target.value)}
-                                    className="modern-input"
-                                    style={{ paddingLeft: '3rem', height: '50px', fontSize: '1rem' }}
                                     required
+                                    style={{ 
+                                        width: '100%', 
+                                        padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
+                                        background: 'rgba(255,255,255,0.03)', 
+                                        border: '1px solid rgba(255,255,255,0.08)', 
+                                        borderRadius: '16px', 
+                                        color: 'white',
+                                        outline: 'none',
+                                        fontSize: '1rem'
+                                    }}
                                 />
-                             </div>
-                        </div>
-                        <div className="input-group">
-                             <div style={{ position: 'relative' }}>
-                                <Lock size={20} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-secondary)' }} />
-                                <input
-                                    type="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    className="modern-input"
-                                    style={{ paddingLeft: '3rem', height: '50px', fontSize: '1rem' }}
-                                    required
-                                />
-                             </div>
+                            </div>
                         </div>
 
-                        <button 
+                        <div className="floating-input-group">
+                            <div style={{ position: 'relative' }}>
+                                <Lock size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                                <input
+                                    type="password" 
+                                    placeholder="Secret Versicle (Password)"
+                                    value={password} 
+                                    onChange={e => setPassword(e.target.value)}
+                                    required
+                                    style={{ 
+                                        width: '100%', 
+                                        padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
+                                        background: 'rgba(255,255,255,0.03)', 
+                                        border: '1px solid rgba(255,255,255,0.08)', 
+                                        borderRadius: '16px', 
+                                        color: 'white',
+                                        outline: 'none',
+                                        fontSize: '1rem'
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                        <motion.button 
                             type="submit" 
-                            className="btn btn-primary" 
                             disabled={loading}
+                            whileHover={{ scale: 1.01, backgroundColor: 'var(--color-accent-hover)' }}
+                            whileTap={{ scale: 0.98 }}
+                            className="btn btn-primary"
                             style={{ 
-                                padding: '1rem', 
+                                width: '100%', 
+                                padding: '1.25rem', 
+                                marginTop: '1rem',
                                 display: 'flex', 
                                 justifyContent: 'center', 
                                 alignItems: 'center', 
-                                gap: '0.5rem', 
-                                fontSize: '1.1rem',
-                                marginTop: '0.5rem',
-                                borderRadius: '8px'
+                                gap: '0.75rem',
+                                fontSize: '1rem',
+                                fontWeight: 700
                             }}
                         >
-                            {loading ? 'Signing In...' : <>Sign In <LogIn size={20} /></>}
-                        </button>
+                            {loading ? 'Communing...' : <>Unlock Passage <ArrowRight size={18} /></>}
+                        </motion.button>
                     </form>
 
-                    <div style={{ marginTop: '2.5rem', textAlign: 'center', fontSize: '0.95rem' }}>
-                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1.5rem' }}>
-                            New here? <Link to="/register" style={{ color: 'var(--color-secondary)', fontWeight: 600, textDecoration: 'none' }}>Join the Guild</Link>
+                    <div style={{ marginTop: '3rem', textAlign: 'center' }}>
+                        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', marginBottom: '2rem' }}>
+                            Untethered from the High Guild? <br/>
+                            <Link to="/register" style={{ color: 'var(--color-accent)', fontWeight: 700, textDecoration: 'none', marginLeft: '0.5rem' }}>Pledge Your Allegiance</Link>
                         </p>
-                        <div style={{ padding: '1rem', backgroundColor: 'rgba(0,0,0,0.03)', borderRadius: '8px', fontSize: '0.85rem', border: '1px solid rgba(0,0,0,0.05)' }}>
-                            <strong style={{ display: 'block', marginBottom: '0.25rem', color: 'var(--color-primary)' }}>Demo Credentials:</strong>
-                            <span style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>user@example.com</span> / <span style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>secret</span>
+
+                        {/* Demo Credentials Archive */}
+                        <div style={{ 
+                            padding: '1.25rem', 
+                            background: 'rgba(255,255,255,0.02)', 
+                            borderRadius: '16px', 
+                            border: '1px solid rgba(255,255,255,0.05)',
+                            textAlign: 'left'
+                        }}>
+                             <span style={{ fontSize: '0.65rem', fontWeight: 800, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.75rem' }}>Archives of the Initiated</span>
+                             <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                                <span style={{ color: 'rgba(255,255,255,0.6)' }}>user@example.com</span>
+                                <span style={{ color: 'var(--color-accent)' }}>secret</span>
+                             </div>
                         </div>
                     </div>
                 </motion.div>
             </div>
+            
+            <style>{`
+                input:focus {
+                    border-color: var(--color-accent) !important;
+                    background: rgba(255,255,255,0.05) !important;
+                    box-shadow: 0 0 20px rgba(181, 146, 76, 0.1);
+                }
+            `}</style>
         </div>
     );
 };
