@@ -7,50 +7,73 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import { CSS } from '@dnd-kit/utilities';
 import PaymentModal from '../components/PaymentModal';
 import { useAuth } from '../context/AuthContext';
-import { GripVertical, Trash2, Plus, Calendar, IndianRupee, User, Info, Map as MapIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { GripVertical, Trash2, Plus, Info, Map as MapIcon, Clock } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import MapPreview from '../components/MapPreview';
 
 // --- Components ---
 
 const SortableItem = ({ id, site, onRemove }: { id: number, site: any, onRemove: (id: number) => void }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        padding: '1.25rem', 
-        marginBottom: '1rem', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'space-between', 
-        cursor: 'default',
-        border: '1px solid rgba(255,255,255,0.6)'
+        zIndex: isDragging ? 100 : 1,
+        position: 'relative' as const
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="card glass">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                <div {...attributes} {...listeners} style={{ cursor: 'grab', color: 'var(--color-primary)', padding: '0.5rem', opacity: 0.7 }}>
-                    <GripVertical size={22} />
+        <motion.div 
+            ref={setNodeRef} 
+            style={style} 
+            layout
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className={`itinerary-card ${isDragging ? 'dragging' : ''}`}
+        >
+             <div className="card-glass-content" style={{ 
+                 display: 'flex', 
+                 alignItems: 'center', 
+                 justifyContent: 'space-between', 
+                 padding: '1.25rem', 
+                 background: isDragging ? 'rgba(255,255,255,1)' : 'var(--color-surface-glass)', 
+                 backdropFilter: 'blur(12px)', 
+                 borderRadius: '32px', 
+                 border: isDragging ? '2px solid var(--color-accent)' : '1px solid rgba(0,0,0,0.05)', 
+                 boxShadow: isDragging ? '0 30px 60px rgba(0,0,0,0.2)' : '0 10px 30px -10px rgba(0,0,0,0.04)', 
+                 marginBottom: '1rem',
+                 transition: 'all 0.3s cubic-bezier(0.19, 1, 0.22, 1)'
+             }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                    <div {...attributes} {...listeners} style={{ cursor: 'grab', color: 'var(--color-text-tertiary)', padding: '0.5rem', display: 'flex', alignItems: 'center' }}>
+                        <GripVertical size={20} />
+                    </div>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '20px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 8px 16px rgba(0,0,0,0.05)' }}>
+                        <img src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'} alt={site.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <div>
+                        <h4 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', fontWeight: 600 }}>{site.name}</h4>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.4rem' }}>
+                            <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                <Clock size={14} /> {site.avg_visit_time_mins} mins
+                            </span>
+                             <span style={{ fontSize: '0.85rem', color: 'var(--color-accent)', fontWeight: 600 }}>
+                                ₹{site.entry_fee}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <img src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'} alt={site.name} style={{ width: '70px', height: '70px', borderRadius: '12px', objectFit: 'cover' }} />
-                <div>
-                    <h4 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-heading)' }}>{site.name}</h4>
-                    <span style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.3rem' }}>
-                        Est. {site.avg_visit_time_mins} mins
-                    </span>
-                </div>
+                <button 
+                    onClick={() => onRemove(id)} 
+                    className="btn-icon-danger"
+                    title="Remove"
+                    style={{ background: 'rgba(239, 68, 68, 0.05)', borderRadius: '16px' }}
+                >
+                    <Trash2 size={18} />
+                </button>
             </div>
-            <button 
-                onClick={() => onRemove(id)} 
-                className="btn btn-outline"
-                style={{ color: 'var(--color-error)', borderColor: 'rgba(198, 40, 40, 0.3)', padding: '0.5rem', borderRadius: '8px' }}
-                title="Remove"
-            >
-                <Trash2 size={18} />
-            </button>
-        </div>
+        </motion.div>
     );
 };
 
@@ -59,6 +82,8 @@ const SortableItem = ({ id, site, onRemove }: { id: number, site: any, onRemove:
 const TripBuilder = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { scrollY } = useScroll();
+    const yHero = useTransform(scrollY, [0, 500], [0, 150]);
 
     // State
     const [showMap, setShowMap] = useState(false);
@@ -126,13 +151,21 @@ const TripBuilder = () => {
     };
 
     const [showPayment, setShowPayment] = useState(false);
-    const { isAuthenticated } = useAuth(); // Assuming useAuth imported
+    const { isAuthenticated, user } = useAuth();
 
     const handleRemove = (id: number) => {
         setSelectedSiteIds(ids => ids.filter(i => i !== id));
     };
 
     const selectedSitesData = selectedSiteIds.map(id => allSites.find(s => s.id === id)).filter(s => !!s);
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+        }
+    };
 
     return (
         <div className="min-h-screen bg-bg-body">
@@ -143,9 +176,8 @@ const TripBuilder = () => {
                 amount={estimate?.totalCost || 0}
                 onSuccess={async () => {
                     try {
-                        // Call Backend
                         const response = await saveTrip({
-                            userId: 1, // specific user ID or from context often better
+                            userId: user?.id || 1,
                             name: `My Trip to ${selectedSitesData[0]?.name || 'History'}`,
                             totalCost: estimate?.totalCost,
                             totalTime: estimate?.totalTimeMinutes,
@@ -156,9 +188,8 @@ const TripBuilder = () => {
                         setShowPayment(false);
                         if (response.data && (response.data.success || response.data.tripId)) {
                             alert('Trip Successfully Booked and Saved!');
-                            navigate('/bookings'); // Navigate to Bookings page
+                            navigate('/bookings');
                         } else {
-                            // Fallback for mock if needed
                             alert('Trip Booked! (Mock Saved)');
                             navigate('/');
                         }
@@ -169,220 +200,350 @@ const TripBuilder = () => {
                 }}
             />
             
-            <div className="container" style={{ padding: '3rem 2rem' }}>
-                <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
-                    <h1 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>Plan Your Trip</h1>
-                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.2rem' }}>Curate your path through history. Collect stories, not just souvenirs.</p>
-                </header>
+            {/* Cinematic Hero */}
+            <section style={{ height: '50vh', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+                 <motion.div style={{ position: 'absolute', inset: 0, y: yHero, scale: 1.1, zIndex: 0 }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, var(--color-bg-body) 100%)', zIndex: 1 }} />
+                    <img 
+                        src="https://images.unsplash.com/photo-1540959733332-e94e270b2d42?auto=format&fit=crop&q=80&w=2000" 
+                        alt="Cartography" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(30%) contrast(1.1) brightness(0.8)' }}
+                    />
+                </motion.div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '3rem' }} className="trip-builder-grid">
+                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1 }}
+                    >
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                            <span style={{ height: '1px', width: '40px', background: 'var(--color-accent)' }}></span>
+                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent)' }}>The Navigator</span>
+                        </div>
+                        <h1 className="text-display" style={{ fontSize: 'clamp(3rem, 5vw, 4.5rem)', color: 'white', lineHeight: 1 }}>
+                            Expedition <br/>
+                            <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)', fontWeight: 400, color: 'var(--color-accent)' }}>Planner.</span>
+                        </h1>
+                    </motion.div>
+                </div>
+            </section>
+
+            <div className="container" style={{ paddingBottom: '8rem' }}>
+                <div className="grid-12" style={{ alignItems: 'start', marginTop: '-4rem' }}>
                     
                     {/* Left Column: Itinerary Builder */}
-                    <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <h2 style={{ fontSize: '1.5rem', margin: 0 }}>Your Itinerary</h2>
-                                {selectedSiteIds.length > 0 && (
-                                    <button 
-                                        onClick={() => setShowMap(!showMap)}
-                                        className="btn btn-outline"
-                                        style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}
-                                    >
-                                        <MapIcon size={16} /> {showMap ? 'Hide Map' : 'View Map'}
-                                    </button>
-                                )}
+                    <div style={{ gridColumn: 'span 8', position: 'relative', zIndex: 20 }}>
+                        <div style={{ 
+                            background: 'white', 
+                            padding: '3rem', 
+                            borderRadius: '32px', 
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.04)',
+                            border: '1px solid rgba(0,0,0,0.05)'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                                    <h2 className="text-h2" style={{ margin: 0, fontSize: '1.75rem' }}>Your Chronicle</h2>
+                                    {selectedSiteIds.length > 0 && (
+                                        <button 
+                                            onClick={() => setShowMap(!showMap)}
+                                            className="btn-text"
+                                            style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.7 }}
+                                        >
+                                            <MapIcon size={16} /> {showMap ? 'Hide Map' : 'View Path'}
+                                        </button>
+                                    )}
+                                </div>
+                                <span style={{ fontSize: '0.8rem', color: 'var(--color-text-tertiary)', fontStyle: 'italic', background: 'rgba(0,0,0,0.03)', padding: '4px 12px', borderRadius: '50px' }}>
+                                    Drag to prioritize
+                                </span>
                             </div>
-                            <span style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>Drag to reorder</span>
+
+                            <AnimatePresence>
+                                {showMap && selectedSiteIds.length > 0 && (
+                                    <motion.div 
+                                        initial={{ height: 0, opacity: 0, marginBottom: 0 }}
+                                        animate={{ height: '400px', opacity: 1, marginBottom: '3rem' }}
+                                        exit={{ height: 0, opacity: 0, marginBottom: 0 }}
+                                        style={{ borderRadius: '32px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 20px 50px rgba(0,0,0,0.1)' }}
+                                    >
+                                        <MapPreview sites={selectedSitesData} />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            <motion.div 
+                                className="itinerary-list" 
+                                style={{ minHeight: '300px' }}
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="show"
+                            >
+                                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                                    <SortableContext items={selectedSiteIds} strategy={verticalListSortingStrategy}>
+                                        {selectedSitesData.map((site) => (
+                                            <SortableItem key={site.id} id={site.id} site={site} onRemove={handleRemove} />
+                                        ))}
+                                    </SortableContext>
+                                </DndContext>
+
+                                {selectedSiteIds.length === 0 && (
+                                    <motion.div 
+                                        initial={{ opacity: 0 }} 
+                                        animate={{ opacity: 1 }}
+                                        style={{ 
+                                            padding: '6rem 4rem', 
+                                            textAlign: 'center', 
+                                            border: '2px dashed rgba(0,0,0,0.08)', 
+                                            borderRadius: '32px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            gap: '1.5rem'
+                                        }}
+                                    >
+                                        <div style={{ padding: '20px', background: 'rgba(200, 163, 89, 0.05)', borderRadius: '50%', color: 'var(--color-accent)' }}>
+                                            <MapIcon size={32} />
+                                        </div>
+                                        <div>
+                                            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>Empty Scroll</h3>
+                                            <p style={{ color: 'var(--color-text-secondary)', maxWidth: '300px', margin: '0 auto' }}>Select sites from the Atlas to begin constructing your legacy journey.</p>
+                                        </div>
+                                        <button 
+                                            onClick={() => navigate('/explore')} 
+                                            className="btn btn-outline"
+                                            style={{ marginTop: '1.5rem' }}
+                                        >
+                                            Browse the Atlas
+                                        </button>
+                                    </motion.div>
+                                )}
+                            </motion.div>
                         </div>
 
-                        {showMap && selectedSiteIds.length > 0 && (
-                            <div style={{ height: '350px', marginBottom: '1.5rem', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.1)' }}>
-                                <MapPreview sites={selectedSitesData} />
-                            </div>
-                        )}
-
-                        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                            <SortableContext items={selectedSiteIds} strategy={verticalListSortingStrategy}>
-                                {selectedSitesData.map((site) => (
-                                    <SortableItem key={site.id} id={site.id} site={site} onRemove={handleRemove} />
-                                ))}
-                            </SortableContext>
-                        </DndContext>
-
-
-                        {selectedSiteIds.length === 0 && (
-                            <div style={{ 
-                                padding: '3rem', 
-                                textAlign: 'center', 
-                                border: '2px dashed #ddd', 
-                                borderRadius: '12px',
-                                backgroundColor: 'rgba(0,0,0,0.02)'
-                            }}>
-                                <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem', color: 'var(--color-text-secondary)' }}>Your chronicle is waiting to be written.</p>
-                                <button 
-                                    onClick={() => navigate('/explore')} 
-                                    className="btn btn-outline"
-                                >
-                                    Explore & Collect Stories
-                                </button>
-                            </div>
-                        )}
-
                         {/* Smart Suggestions */}
-                        <div style={{ marginTop: '4rem' }}>
-                            <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem' }}>You Might Also Like</h3>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                        <div style={{ marginTop: '6rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem' }}>
+                                <div style={{ height: '1px', flex: 1, background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.1))' }} />
+                                <h3 className="text-h3" style={{ margin: 0, textTransform: 'uppercase', letterSpacing: '0.1rem', fontSize: '1rem' }}>Recommended Discoveries</h3>
+                                <div style={{ height: '1px', flex: 1, background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.1))' }} />
+                            </div>
+                            
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
                                 {allSites
-                                    .filter(s => !selectedSiteIds.includes(s.id)) // Not already selected
-                                    .slice(0, 4) // Suggest 4
-                                    .map(site => (
-                                        <div key={site.id} className="card glass" style={{
-                                            padding: '1.25rem',
-                                            display: 'flex', 
-                                            justifyContent: 'space-between', 
-                                            alignItems: 'center',
-                                            gap: '1rem',
-                                            border: '1px solid rgba(255,255,255,0.7)'
-                                        }}>
+                                    .filter(s => !selectedSiteIds.includes(s.id))
+                                    .slice(0, 3)
+                                    .map((site, i) => (
+                                        <motion.div 
+                                            key={site.id} 
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: i * 0.1 }}
+                                            viewport={{ once: true }}
+                                            className="suggestion-card heritage-tile" 
+                                            style={{
+                                                padding: '2rem',
+                                                background: 'white',
+                                                borderRadius: '32px',
+                                                display: 'flex', 
+                                                flexDirection: 'column',
+                                                gap: '1.25rem',
+                                                boxShadow: '0 20px 40px rgba(0,0,0,0.04)',
+                                                border: '1px solid rgba(0,0,0,0.02)'
+                                            }}
+                                        >
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                                <img src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'} alt={site.name} style={{ width: '70px', height: '70px', borderRadius: '12px', objectFit: 'cover' }} />
+                                                <div style={{ width: '80px', height: '80px', borderRadius: '20px', overflow: 'hidden', flexShrink: 0 }}>
+                                                    <img src={site.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg'} alt={site.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                </div>
                                                 <div>
-                                                    <h4 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-heading)' }}>{site.name}</h4>
-                                                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{site.type}</p>
+                                                    <h4 style={{ margin: 0, fontSize: '1rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>{site.name}</h4>
+                                                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-accent)', fontWeight: 600 }}>{site.type}</p>
                                                 </div>
                                             </div>
                                             <button
                                                 onClick={() => setSelectedSiteIds([...selectedSiteIds, site.id])}
-                                                className="btn btn-primary"
-                                                style={{ padding: '0.5rem 1rem', borderRadius: '50px', fontSize: '0.85rem' }}
+                                                className="btn-text"
+                                                style={{ 
+                                                    width: '100%',
+                                                    justifyContent: 'center',
+                                                    border: '1px solid rgba(0,0,0,0.08)',
+                                                    borderRadius: '16px',
+                                                    padding: '0.75rem',
+                                                    fontSize: '0.85rem'
+                                                }}
                                             >
-                                                <Plus size={18} /> Add
+                                                <Plus size={16} /> Add to Itinerary
                                             </button>
-                                        </div>
+                                        </motion.div>
                                     ))}
                             </div>
                         </div>
 
                     </div>
 
-                    {/* Right Column: Controls & Estimate */}
-                    <div style={{ height: 'fit-content', position: 'sticky', top: '100px' }}>
-                         <div className="card glass" style={{ padding: '2.5rem', border: '1px solid rgba(255,255,255,0.6)' }}>
-                            <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Trip Details</h3>
+                    {/* Right Column: Navigator's Console */}
+                    <div style={{ gridColumn: 'span 4', position: 'sticky', top: '120px', zIndex: 20 }}>
+                         <div style={{ 
+                             padding: '3rem 2.5rem', 
+                             background: '#1A1A1A', 
+                             borderRadius: '32px', 
+                             boxShadow: '0 40px 80px rgba(0,0,0,0.15)',
+                             color: 'white',
+                             position: 'relative',
+                             overflow: 'hidden'
+                         }}>
+                            {/* Accent Glow */}
+                            <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '150px', height: '150px', background: 'var(--color-accent)', filter: 'blur(80px)', opacity: 0.15 }}></div>
 
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
-                                    <IndianRupee size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }}/> Total Budget
+                            <h3 style={{ marginBottom: '2.5rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-accent)' }}>Logistics Console</h3>
+
+                            <div className="form-group" style={{ marginBottom: '2rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1rem' }}>
+                                    Fiscal Limit (₹)
                                 </label>
                                 <input
                                     type="number"
                                     value={input.budget}
                                     onChange={e => setInput({ ...input, budget: Number(e.target.value) })}
-                                    className="modern-input"
+                                    style={{ 
+                                        width: '100%', 
+                                        padding: '1.25rem', 
+                                        borderRadius: '20px', 
+                                        border: '1px solid rgba(255,255,255,0.08)', 
+                                        background: 'rgba(255,255,255,0.03)',
+                                        color: 'white',
+                                        fontSize: '1.1rem',
+                                        fontFamily: 'monospace'
+                                    }}
                                 />
                             </div>
 
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
-                                    <Calendar size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }}/> Duration (Days)
+                            <div style={{ marginBottom: '2rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1rem' }}>
+                                    Expedition Period (Days)
                                 </label>
                                 <input
                                     type="number"
                                     value={input.days}
                                     onChange={e => setInput({ ...input, days: Number(e.target.value) })}
-                                    className="modern-input"
+                                    style={{ 
+                                        width: '100%', 
+                                        padding: '1.25rem', 
+                                        borderRadius: '20px', 
+                                        border: '1px solid rgba(255,255,255,0.08)', 
+                                        background: 'rgba(255,255,255,0.03)',
+                                        color: 'white',
+                                        fontSize: '1.1rem',
+                                        fontFamily: 'monospace'
+                                    }}
                                 />
                             </div>
 
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
-                                    <User size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'text-bottom' }}/> Local Guide
+                            <div style={{ marginBottom: '3rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1rem' }}>
+                                    Assign Guild Expert
                                 </label>
                                 <select
                                     value={input.guideId}
                                     onChange={e => setInput({ ...input, guideId: e.target.value })}
-                                    className="modern-input"
-                                    style={{ appearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232C2420' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1em' }}
+                                    style={{ 
+                                        width: '100%', 
+                                        padding: '1.25rem', 
+                                        borderRadius: '20px', 
+                                        border: '1px solid rgba(255,255,255,0.08)', 
+                                        background: 'rgba(255,255,255,0.03)',
+                                        color: 'white',
+                                        appearance: 'none'
+                                    }}
                                 >
-                                    <option value="">No Guide</option>
+                                    <option value="">Independent Study</option>
                                     {guides.map(g => (
-                                        <option key={g.id} value={g.id}>{g.name} (₹{g.fee_per_day}/day)</option>
+                                        <option key={g.id} value={g.id} style={{ background: '#1A1A1A' }}>{g.name} (₹{g.fee_per_day}/day)</option>
                                     ))}
                                 </select>
                             </div>
 
-                            <hr style={{ margin: '2rem 0', border: 'none', borderTop: '1px solid rgba(0,0,0,0.1)' }} />
-
-                            {loading && <div style={{ color: 'var(--color-text-secondary)', textAlign: 'center', fontStyle: 'italic' }}>Calculating best plan...</div>}
+                            <AnimatePresence>
+                                {loading && (
+                                    <motion.div 
+                                        initial={{ opacity: 0 }} 
+                                        animate={{ opacity: 1 }} 
+                                        exit={{ opacity: 0 }}
+                                        style={{ color: 'var(--color-accent)', textAlign: 'center', fontSize: '0.85rem', marginBottom: '1rem', fontStyle: 'italic' }}
+                                    >
+                                        Running algorithmic check...
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
 
                             {estimate && (
                                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '1rem' }}>
-                                        <span style={{ color: 'var(--color-text-secondary)' }}>Entry Fees</span>
-                                        <span style={{ fontWeight: 500 }}>₹{estimate.breakdown.entryFees}</span>
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '1rem' }}>
-                                        <span style={{ color: 'var(--color-text-secondary)' }}>Guide</span>
-                                        <span style={{ fontWeight: 500 }}>₹{estimate.breakdown.guideCost}</span>
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '1rem' }}>
-                                        <span style={{ color: 'var(--color-text-secondary)' }}>Food & Stay (Est.)</span>
-                                        <span style={{ fontWeight: 500 }}>₹{estimate.breakdown.food + estimate.breakdown.accommodation}</span>
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '1rem' }}>
-                                        <span style={{ color: 'var(--color-text-secondary)' }}>Transport (Est.)</span>
-                                        <span style={{ fontWeight: 500 }}>₹{estimate.breakdown.transport}</span>
+                                    <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                                            <span style={{ color: 'rgba(255,255,255,0.5)' }}>Historic Entry Fees</span>
+                                            <span>₹{estimate.breakdown.entryFees}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                                            <span style={{ color: 'rgba(255,255,255,0.5)' }}>Expert Honorarium</span>
+                                            <span>₹{estimate.breakdown.guideCost}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                                            <span style={{ color: 'rgba(255,255,255,0.5)' }}>Estimated Provisions</span>
+                                            <span>₹{estimate.breakdown.food + estimate.breakdown.accommodation + estimate.breakdown.transport}</span>
+                                        </div>
                                     </div>
 
                                     <div style={{ 
                                         display: 'flex', 
                                         justifyContent: 'space-between', 
+                                        alignItems: 'baseline',
                                         marginTop: '1.5rem', 
-                                        paddingTop: '1.5rem',
-                                        borderTop: '2px dashed rgba(0,0,0,0.1)',
-                                        fontWeight: 800, 
-                                        fontSize: '1.5rem',
-                                        color: estimate.isWithinBudget ? 'var(--color-success)' : 'var(--color-error)',
-                                        fontFamily: 'var(--font-heading)'
+                                        paddingTop: '2rem',
+                                        borderTop: '2px dashed rgba(255,255,255,0.2)',
                                     }}>
-                                        <span>Total Est.</span>
-                                        <span>₹{estimate.totalCost}</span>
+                                        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1rem' }}>Total Provision</span>
+                                        <span style={{ fontSize: '2rem', fontFamily: 'var(--font-heading)', color: estimate.isWithinBudget ? 'var(--color-accent)' : 'var(--color-error)' }}>₹{estimate.totalCost.toLocaleString()}</span>
                                     </div>
+
                                     {!estimate.isWithinBudget && (
                                         <div style={{ 
-                                            marginTop: '0.5rem', 
-                                            color: 'var(--color-error)', 
+                                            marginTop: '1rem', 
+                                            color: '#fca5a5', 
                                             fontSize: '0.85rem', 
                                             display: 'flex', 
                                             alignItems: 'center', 
-                                            gap: '0.25rem' 
+                                            gap: '0.5rem',
+                                            padding: '12px',
+                                            background: 'rgba(220, 38, 38, 0.1)',
+                                            borderRadius: '8px'
                                         }}>
-                                            <Info size={14} /> Exceeds your budget of ₹{input.budget}
+                                            <Info size={16} /> Exceeds mapped budget.
                                         </div>
                                     )}
-
-                                    <div style={{ marginTop: '1.5rem', padding: '0.8rem', backgroundColor: 'var(--color-bg-alt)', borderRadius: '6px', fontSize: '0.9rem' }}>
-                                        <strong>Total Time:</strong> {Math.floor(estimate.totalTimeMinutes / 60)} hrs {estimate.totalTimeMinutes % 60} mins
-                                        {estimate.recommendedDays > input.days && (
-                                            <p style={{ color: 'var(--color-warning)', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                                <Info size={14} /> We recommend {estimate.recommendedDays} days for this trip.
-                                            </p>
-                                        )}
-                                    </div>
 
                                     <button
                                         style={{
                                             width: '100%',
-                                            marginTop: '1.5rem',
-                                            opacity: isAuthenticated ? 1 : 0.8
+                                            marginTop: '3rem',
+                                            padding: '1.25rem',
+                                            fontSize: '1rem',
+                                            fontWeight: 700,
+                                            letterSpacing: '0.1rem',
+                                            textTransform: 'uppercase',
+                                            background: estimate.isWithinBudget ? 'var(--color-accent)' : 'rgba(255,255,255,0.1)',
+                                            color: estimate.isWithinBudget ? 'black' : 'white',
+                                            border: 'none',
+                                            borderRadius: '20px',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s'
                                         }}
-                                        className="btn btn-primary"
                                         onClick={() => {
                                             if (!isAuthenticated) navigate('/login');
                                             else setShowPayment(true);
                                         }}
                                     >
-                                        {isAuthenticated ? 'Pay & Book Now' : 'Login to Book'}
+                                        {isAuthenticated ? 'Finalize Expedition' : 'Initialize Portal'}
                                     </button>
                                 </motion.div>
                             )}
@@ -390,10 +551,42 @@ const TripBuilder = () => {
                     </div>
                 </div>
             </div>
-            <style>{`
-                @media (max-width: 900px) {
-                    .trip-builder-grid {
-                        grid-template-columns: 1fr !important;
+             <style>{`
+                .btn-icon-danger {
+                    background: transparent;
+                    border: none;
+                    color: rgba(0,0,0,0.2);
+                    cursor: pointer;
+                    padding: 10px;
+                    transition: all 0.2s;
+                }
+                .btn-icon-danger:hover {
+                    background: rgba(239, 68, 68, 0.1);
+                    color: #ef4444;
+                }
+                .btn-text {
+                    background: transparent;
+                    border: none;
+                    color: var(--color-primary);
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .btn-text:hover {
+                    color: var(--color-accent);
+                }
+                .glass-input:focus {
+                    outline: none;
+                    border-color: var(--color-accent) !important;
+                    background: rgba(255,255,255,0.1) !important;
+                }
+                @media (max-width: 1100px) {
+                    .grid-12 > div {
+                        grid-column: span 12 !important;
+                    }
+                    div[style*="sticky"] {
+                        position: static !important;
+                        margin-top: 3rem;
                     }
                 }
             `}</style>
