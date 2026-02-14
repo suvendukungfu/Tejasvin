@@ -18,25 +18,54 @@ import AntigravityPage from './pages/AntigravityPage';
 import './index.css';
 import 'leaflet/dist/leaflet.css';
 
+import { useLocation } from 'react-router-dom';
+import Footer from './components/Footer';
+import { useEffect } from 'react';
+
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+    return null;
+};
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
+    const location = useLocation();
+    const isAdmin = location.pathname.startsWith('/admin');
+    const isAuth = ['/login', '/register'].includes(location.pathname);
+    const showFooter = !isAdmin && !isAuth;
+
+    return (
+        <>
+            <ScrollToTop />
+            {children}
+            {showFooter && <Footer />}
+        </>
+    );
+};
+
 const App = () => {
     return (
         <BrowserRouter>
             <AuthProvider>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/explore" element={<Explore />} />
-                    <Route path="/region/:slug" element={<RegionDetail />} />
-                    <Route path="/site/:slug" element={<SiteDetail />} />
-                    <Route path="/book" element={<TripBuilder />} />
-                    <Route path="/bookings" element={<Bookings />} />
-                    <Route path="/feedback" element={<Feedback />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/pricing" element={<Pricing />} />
-                    <Route path="/antigravity" element={<AntigravityPage />} />
-                </Routes>
+                <Layout>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/explore" element={<Explore />} />
+                        <Route path="/region/:slug" element={<RegionDetail />} />
+                        <Route path="/site/:slug" element={<SiteDetail />} />
+                        <Route path="/book" element={<TripBuilder />} />
+                        <Route path="/bookings" element={<Bookings />} />
+                        <Route path="/feedback" element={<Feedback />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/pricing" element={<Pricing />} />
+                        <Route path="/antigravity" element={<AntigravityPage />} />
+                    </Routes>
+                </Layout>
             </AuthProvider>
         </BrowserRouter>
     );
