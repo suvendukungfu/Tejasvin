@@ -46,10 +46,10 @@ const NavBar = () => {
             width: '100%',
             height: '88px', 
             zIndex: 1000,
-            transition: 'all 0.4s var(--ease-out)',
-            background: scrolled ? 'rgba(249, 247, 242, 0.85)' : 'transparent',
-            backdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'none',
-            borderBottom: scrolled ? 'var(--border-subtle)' : '1px solid transparent',
+            transition: 'all 0.6s var(--ease-out)',
+            background: scrolled ? 'var(--color-surface-glass)' : 'transparent',
+            backdropFilter: scrolled ? 'var(--backdrop-blur)' : 'none',
+            borderBottom: scrolled ? 'var(--border-cinematic)' : '1px solid transparent',
         }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
                 {/* Logo Area */}
@@ -60,7 +60,7 @@ const NavBar = () => {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '14px',
-                        color: 'var(--color-charcoal)',
+                        color: 'var(--color-text-primary)',
                         position: 'relative',
                         zIndex: 1002
                     }}
@@ -68,13 +68,14 @@ const NavBar = () => {
                     <div style={{
                         width: '40px',
                         height: '40px',
-                        borderRadius: '10px',
-                        background: 'var(--color-charcoal)',
+                        borderRadius: '12px',
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: 'var(--color-sandstone)',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                        color: 'var(--color-gold)',
+                        boxShadow: '0 0 20px -5px rgba(212, 175, 55, 0.3)'
                     }}>
                         <Compass size={22} strokeWidth={2} />
                     </div>
@@ -83,8 +84,9 @@ const NavBar = () => {
                         fontWeight: 700,
                         fontSize: '1.25rem',
                         letterSpacing: '-0.03em',
-                        color: 'var(--color-charcoal)',
-                        opacity: scrolled ? 1 : (isActive('/') ? 1 : 0.9)
+                        color: 'var(--color-text-primary)',
+                        opacity: scrolled ? 1 : (isActive('/') ? 1 : 0.9),
+                        textShadow: '0 0 20px rgba(0,0,0,0.5)'
                     }}>Hidden Heritage</span>
                 </div>
 
@@ -100,8 +102,9 @@ const NavBar = () => {
                                 onClick={() => navigate(link.path)}
                                 style={{
                                     fontSize: '0.95rem',
-                                    fontWeight: 600,
-                                    color: isActive(link.path) ? 'var(--color-charcoal)' : 'rgba(26, 26, 26, 0.6)',
+                                    fontWeight: 500,
+                                    letterSpacing: '0.02em',
+                                    color: isActive(link.path) ? 'var(--color-gold)' : 'rgba(255, 255, 255, 0.6)',
                                     background: 'transparent',
                                     transition: 'all 0.3s var(--ease-out)',
                                     position: 'relative',
@@ -115,7 +118,7 @@ const NavBar = () => {
                                     <motion.div 
                                         layoutId="active-pill"
                                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                        style={{ position: 'absolute', bottom: -4, left: 0, right: 0, height: '2px', background: 'var(--color-gold)', borderRadius: '2px', boxShadow: '0 0 8px var(--color-gold)' }} 
+                                        style={{ position: 'absolute', bottom: -4, left: 0, right: 0, height: '1px', background: 'var(--color-gold)', boxShadow: '0 0 10px var(--color-gold)' }} 
                                     />
                                 )}
                             </button>

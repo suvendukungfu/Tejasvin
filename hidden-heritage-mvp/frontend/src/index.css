@@ -1,32 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* --- 🏛️ HERITAGE DESIGN SYSTEM (STAFF LEVEL) --- */
+  /* --- 🏛️ HERITAGE OPERATING SYSTEM (VISIONARY) --- */
   
-  /* Core Palette */
-  --color-sandstone: #F9F7F2;    /* Warm Neutral Background */
-  --color-charcoal: #1A1A1A;     /* Deep Editorial Text */
-  --color-gold: #C8A359;         /* Antique Gold Accents */
+  /* Core Palette (Deep Time) */
+  --color-sandstone: #0A0A0A;    /* Deep Void Background */
+  --color-charcoal: #FFFFFF;     /* Pure Light Text */
+  --color-gold: #D4AF37;         /* Metric Gold Accents */
   
   /* Semantic Mappings */
   --color-primary: var(--color-charcoal);
   --color-accent: var(--color-gold);
   --color-bg-body: var(--color-sandstone);
-  --color-surface-glass: rgba(255, 255, 255, 0.7);
+  
+  /* Glass Materials (VisionOS) */
+  --color-surface-glass: rgba(255, 255, 255, 0.03);
+  --color-surface-glass-hover: rgba(255, 255, 255, 0.08);
+  --backdrop-blur: blur(40px);
   
   /* Typography Scale */
   --font-display: 'Playfair Display', serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   
-  --text-display: clamp(3.5rem, 8vw, 6rem);    /* Hero Headlines */
-  --text-h1: clamp(2.5rem, 5vw, 4rem);         /* Section Headers */
-  --text-h2: clamp(1.5rem, 3vw, 2.25rem);      /* Editorial Subheaders */
+  --text-display: clamp(4rem, 10vw, 8rem);     /* Cinematic Headlines */
+  --text-h1: clamp(3rem, 6vw, 5rem);           /* Section Headers */
+  --text-h2: clamp(1.5rem, 3vw, 2.5rem);       /* Editorial Subheaders */
   --text-body: 1.125rem;                       /* 18px Base Readability */
   
   /* Grid & Spacing Primitives (8px System) */
   --grid-columns: 12;
   --grid-gap: 24px;
-  --container-max: 1280px;
+  --container-max: 1440px; /* Wide Cinema */
   
   --space-unit: 8px;
   --space-8: 8px;
@@ -34,32 +38,31 @@
   --space-24: 24px;
   --space-32: 32px;
   --space-64: 64px;
-  --space-120: 120px;
+  --space-120: 160px; /* Deep Spacing */
   
-  /* Cinematic Elevation */
-  /* Cinematic Elevation (Blackbelt Lighting) */
-  --shadow-warm: 0 10px 30px -10px rgba(26, 26, 26, 0.05);
-  --shadow-portal: 0 40px 80px -20px rgba(0, 0, 0, 0.15);
-  --border-cinematic: 1px solid rgba(255, 255, 255, 0.4);
-  --border-subtle: 1px solid rgba(26, 26, 26, 0.05);
+  /* Cinematic Elevation (Atmospheric) */
+  --shadow-warm: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  --shadow-portal: 0 0 120px -30px rgba(212, 175, 55, 0.15); /* Gold Glow */
+  --border-cinematic: 1px solid rgba(255, 255, 255, 0.08);
+  --border-subtle: 1px solid rgba(255, 255, 255, 0.03);
   
   /* Inner Lighting (Inset Highlight) */
-  --highlight-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  --highlight-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
   
   /* Radii */
-  --radius-portal: 40px;
+  --radius-portal: 48px;
   --radius-standard: 32px;
-  --radius-interactive: 100px;
+  --radius-interactive: 120px;
 
   /* Legacy Compat */
   --color-text-primary: var(--color-charcoal);
-  --color-text-secondary: #444444;
-  --color-text-tertiary: #757575;
-  --color-text-inverse: #FFFFFF;
-  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
-  --duration-short: 200ms;
-  --duration-medium: 400ms;
-  --duration-long: 600ms;
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-text-tertiary: rgba(255, 255, 255, 0.4);
+  --color-text-inverse: #000000;
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1); /* Exponential Smooth */
+  --duration-short: 300ms;
+  --duration-medium: 600ms;
+  --duration-long: 1000ms;
 }
 
 /* --- GLOBAL RESET --- */
@@ -72,13 +75,14 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  background: #0A0A0A;
 }
 
 body {
   font-family: var(--font-sans);
   background: var(--color-bg-body);
   color: var(--color-text-primary);
-  line-height: var(--leading-normal);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -152,32 +156,34 @@ p {
   background: rgba(26, 26, 26, 0.02);
 }
 
-/* 2. Glass Panels (Refined) */
+/* 2. Glass Panels (VisionOS) */
 .glass-panel {
   background: var(--color-surface-glass);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: var(--border-cinematic);
   box-shadow: var(--shadow-warm);
   border-radius: var(--radius-standard);
 }
 
-/* 3. Heritage Tiles (Floating Glass) */
+/* 3. Heritage Tiles (Living Portals) */
 .heritage-tile {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: var(--border-subtle);
   border-top: var(--border-cinematic);
   box-shadow: var(--shadow-warm), var(--highlight-inner);
   border-radius: var(--radius-standard);
   overflow: hidden;
-  transition: transform var(--duration-medium) var(--ease-out), box-shadow var(--duration-medium) var(--ease-out);
+  transition: transform var(--duration-medium) var(--ease-out), background var(--duration-medium) var(--ease-out), box-shadow var(--duration-medium) var(--ease-out);
 }
 
 .heritage-tile:hover {
-  transform: translateY(-4px) scale(1.005);
-  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1), var(--highlight-inner);
+  transform: translateY(-8px) scale(1.02);
+  background: var(--color-surface-glass-hover);
+  box-shadow: var(--shadow-portal), var(--highlight-inner);
+  border-color: rgba(212, 175, 55, 0.3);
 }
 
 /* --- UTILITIES --- */
