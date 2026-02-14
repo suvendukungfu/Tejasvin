@@ -1,11 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Compass, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
 
 const NavBar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
     // Safely use auth context
     let auth: any = {};
@@ -15,115 +19,168 @@ const NavBar = () => {
         // Fallback
     }
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+    const navLinks = [
+        { name: 'Home', path: '/' },
+        { name: 'Explore', path: '/explore' },
+        { name: 'Journal', path: '/book' },
+        { name: 'About', path: '/about' }
+    ];
+
+    const isActive = (path: string) => location.pathname === path;
+
     return (
-        <nav className="glass navbar" style={{ 
-            borderBottom: '1px solid rgba(255,255,255,0.1)',
-            background: 'rgba(255, 255, 255, 0.8)', // Slightly more opaque for better readability
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.05)',
-            zIndex: 1000
+        <nav style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '88px', 
+            zIndex: 1000,
+            transition: 'all 0.4s var(--ease-out)',
+            background: scrolled ? 'rgba(249, 247, 242, 0.8)' : 'transparent',
+            backdropFilter: scrolled ? 'blur(20px)' : 'none',
+            borderBottom: scrolled ? '1px solid rgba(26, 26, 26, 0.05)' : '1px solid transparent',
         }}>
-            <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '80px' }}>
+            <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
+                {/* Logo Area */}
                 <div
                     onClick={() => navigate('/')}
                     style={{
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.75rem',
-                        color: 'var(--color-primary)',
-                        fontWeight: 800,
-                        fontSize: '1.8rem',
-                        fontFamily: 'var(--font-heading)',
-                        letterSpacing: '-0.03em'
+                        gap: '14px',
+                        color: 'var(--color-charcoal)',
+                        position: 'relative',
+                        zIndex: 1002
                     }}
                 >
                     <div style={{
-                        background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%)',
-                        padding: '8px',
-                        borderRadius: '12px',
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '10px',
+                        background: 'var(--color-charcoal)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        boxShadow: '0 4px 10px rgba(216, 67, 21, 0.2)'
+                        color: 'var(--color-sandstone)',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                     }}>
-                        <Compass size={24} color="white" strokeWidth={2.5} />
+                        <Compass size={22} strokeWidth={2} />
                     </div>
-                    <span>Hidden Heritage</span>
+                    <span style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontWeight: 700,
+                        fontSize: '1.25rem',
+                        letterSpacing: '-0.03em',
+                        color: 'var(--color-charcoal)',
+                        opacity: scrolled ? 1 : (isActive('/') ? 1 : 0.9)
+                    }}>Hidden Heritage</span>
                 </div>
 
                 {/* Desktop Menu */}
-                <div className="desktop-menu" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                    <NavLink onClick={() => navigate('/')}>Home</NavLink>
-                    <NavLink onClick={() => navigate('/explore')}>Explore</NavLink>
-                    <NavLink onClick={() => navigate('/book')}>Bookings</NavLink>
-                    <NavLink onClick={() => navigate('/about')}>About</NavLink>
-                    {/* <NavLink onClick={() => navigate('/pricing')}>Pricing</NavLink> */}
+                <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+                    <div style={{ 
+                        display: 'flex',
+                        gap: '24px'
+                    }}>
+                        {navLinks.map((link) => (
+                            <button
+                                key={link.name}
+                                onClick={() => navigate(link.path)}
+                                style={{
+                                    fontSize: '0.95rem',
+                                    fontWeight: 600,
+                                    color: isActive(link.path) ? 'var(--color-charcoal)' : 'rgba(26, 26, 26, 0.6)',
+                                    background: 'transparent',
+                                    transition: 'all 0.3s var(--ease-out)',
+                                    position: 'relative',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    padding: '8px 0'
+                                }}
+                            >
+                                {link.name}
+                                {isActive(link.path) && (
+                                    <motion.div 
+                                        layoutId="active-pill"
+                                        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'var(--color-gold)', borderRadius: '2px' }} 
+                                    />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div style={{ width: '1px', height: '24px', background: 'rgba(0,0,0,0.1)', margin: '0 16px' }} />
 
                     {auth.user ? (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', paddingLeft: '1.5rem', borderLeft: '1px solid rgba(0,0,0,0.1)' }}>
-                            <span style={{ fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.95rem' }}>Hi, {auth.user.name.split(' ')[0]}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{auth.user.name.split(' ')[0]}</span>
                             <button
                                 onClick={auth.logout}
-                                className="btn-outline"
-                                style={{ fontSize: '0.85rem', padding: '0.5rem 1.2rem', borderColor: 'var(--color-error)', color: 'var(--color-error)', borderRadius: '50px', fontWeight: 600 }}
+                                style={{ 
+                                    padding: '8px 20px', 
+                                    borderRadius: '100px', 
+                                    border: '1px solid rgba(0,0,0,0.1)',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 500,
+                                    transition: 'all 0.2s',
+                                    background: 'transparent',
+                                    cursor: 'pointer'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.05)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                             >
                                 Logout
                             </button>
                         </div>
                     ) : (
                         <button
-                            className="btn btn-primary"
                             onClick={() => navigate('/login')}
-                            style={{ padding: '0.7rem 1.8rem', fontSize: '0.95rem', borderRadius: '50px', fontWeight: 600, boxShadow: '0 4px 15px rgba(216, 67, 21, 0.25)' }}
+                            className="btn-cinematic btn-outline"
+                            style={{ padding: '10px 24px', fontSize: '0.9rem' }}
                         >
-                            Login
+                            Sign In
                         </button>
                     )}
                 </div>
 
                 {/* Mobile Menu Toggle */}
-                <button className="mobile-toggle" onClick={toggleMenu} style={{ display: 'none', color: 'var(--color-primary)' }}>
+                <button 
+                    className="mobile-toggle" 
+                    onClick={toggleMenu} 
+                    style={{ 
+                        display: 'none', 
+                        color: 'var(--color-text-primary)',
+                        zIndex: 1002,
+                        position: 'relative',
+                        background: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer'
+                    }}
+                >
                     {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
             </div>
-
-            {/* Mobile Menu Dropdown (Placeholder for responsiveness) */}
-            {/* ... styles ... */}
+            
+             <style>{`
+                @media (max-width: 900px) {
+                    .desktop-menu { display: none !important; }
+                    .mobile-toggle { display: block !important; }
+                }
+            `}</style>
         </nav>
     );
 };
-
-const NavLink = ({ children, onClick }: { children: React.ReactNode, onClick: () => void }) => (
-    <button
-        onClick={onClick}
-        className="nav-link"
-        style={{
-            fontSize: '1rem',
-            fontWeight: 600,
-            color: 'var(--color-primary)',
-            transition: 'color 0.2s ease',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '0.5rem',
-            textShadow: '0 1px 2px rgba(0,0,0,0.05)'
-        }}
-        onMouseOver={(e) => {
-            e.currentTarget.style.color = 'var(--color-secondary)';
-            e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)';
-            e.currentTarget.style.borderRadius = '8px';
-        }}
-        onMouseOut={(e) => {
-            e.currentTarget.style.color = 'var(--color-primary)';
-            e.currentTarget.style.backgroundColor = 'transparent';
-        }}
-    >
-        {children}
-    </button>
-);
 
 export default NavBar;
