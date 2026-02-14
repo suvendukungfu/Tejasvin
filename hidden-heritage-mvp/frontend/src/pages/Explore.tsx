@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { getRegions } from '../services/api';
+
+// Heritage Cinematic Assets
+import gwaliorFort from '../assets/heritage/gwalior_fort.png';
 
 interface Region {
     id: number;
@@ -18,6 +22,11 @@ const Explore = () => {
     const navigate = useNavigate();
     const [regions, setRegions] = useState<Region[]>([]);
     const [loading, setLoading] = useState(true);
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
+
+    // Parallax effect for the hero image
+    const yHero = useTransform(scrollYProgress, [0, 0.4], ["0%", "20%"]);
 
     useEffect(() => {
         const fetchRegions = async () => {
@@ -34,11 +43,27 @@ const Explore = () => {
         fetchRegions();
     }, []);
 
+    // Motion variants for the grid
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+    };
+
     if (loading) {
         return (
-            <div className="min-h-screen bg-bg-body">
+            <div className="min-h-screen" style={{ background: 'var(--color-bg-body)' }}>
                 <NavBar />
-                <div style={{ paddingTop: '10rem', textAlign: 'center', color: '#fff' }}>
+                <div style={{ paddingTop: '10rem', textAlign: 'center', color: 'var(--color-text-primary)' }}>
                     Loading regions...
                 </div>
             </div>
@@ -46,165 +71,118 @@ const Explore = () => {
     }
 
     return (
-        <div className="min-h-screen bg-bg-body">
+        <div ref={containerRef} className="min-h-screen" style={{ background: 'var(--color-bg-body)' }}>
             <NavBar />
 
-            {/* Explore Hero Section */}
-            <div style={{
-                height: '50vh',
+            {/* Explore Hero Section with Cinematic Background */}
+            <section style={{
+                height: '80vh',
                 position: 'relative',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                marginTop: '-70px',
-                paddingTop: '70px',
-                marginBottom: '4rem',
                 overflow: 'hidden'
             }}>
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    zIndex: -2,
-                    filter: 'brightness(0.8) grayscale(20%)'
-                }} />
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8))',
-                    zIndex: -1
-                }} />
-                
-                <div className="container" style={{ textAlign: 'center', zIndex: 1 }}>
+                <motion.div 
+                    style={{ position: 'absolute', inset: 0, y: yHero, zIndex: 0 }}
+                >
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.2), var(--color-bg-body))', zIndex: 1 }} />
+                    <img 
+                        src={gwaliorFort} 
+                        alt="Gwalior Fort" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} 
+                    />
+                </motion.div>
+
+                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
+                        transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                        style={{ maxWidth: '850px' }}
                     >
-                        <h1 style={{ 
-                            fontSize: '4.5rem', 
-                            marginBottom: '1.5rem', 
-                            fontFamily: 'var(--font-heading)', 
-                            fontWeight: 700,
-                            letterSpacing: '0.05em',
-                            color: '#ffffff',
-                            textShadow: '0 4px 30px rgba(0,0,0,0.8)' 
-                        }}>
-                            Where Legends Sleep
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                            <span style={{ height: '1px', width: '40px', background: 'var(--color-accent)' }}></span>
+                            <span style={{ 
+                                textTransform: 'uppercase', 
+                                letterSpacing: '0.3em', 
+                                fontSize: '0.85rem', 
+                                fontWeight: 800, 
+                                color: 'var(--color-gold)' 
+                            }}>
+                                Deep Field Exploration
+                            </span>
+                        </div>
+                        <h1 className="text-display" style={{ color: 'var(--color-charcoal)', marginBottom: '2.5rem' }}>
+                            The Geography of <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)', color: 'var(--color-gold)' }}>Memory.</span>
                         </h1>
-                        <p style={{ 
-                            color: '#ffffff', 
-                            maxWidth: '700px', 
-                            margin: '0 auto', 
-                            fontSize: '1.25rem', 
-                            lineHeight: 1.6,
-                            fontWeight: 400,
-                            textShadow: '0 2px 10px rgba(0,0,0,0.8)'
-                        }}>
-                             Wander through the mists of time. Uncover the forgotten monuments, ancient temples, and untold whispers of the heartland.
+                        <p style={{ fontSize: '1.25rem', color: 'rgba(26, 26, 26, 0.7)', lineHeight: 1.6, marginBottom: '3rem', maxWidth: '640px' }}>
+                            Our spatial archive is divided into curated regions, each containing thousands of years of architectural and cultural data. Choose a sector to begin your transmission.
                         </p>
                     </motion.div>
                 </div>
-            </div>
+            </section>
 
-            <div className="container" style={{ padding: '2rem', paddingBottom: '5rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
-                    {regions.map((region, index) => (
-                        <motion.div
-                            key={region.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
-                            className="card glass"
-                            style={{ 
-                                padding: 0, 
-                                overflow: 'hidden', 
-                                cursor: 'pointer', 
-                                display: 'flex', 
-                                flexDirection: 'column',
-                                borderRadius: 'var(--border-radius-lg)',
-                                border: '1px solid rgba(255,255,255,0.8)',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                                background: 'var(--color-bg-surface)',
-                                transition: 'all 0.3s ease'
-                            }}
-                            onClick={() => navigate(`/region/${region.slug}`)}
-                        >
-                            <div style={{ height: '280px', overflow: 'hidden', position: 'relative' }}>
-                                <img
-                                    src={region.banner_image}
-                                    alt={region.name}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
-                                    className="card-image-zoom"
-                                />
-                                <div style={{
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)',
-                                    padding: '2rem',
-                                    paddingTop: '6rem',
-                                    display: 'flex',
-                                    alignItems: 'flex-end',
-                                    justifyContent: 'space-between'
+            {/* Regions Grid */}
+            <section style={{ padding: '120px 0' }}>
+                <div className="container">
+                    <motion.div 
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true }}
+                        className="grid-12"
+                    >
+                        {regions.map((region) => (
+                            <motion.div 
+                                key={region.id}
+                                variants={itemVariants}
+                                style={{ gridColumn: 'span 6', cursor: 'pointer' }}
+                                onClick={() => navigate(`/region/${region.slug}`)}
+                            >
+                                <div style={{ 
+                                    position: 'relative', 
+                                    height: '400px', 
+                                    borderRadius: '32px', 
+                                    overflow: 'hidden',
+                                    marginBottom: '2rem',
+                                    boxShadow: '0 30px 60px -12px rgba(0,0,0,0.15)'
                                 }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255,255,255,0.9)', fontSize: '0.9rem', fontWeight: 500 }}>
-                                        <MapPin size={16} color="var(--color-secondary)" />
-                                        <span>{region.sites_count} Sites</span>
+                                    <img 
+                                        src={region.banner_image || "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=1200"} 
+                                        alt={region.name} 
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                    />
+                                    <div className="glass-panel" style={{ 
+                                        position: 'absolute', 
+                                        bottom: '32px', 
+                                        left: '32px', 
+                                        padding: '16px 32px', 
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        borderRadius: '32px',
+                                        background: 'rgba(255, 255, 255, 0.9)',
+                                        backdropFilter: 'blur(20px)',
+                                        border: '1px solid rgba(255, 255, 255, 0.5)'
+                                    }}>
+                                        <MapPin size={18} color="var(--color-accent)" />
+                                        <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--color-primary)', letterSpacing: '0.05em' }}>{region.sites_count} Artifacts</span>
                                     </div>
                                 </div>
-                            </div>
-                            <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                <h3 style={{ fontSize: '1.75rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', fontWeight: 700 }}>{region.name}</h3>
-                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem', fontSize: '1rem', flex: 1, lineHeight: 1.7 }}>
-                                    {region.description}
-                                </p>
-                                <button
-                                    className="btn btn-outline"
-                                    style={{ alignSelf: 'start', display: 'flex', alignItems: 'center', gap: '0.5rem', borderRadius: '50px', padding: '0.8rem 1.75rem' }}
-                                >
-                                    View Details <ArrowRight size={18} />
-                                </button>
-                            </div>
-                        </motion.div>
-                    ))}
+
+                                <div style={{ padding: '0 8px' }}>
+                                    <h3 className="text-h2" style={{ marginBottom: '1rem', color: 'var(--color-text-primary)' }}>{region.name}</h3>
+                                    <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem', lineHeight: 1.6 }}>{region.description}</p>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)', fontWeight: 800, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                        Enter Sector <ArrowRight size={16} />
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
                 </div>
-                
-                <div style={{ marginTop: '4rem', textAlign: 'center' }}>
-                    <div className="card" style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 100%)', color: 'white', border: '1px solid rgba(255,255,255,0.1)' }}>
-                        <h2 style={{ color: '#fff', fontSize: '2rem', marginBottom: '1rem' }}>Step Through the Portal</h2>
-                        <p style={{ color: '#ccc', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
-                            Experience history as if you were there. Enter our Immersive Zone to see ruins rebuilt before your eyes.
-                        </p>
-                        <button 
-                            onClick={() => navigate('/antigravity')} 
-                            className="btn"
-                            style={{ 
-                                background: 'linear-gradient(45deg, #9c27b0, #673ab7)', 
-                                color: 'white', 
-                                border: 'none',
-                                padding: '1rem 2.5rem',
-                                fontSize: '1.1rem',
-                                fontWeight: 'bold',
-                                boxShadow: '0 4px 15px rgba(103, 58, 183, 0.3)'
-                            }}
-                        >
-                            🕶️ Enter AR/VR Section
-                        </button>
-                    </div>
-                </div>
-            </div>
+            </section>
+            <Footer />
         </div>
     );
 };
