@@ -1,57 +1,89 @@
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars, Text } from '@react-three/drei';
+import { OrbitControls, Stars, Text, Float } from '@react-three/drei';
 import { XR, createXRStore } from '@react-three/xr';
 import * as THREE from 'three';
+import { Maximize } from 'lucide-react';
 
 const store = createXRStore()
 
 const PlaceholderModel = (props: any) => {
-  // This reference will give us direct access to the mesh
   const meshRef = useRef<THREE.Mesh>(null!);
-  
-  // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false);
   const [active, setActive] = useState(false);
   
-  // Rotate mesh every frame, this is outside of React without overhead
-  useFrame((_, delta) => (meshRef.current.rotation.x += delta));
+  useFrame((_, delta) => (meshRef.current.rotation.x += delta * 0.5));
 
   return (
-    <mesh
-      {...props}
-      ref={meshRef}
-      scale={active ? 1.5 : 1}
-      onClick={() => setActive(!active)}
-      onPointerOver={() => setHover(true)}
-      onPointerOut={() => setHover(false)}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-    </mesh>
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+        <mesh
+        {...props}
+        ref={meshRef}
+        scale={active ? 1.2 : 1}
+        onClick={() => setActive(!active)}
+        onPointerOver={() => setHover(true)}
+        onPointerOut={() => setHover(false)}>
+        <dodecahedronGeometry args={[0.8, 0]} />
+        <meshStandardMaterial 
+            color={hovered ? '#D4AF37' : '#C8A359'} 
+            roughness={0.1} 
+            metalness={0.8} 
+            emissive={hovered ? '#D4AF37' : 'black'}
+            emissiveIntensity={0.5}
+        />
+        </mesh>
+    </Float>
   );
 };
 
 const AntigravityScene: React.FC = () => {
     return (
-        <div style={{ width: '100vw', height: '100vh', background: '#111' }}>
-             <button onClick={() => store.enterAR()} style={{ position: 'absolute', zIndex: 10, top: '20px', left: '20px' }}>
-                Enter AR
+        <div style={{ width: '100vw', height: '100vh', background: 'var(--color-charcoal)' }}>
+             <button 
+                onClick={() => store.enterAR()} 
+                className="btn-cinematic btn-primary"
+                style={{ 
+                    position: 'absolute', 
+                    zIndex: 10, 
+                    bottom: '64px', 
+                    left: '50%', 
+                    transform: 'translateX(-50%)',
+                    background: 'var(--color-gold)',
+                    color: 'var(--color-charcoal)',
+                    fontWeight: 800,
+                    letterSpacing: '0.1em',
+                    padding: '20px 48px'
+                }}
+             >
+                <Maximize size={18} /> ENTER PORTAL
              </button>
-            <Canvas>
-                <XR store={store}>
-                    <ambientLight intensity={0.5} />
-                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-                    <pointLight position={[-10, -10, -10]} />
-                    
-                    <PlaceholderModel position={[-1.2, 0, 0]} />
-                    <PlaceholderModel position={[1.2, 0, 0]} />
 
-                    <Text position={[0, 1.5, 0]} fontSize={0.5} color="white">
-                        AR/VR Experience
-                    </Text>
+            <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
+                <XR store={store}>
+                    {/* Atmospheric Lighting */}
+                    <ambientLight intensity={0.15} />
+                    <spotLight position={[10, 15, 10]} angle={0.3} penumbra={1} intensity={2} color="#C8A359" />
+                    <pointLight position={[-10, -5, -5]} intensity={0.5} color="#F9F7F2" />
+                    
+                    <PlaceholderModel position={[-1.5, 0, 0]} />
+                    <PlaceholderModel position={[1.5, 0, 0]} />
+
+                    <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
+                        <Text 
+                            position={[0, 2.5, 0]} 
+                            fontSize={0.5} 
+                            color="#C8A359" 
+                            font="https://fonts.gstatic.com/s/playfairdisplay/v21/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff"
+                            anchorX="center" 
+                            anchorY="middle"
+                            letterSpacing={0.2}
+                        >
+                            THE DIGITAL PORTAL
+                        </Text>
+                    </Float>
                     
                     <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-                    <OrbitControls />
+                    <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.3} />
                 </XR>
             </Canvas>
         </div>
