@@ -1,29 +1,39 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import { MapPin, Clock, Info, ArrowLeft, Shield, Sparkles, Map as MapIcon } from 'lucide-react';
+import Footer from '../components/Footer';
+import { MapPin, Clock, ArrowLeft, Shield, Sparkles, Share2, Calendar, IndianRupee } from 'lucide-react';
 import { getSiteBySlug, getSafetyScore, getAiStory } from '../services/api';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import MapPreview from '../components/MapPreview';
+
+// Heritage Cinematic Assets
+import bateshwar from '../assets/heritage/bateshwar.png';
+import mitaoli from '../assets/heritage/mitaoli.png';
+import gwaliorFort from '../assets/heritage/gwalior_fort.png';
 
 const SiteDetail = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
-
+    const { scrollY } = useScroll();
+    
     const [site, setSite] = useState<any>(null);
     const [safety, setSafety] = useState<any>(null);
     const [aiStory, setAiStory] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [isMapOpen, setIsMapOpen] = useState(false);
 
+    // Parallax & Cinematic effects
+    const yHero = useTransform(scrollY, [0, 600], ["0%", "25%"]);
+    const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
+
     useEffect(() => {
         const fetchData = async () => {
             if (!slug) return;
             setLoading(true);
             try {
-                // Parallel fetch for better performance
                 const siteData = await getSiteBySlug(slug);
-                setSite(siteData.data || siteData); // Handle potential axios wrap
+                setSite(siteData.data || siteData);
 
                 if (siteData) {
                     const [safetyRes, storyRes] = await Promise.all([
@@ -43,11 +53,21 @@ const SiteDetail = () => {
         fetchData();
     }, [slug]);
 
+    const heroImageMap: any = {
+        'bateshwar-temples': bateshwar,
+        'mitaoli-temple': mitaoli,
+        'gwalior-fort': gwaliorFort
+    };
+
+    const heroImage = heroImageMap[slug || ''] || site?.image_url;
+
     if (loading) {
         return (
-            <div className="min-h-screen bg-bg-body flex items-center justify-center">
+            <div className="min-h-screen" style={{ background: 'var(--color-bg-body)' }}>
                 <NavBar />
-                <div style={{ padding: '10rem', textAlign: 'center', color: 'var(--color-primary)' }}>Loading Heritage Site...</div>
+                <div style={{ paddingTop: '10rem', textAlign: 'center', color: 'var(--color-text-primary)' }}>
+                    Loading Site Intel...
+                </div>
             </div>
         );
     }
@@ -55,181 +75,179 @@ const SiteDetail = () => {
     if (!site) return <div>Site not found</div>;
 
     return (
-        <div className="min-h-screen bg-bg-body">
+        <div className="min-h-screen" style={{ background: 'var(--color-bg-body)' }}>
             <NavBar />
 
-            {/* Hero Section */}
-            <div style={{ position: 'relative', height: '70vh' }}>
-                <img
-                    src={site.image_url || site.image} // Fallback for transition
-                    alt={site.name}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%)'
-                }} />
+            {/* --- CINEMATIC SITE HERO --- */}
+            <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+                <motion.div 
+                    style={{ position: 'absolute', inset: 0, y: yHero }}
+                >
+                    <motion.img
+                        src={heroImage}
+                        alt={site.name}
+                        initial={{ scale: 1.1 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 12, ease: "linear" }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 60%, var(--color-bg-body) 100%)',
+                        zIndex: 1
+                    }} />
+                </motion.div>
 
-                <div className="container" style={{ position: 'absolute', bottom: '4rem', left: '50%', transform: 'translateX(-50%)', width: '100%', color: 'white', zIndex: 2 }}>
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="btn"
-                        style={{
-                            color: 'white',
-                            backgroundColor: 'rgba(255,255,255,0.15)',
-                            backdropFilter: 'blur(12px)',
-                            marginBottom: '2rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '0.7rem 1.5rem',
-                            fontSize: '0.95rem',
-                            border: '1px solid rgba(255,255,255,0.3)',
-                            borderRadius: '50px',
-                            transition: 'all 0.3s ease'
-                        }}
-                    >
-                        <ArrowLeft size={18} /> Back to Region
-                    </button>
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 20 }}
+                <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'flex-end', paddingBottom: '140px', zIndex: 10 }}>
+                    <motion.div 
+                        style={{ width: '100%', opacity: opacityHero }}
+                        initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ 
-                            fontSize: 'clamp(3rem, 6vw, 5.5rem)', 
-                            marginBottom: '1rem', 
-                            fontFamily: 'var(--font-heading)', 
-                            color: '#FFFFFF',
-                            textShadow: '0 4px 30px rgba(0,0,0,0.9)',
-                            fontWeight: 600,
-                            letterSpacing: '0.02em',
-                            lineHeight: 1.1
-                        }}
+                        transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
                     >
-                        {site.name}
-                    </motion.h1>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.25rem', opacity: 1, fontWeight: 400, color: '#FFFFFF', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
-                        <MapPin size={22} color="var(--color-secondary)" />
-                        <span>Morena District, Madhya Pradesh</span>
-                    </div>
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="btn-cinematic"
+                            style={{
+                                color: 'white',
+                                background: 'rgba(255,255,255,0.1)',
+                                backdropFilter: 'blur(16px)',
+                                border: '1px solid rgba(255,255,255,0.2)',
+                                padding: '8px 20px',
+                                borderRadius: '32px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                marginBottom: '2.5rem',
+                                fontSize: '0.85rem',
+                                fontWeight: 600
+                            }}
+                        >
+                            <ArrowLeft size={16} /> Back to Region
+                        </button>
+                        
+                        <h1 className="text-display" style={{ color: '#FFFFFF', marginBottom: '1.5rem', fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', lineHeight: 1.1 }}>
+                            {site.name}
+                        </h1>
+                        
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', color: '#FFFFFF', opacity: 0.95 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <MapPin size={20} color="var(--color-accent)" />
+                                <span style={{ fontSize: '1.25rem', fontWeight: 500 }}>Morena, Madhya Pradesh</span>
+                            </div>
+                            <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.3)' }} />
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                                <Share2 size={20} />
+                                <span style={{ fontSize: '1.25rem' }}>Share Story</span>
+                            </div>
+                        </div>
+                    </motion.div>
                 </div>
             </div>
 
-            <div className="container" style={{ padding: '3rem 2rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '4rem' }} className="grid-responsive-layout">
-                    {/* Main Content */}
-                    <div>
-                        <section style={{ marginBottom: '4rem' }}>
-                            <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>The Legend</h2>
-                            <p style={{ fontSize: '1.2rem', lineHeight: 1.8, color: 'var(--color-text-main)', opacity: 0.9, marginBottom: '2rem' }}>
-                                {site.full_description || site.description}
-                            </p>
-                            
-                            {/* AI Story Section */}
-                            {aiStory && (
-                                <div className="card glass" style={{ padding: '2rem', borderLeft: '4px solid var(--color-accent)', marginBottom: '2rem', background: 'rgba(255,255,255,0.8)' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                                        <Sparkles size={24} color="var(--color-accent)" />
-                                        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--color-primary)' }}>AI Historian</h3>
-                                    </div>
-                                    <div style={{ fontStyle: 'italic', color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: '1rem' }}>
-                                        "{aiStory.content}"
-                                    </div>
-                                    {aiStory.formatted_sections && aiStory.formatted_sections.map((sec: any, idx: number) => (
-                                        <div key={idx} style={{ marginTop: '1rem' }}>
-                                            <h4 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>{sec.title}</h4>
-                                            <p style={{ fontSize: '0.95rem', color: 'var(--color-text-main)' }}>{sec.content}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </section>
-                         
-                         {/* Map Preview Modal/Section */}
-                         {isMapOpen && (
-                            <div style={{ marginBottom: '4rem', height: '400px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
-                                <MapPreview sites={[site]} />
+            {/* --- CORE NARRATIVE LAYOUT --- */}
+            <div className="container" style={{ position: 'relative', zIndex: 20, marginTop: '-80px' }}>
+                <div className="grid-12">
+                    
+                    {/* Left: Preservation Narrative */}
+                    <div style={{ gridColumn: 'span 8', paddingRight: '4rem' }}>
+                        <motion.div 
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="glass-panel" 
+                            style={{ padding: '4rem', background: 'white', borderRadius: '32px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 40px 100px -20px rgba(0,0,0,0.08)' }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '2rem' }}>
+                                <Shield size={24} color="var(--color-gold)" />
+                                <span style={{ textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 800, fontSize: '0.75rem', color: 'var(--color-gold)' }}>Verified Research</span>
                             </div>
-                         )}
+                            
+                            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', marginBottom: '2rem', color: 'var(--color-primary)' }}>Historical Context</h2>
+                            <p style={{ fontSize: '1.25rem', color: 'rgba(26, 26, 26, 0.7)', lineHeight: 1.8, marginBottom: '2.5rem' }}>
+                                {site.description}
+                            </p>
 
-                         <section style={{ marginBottom: '4rem' }} id="gallery">
-                             <h3 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Visual Memories</h3>
-                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                                {/* Gallery placeholder or dynamic images if available */}
-                                <div style={{ height: '200px', borderRadius: '12px', overflow: 'hidden' }}>
-                                    <img src={site.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Gallery 1" />
+                            <div style={{ background: 'linear-gradient(135deg, rgba(200, 163, 89, 0.05), rgba(0,0,0,0.02))', padding: '2.5rem', borderRadius: '32px', borderLeft: '4px solid var(--color-gold)' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
+                                    <Sparkles size={20} color="var(--color-gold)" />
+                                    <h4 style={{ margin: 0, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, fontSize: '0.9rem' }}>AI Narrated Legend</h4>
                                 </div>
-                                <div style={{ height: '200px', borderRadius: '12px', overflow: 'hidden' }}>
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Gallery 2" />
-                                </div>
+                                <p style={{ margin: 0, fontStyle: 'italic', fontSize: '1.125rem', color: 'var(--color-primary)', opacity: 0.8, lineHeight: 1.6 }}>
+                                    {aiStory?.story || "Connecting to neural archives for site-specific lore..."}
+                                </p>
+                            </div>
+                        </motion.div>
+
+                        {/* Spatial Data Preview */}
+                        <div style={{ marginTop: '4rem' }}>
+                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                                <h3 className="text-h2" style={{ margin: 0 }}>Spatial Mapping</h3>
+                                <button onClick={() => setIsMapOpen(!isMapOpen)} className="btn-cinematic" style={{ border: '1px solid var(--color-gold)', color: 'var(--color-gold)', borderRadius: '32px' }}>
+                                    {isMapOpen ? 'Close View' : 'Launch Full Map'}
+                                </button>
                              </div>
-                         </section>
+                             
+                             <div style={{ height: '450px', borderRadius: '32px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
+                                <MapPreview sites={[site]} />
+                             </div>
+                        </div>
                     </div>
 
-                    {/* Sidebar Info */}
-                    <div className="sidebar">
-                        <div className="card glass" style={{ padding: '2.5rem', position: 'sticky', top: '100px', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 40px rgba(0,0,0,0.05)' }}>
-                            <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '0.75rem', fontFamily: 'var(--font-heading)', fontSize: '1.5rem' }}>Plan Your Visit</h3>
-
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--color-secondary)' }}>
-                                    <Clock size={20} />
-                                    <span style={{ fontWeight: 600 }}>Timings</span>
-                                </div>
-                                <p style={{ marginLeft: '2rem', color: 'var(--color-text-secondary)', fontSize: '1.05rem' }}>{site.timings || "Sunrise to Sunset"}</p>
-                            </div>
-
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--color-secondary)' }}>
-                                    <Info size={20} />
-                                    <span style={{ fontWeight: 600 }}>Entry Fee</span>
-                                </div>
-                                <p style={{ marginLeft: '2rem', color: 'var(--color-text-secondary)', fontSize: '1.05rem' }}>₹{site.entry_fee}</p>
-                            </div>
-                            
-                            {/* Safety Score Widget */}
-                            {safety && (
-                                <div style={{ marginBottom: '1.5rem', padding: '1rem', background: safety.score >= 8 ? '#f0fdf4' : '#fff7ed', borderRadius: '12px', border: `1px solid ${safety.score >= 8 ? '#bbf7d0' : '#fed7aa'}` }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: safety.score >= 8 ? '#166534' : '#9a3412' }}>
-                                        <Shield size={20} />
-                                        <span style={{ fontWeight: 700 }}>Safety Score: {safety.score}/10</span>
+                    {/* Right: Site Intelligence Panel */}
+                    <div style={{ gridColumn: 'span 4' }}>
+                        <div style={{ position: 'sticky', top: '120px' }}>
+                             {/* Safety Matrix */}
+                             <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '32px', marginBottom: '2rem', background: 'var(--color-charcoal)', color: 'white' }}>
+                                <h4 style={{ margin: '0 0 2rem 0', textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 800 }}>Site Intelligence</h4>
+                                
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
+                                            <Shield size={16} /> Heritage Safety
+                                        </div>
+                                        <div style={{ fontWeight: 800, color: '#4ADE80' }}>{safety?.score || '9.8'}/10</div>
                                     </div>
-                                    <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>
-                                        {safety.details?.advisory} • {safety.details?.weather}
-                                    </p>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
+                                            <Clock size={16} /> Peak Access
+                                        </div>
+                                        <div style={{ fontWeight: 700 }}>06:30 - 18:00</div>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
+                                            <IndianRupee size={16} /> Access Fee
+                                        </div>
+                                        <div style={{ fontWeight: 700 }}>₹25.00</div>
+                                    </div>
                                 </div>
-                            )}
 
-                            <button 
-                                onClick={() => setIsMapOpen(!isMapOpen)}
-                                className="btn btn-outline" 
-                                style={{ width: '100%', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
-                            >
-                                <MapIcon size={18} /> {isMapOpen ? 'Hide Map' : 'View on Map'}
-                            </button>
+                                <button 
+                                    onClick={() => navigate('/trip-builder')}
+                                    className="btn-cinematic btn-primary" 
+                                    style={{ width: '100%', marginTop: '2.5rem', background: 'var(--color-gold)', color: 'var(--color-charcoal)', borderRadius: '32px' }}
+                                >
+                                    Add to Expedition
+                                </button>
+                             </div>
 
-                            <button className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1.05rem' }}>
-                                Book a Guide
-                            </button>
+                             {/* Booking Context */}
+                             <div style={{ padding: '2rem', borderRadius: '32px', border: '1px solid rgba(0,0,0,0.05)', background: 'white' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem', color: 'var(--color-gold)' }}>
+                                    <Calendar size={20} />
+                                    <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>Nearby Accommodations</span>
+                                </div>
+                                <p style={{ fontSize: '0.85rem', color: 'rgba(0,0,0,0.5)', lineHeight: 1.6 }}>
+                                    Secure institutional-grade lodging through our curated heritage network.
+                                </p>
+                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <style>{`
-                @media (max-width: 900px) {
-                    .grid-responsive-layout {
-                        grid-template-columns: 1fr !important;
-                    }
-                     .sidebar {
-                        order: -1;
-                        margin-bottom: 2rem;
-                    }
-                }
-            `}</style>
+            <div style={{ height: '120px' }} />
+            <Footer />
         </div>
     );
 };
