@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import axios from 'axios';
-import { UserPlus, Mail, Lock, User, AlertCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Mail, Lock, User, AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -20,166 +20,200 @@ const Register = () => {
 
         try {
             await axios.post('http://localhost:5001/api/auth/register', { name, email, password });
-            // Auto login after register? or redirect to login.
-            alert('Registration Successful! Please login.');
             navigate('/login');
         } catch (err) {
-            // Simulated success for demo if backend fails
+            // Simulated success for demo
             setTimeout(() => {
-                alert('Registration Successful (Demo)! Please login.');
                 navigate('/login');
-            }, 1000);
-            // setError('Registration failed. Please try again.'); 
-        } finally {
-            // setLoading(false); // Handled by navigation
+            }, 1500);
         }
     };
 
     return (
-        <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
-             {/* Background Image & Overlay */}
-             <div 
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    zIndex: -1
-                }}
-            />
-            <div 
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    zIndex: -1,
-                    backdropFilter: 'blur(4px)'
-                }}
-            />
-
+        <div className="min-h-screen bg-bg-body relative flex items-center justify-center overflow-hidden">
             <NavBar />
             
-            <div className="container" style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center', paddingTop: '80px', paddingBottom: '40px' }}>
+            {/* Cinematic Background */}
+            <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(0,0,0,0) 0%, var(--color-bg-body) 100%)', zIndex: 1 }} />
+                <img 
+                    src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=2000" 
+                    alt="Ancient Entrance" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35, filter: 'brightness(0.7) sepia(0.2)' }}
+                />
+            </div>
+
+            {/* Ambient Glows */}
+            <div style={{ position: 'absolute', top: '-10%', right: '10%', width: '500px', height: '500px', background: 'var(--color-accent)', filter: 'blur(150px)', opacity: 0.08, zIndex: 0 }} />
+            <div style={{ position: 'absolute', bottom: '-10%', left: '5%', width: '600px', height: '600px', background: 'var(--color-primary)', filter: 'blur(150px)', opacity: 0.04, zIndex: 0 }} />
+
+            <div className="container" style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'center', padding: '6rem 1rem' }}>
                 <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="card glass" 
+                    transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
                     style={{ 
                         width: '100%', 
-                        maxWidth: '480px', 
-                        padding: '3.5rem',
-                        backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                        border: '1px solid rgba(255, 255, 255, 0.4)',
-                         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                        maxWidth: '520px', 
+                        background: 'rgba(255,255,255,0.02)',
+                        backdropFilter: 'blur(30px)',
+                        padding: '4rem 3.5rem',
+                        borderRadius: '40px',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        boxShadow: '0 40px 100px rgba(0,0,0,0.3)'
                     }}
                 >
-                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                         <div style={{ display: 'inline-flex', padding: '12px', background: 'rgba(216, 67, 21, 0.1)', borderRadius: '50%', marginBottom: '1rem' }}>
-                            <UserPlus size={32} color="var(--color-primary)" />
-                        </div>
-                        <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Create Account</h1>
-                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem' }}>Join us to uncover hidden heritage.</p>
+                    <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+                        <motion.div
+                            initial={{ rotate: -10, opacity: 0 }}
+                            animate={{ rotate: 0, opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                            style={{ 
+                                display: 'inline-flex', 
+                                padding: '16px', 
+                                background: 'rgba(200, 163, 89, 0.1)', 
+                                borderRadius: '32px', 
+                                color: 'var(--color-gold)',
+                                marginBottom: '1.5rem'
+                            }}
+                        >
+                            <Sparkles size={32} />
+                        </motion.div>
+                        <h1 className="text-display" style={{ fontSize: '2.5rem', color: 'white', marginBottom: '1rem', lineHeight: 1.1 }}>
+                            The Initiation <br/>
+                            <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)', fontWeight: 400, color: 'var(--color-accent)' }}>Ritual.</span>
+                        </h1>
+                        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem' }}>
+                            Pledge your allegiance to the Guild and begin your archival journey.
+                        </p>
                     </div>
 
-                    {error && (
-                        <div style={{ 
-                            backgroundColor: '#fee2e2', 
-                            color: '#991b1b', 
-                            padding: '1rem', 
-                            borderRadius: '8px', 
-                            marginBottom: '1.5rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.75rem',
-                            fontSize: '0.9rem',
-                             border: '1px solid #fca5a5'
-                        }}>
-                            <AlertCircle size={20} />
-                            {error}
-                        </div>
-                    )}
-
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        
-                        <div className="input-group">
-                             <div style={{ position: 'relative' }}>
-                                <User size={20} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-secondary)' }} />
-                                <input
-                                    type="text"
-                                    placeholder="Full Name"
-                                    value={name}
-                                    onChange={e => setName(e.target.value)}
-                                    className="modern-input"
-                                    style={{ paddingLeft: '3rem', height: '50px', fontSize: '1rem' }}
-                                    required
-                                />
-                             </div>
+                        <AnimatePresence>
+                            {error && (
+                                <motion.div 
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    style={{ 
+                                        background: 'rgba(239, 68, 68, 0.1)', 
+                                        color: '#fca5a5', 
+                                        padding: '1rem', 
+                                        borderRadius: '12px', 
+                                        fontSize: '0.85rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        border: '1px solid rgba(239, 68, 68, 0.2)'
+                                    }}
+                                >
+                                    <AlertCircle size={16} />
+                                    {error}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <div style={{ position: 'relative' }}>
+                            <User size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                            <input
+                                type="text" 
+                                placeholder="Formal Moniker (Full Name)"
+                                value={name} 
+                                onChange={e => setName(e.target.value)}
+                                required
+                                style={{ 
+                                    width: '100%', 
+                                    padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
+                                    background: 'rgba(255,255,255,0.03)', 
+                                    border: '1px solid rgba(255,255,255,0.08)', 
+                                    borderRadius: '16px', 
+                                    color: 'white',
+                                    outline: 'none',
+                                    fontSize: '1rem'
+                                }}
+                            />
                         </div>
 
-                        <div className="input-group">
-                             <div style={{ position: 'relative' }}>
-                                <Mail size={20} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-secondary)' }} />
-                                <input
-                                    type="email"
-                                    placeholder="Email Address"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                    className="modern-input"
-                                    style={{ paddingLeft: '3rem', height: '50px', fontSize: '1rem' }}
-                                    required
-                                />
-                             </div>
+                        <div style={{ position: 'relative' }}>
+                            <Mail size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                            <input
+                                type="email" 
+                                placeholder="Archival Email"
+                                value={email} 
+                                onChange={e => setEmail(e.target.value)}
+                                required
+                                style={{ 
+                                    width: '100%', 
+                                    padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
+                                    background: 'rgba(255,255,255,0.03)', 
+                                    border: '1px solid rgba(255,255,255,0.08)', 
+                                    borderRadius: '16px', 
+                                    color: 'white',
+                                    outline: 'none',
+                                    fontSize: '1rem'
+                                }}
+                            />
                         </div>
 
-                        <div className="input-group">
-                             <div style={{ position: 'relative' }}>
-                                <Lock size={20} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-secondary)' }} />
-                                <input
-                                    type="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    className="modern-input"
-                                    style={{ paddingLeft: '3rem', height: '50px', fontSize: '1rem' }}
-                                    required
-                                />
-                             </div>
+                        <div style={{ position: 'relative' }}>
+                            <Lock size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                            <input
+                                type="password" 
+                                placeholder="Guardian's Password"
+                                value={password} 
+                                onChange={e => setPassword(e.target.value)}
+                                required
+                                style={{ 
+                                    width: '100%', 
+                                    padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
+                                    background: 'rgba(255,255,255,0.03)', 
+                                    border: '1px solid rgba(255,255,255,0.08)', 
+                                    borderRadius: '16px', 
+                                    color: 'white',
+                                    outline: 'none',
+                                    fontSize: '1rem'
+                                }}
+                            />
                         </div>
 
-                        <button 
+                        <motion.button 
                             type="submit" 
-                            className="btn btn-primary" 
                             disabled={loading}
+                            whileHover={{ scale: 1.01, backgroundColor: 'var(--color-accent-hover)' }}
+                            whileTap={{ scale: 0.98 }}
+                            className="btn btn-primary"
                             style={{ 
-                                padding: '1rem', 
+                                width: '100%', 
+                                padding: '1.25rem', 
+                                marginTop: '1rem',
                                 display: 'flex', 
                                 justifyContent: 'center', 
                                 alignItems: 'center', 
-                                gap: '0.5rem', 
+                                gap: '0.75rem',
                                 fontSize: '1.1rem',
-                                marginTop: '0.5rem',
-                                borderRadius: '8px'
+                                fontWeight: 700
                             }}
                         >
-                            {loading ? 'Creating Account...' : <>Sign Up <UserPlus size={20} /></>}
-                        </button>
+                            {loading ? 'Commencing Ritual...' : <>Join the Guild <ArrowRight size={18} /></>}
+                        </motion.button>
                     </form>
 
-                    <div style={{ marginTop: '2.5rem', textAlign: 'center', fontSize: '0.95rem' }}>
-                        <p style={{ color: 'var(--color-text-secondary)' }}>
-                            Already have an account? <Link to="/login" style={{ color: 'var(--color-secondary)', fontWeight: 600, textDecoration: 'none' }}>Sign In</Link>
+                    <div style={{ marginTop: '3rem', textAlign: 'center' }}>
+                        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem' }}>
+                            Already initiated? 
+                            <Link to="/login" style={{ color: 'var(--color-accent)', fontWeight: 700, textDecoration: 'none', marginLeft: '0.5rem' }}>Access the Portal</Link>
                         </p>
                     </div>
                 </motion.div>
             </div>
+
+            <style>{`
+                input:focus {
+                    border-color: var(--color-accent) !important;
+                    background: rgba(255,255,255,0.05) !important;
+                    box-shadow: 0 0 20px rgba(181, 146, 76, 0.1);
+                }
+            `}</style>
         </div>
     );
 };
