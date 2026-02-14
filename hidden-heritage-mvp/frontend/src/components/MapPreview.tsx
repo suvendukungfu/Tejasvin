@@ -103,18 +103,18 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
     const createNumberedIcon = (number: number) => {
         return L.divIcon({
             className: 'custom-icon',
-            html: `<div style="background-color: #d97706; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">${number}</div>`,
-            iconSize: [24, 24],
-            iconAnchor: [12, 12]
+            html: `<div style="background-color: var(--color-gold); color: var(--color-charcoal); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 0.75rem;">${number}</div>`,
+            iconSize: [28, 28],
+            iconAnchor: [14, 14]
         }) as L.DivIcon;
     };
 
     const createSelectedIcon = () => {
         return L.divIcon({
             className: 'custom-icon-selected',
-            html: `<div style="background-color: #2e7d32; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 0 8px #2e7d32;">✓</div>`,
-            iconSize: [24, 24],
-            iconAnchor: [12, 12]
+            html: `<div style="background-color: #1A1A1A; color: var(--color-gold); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-gold); box-shadow: 0 0 12px var(--color-gold);">✓</div>`,
+            iconSize: [28, 28],
+            iconAnchor: [14, 14]
         }) as L.DivIcon;
     };
 
@@ -128,16 +128,22 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                 </div>
                 <button 
                     onClick={handlePlanRoute}
-                    className="btn btn-primary"
+                    className="btn-cinematic"
                     style={{ 
-                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)', 
-                        fontSize: '0.9rem',
-                        padding: '0.5rem 1rem',
+                        fontSize: '0.75rem',
+                        padding: '0.6rem 1.25rem',
                         opacity: selectedSiteIds.length < 2 ? 0.7 : 1,
-                        cursor: selectedSiteIds.length < 2 ? 'not-allowed' : 'pointer'
+                        cursor: selectedSiteIds.length < 2 ? 'not-allowed' : 'pointer',
+                        background: selectedSiteIds.length < 2 ? 'rgba(0,0,0,0.4)' : 'var(--color-gold)',
+                        color: selectedSiteIds.length < 2 ? 'white' : 'var(--color-charcoal)',
+                        border: 'none',
+                        borderRadius: '32px',
+                        fontWeight: 800,
+                        letterSpacing: '0.05em',
+                        backdropFilter: 'blur(10px)'
                     }}
                 >
-                    📍 Plan Shortest Route
+                    📍 Plan Route
                 </button>
             </div>
 
@@ -145,7 +151,7 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                 center={center} 
                 zoom={9} 
                 scrollWheelZoom={false} 
-                style={{ height: '100%', width: '100%', borderRadius: '12px' }}
+                style={{ height: '100%', width: '100%', borderRadius: '32px' }}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -156,9 +162,9 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                 {optimizedRoute && (
                     <Polyline 
                         positions={optimizedRoute.map(site => [site.latitude, site.longitude])}
-                        color="#d97706" 
-                        dashArray="10, 10" 
-                        weight={4}
+                        color="var(--color-gold)" 
+                        dashArray="12, 12" 
+                        weight={5}
                     />
                 )}
 
@@ -194,16 +200,17 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                                         <button 
                                             onClick={() => toggleSiteSelection(site.id)}
                                             style={{
-                                                background: selectedSiteIds.includes(site.id) ? '#ef4444' : '#2e7d32',
-                                                color: 'white',
-                                                border: 'none',
-                                                padding: '4px 8px',
-                                                borderRadius: '4px',
+                                                background: selectedSiteIds.includes(site.id) ? 'rgba(239, 68, 68, 0.1)' : 'var(--color-gold)',
+                                                color: selectedSiteIds.includes(site.id) ? '#ef4444' : 'var(--color-charcoal)',
+                                                border: selectedSiteIds.includes(site.id) ? '1px solid #ef4444' : 'none',
+                                                padding: '8px 16px',
+                                                borderRadius: '32px',
                                                 cursor: 'pointer',
-                                                fontSize: '0.8rem'
+                                                fontSize: '0.75rem',
+                                                fontWeight: 700
                                             }}
                                         >
-                                            {selectedSiteIds.includes(site.id) ? 'Remove from Route' : 'Add to Route'}
+                                            {selectedSiteIds.includes(site.id) ? 'Remove Selection' : 'Add to Expedition'}
                                         </button>
                                         
                                         {site.slug && (
