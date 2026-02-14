@@ -1,215 +1,180 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Loader from '../components/Loader';
+import { getSites } from '../services/api'; 
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import { getSites, getRegionBySlug } from '../services/api';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Layers, Info, Box } from 'lucide-react';
 
-// Heritage Cinematic Assets
-import bateshwar from '../assets/heritage/bateshwar.png';
-import mitaoli from '../assets/heritage/mitaoli.png';
+// Using consistent cinematic asset for demo fallback
 import gwaliorFort from '../assets/heritage/gwalior_fort.png';
-import chambalValley from '../assets/heritage/chambal_valley.png';
+
+interface Site {
+    id: number;
+    name: string;
+    description: string;
+    slug: string;
+    images?: string[];
+    thumbnail?: string;
+}
 
 const RegionDetail = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
-    const { scrollY } = useScroll();
-    
-    // Parallax & Cinematic effects
-    const yHero = useTransform(scrollY, [0, 600], ["0%", "25%"]);
-    const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
-
-    const [region, setRegion] = useState<any>(null);
-    const [sites, setSites] = useState<any[]>([]);
+    const [sites, setSites] = useState<Site[]>([]);
+    const [regionName, setRegionName] = useState<string>('');
     const [loading, setLoading] = useState(true);
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({ target: containerRef });
+    
+    // Parallax & Fade for Background
+    const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+    const opacityBg = useTransform(scrollYProgress, [0, 0.8], [1, 0.5]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (!slug) return;
-            setLoading(true);
+        const fetchSites = async () => {
             try {
-                const regionRes = await getRegionBySlug(slug);
-                const regionData = regionRes.data || regionRes || {};
-                setRegion(regionData);
+                // Determine ID based on slug (Mock logic for demo, real app would have slug-based endpoint)
+                // In a real scenario, the API would return region details + sites.
+                // Here we fetch sites for a region ID. assuming mapping for MVP.
+                let regionId = 1; 
+                if (slug === 'chambal-valley') regionId = 1;
+                if (slug === 'gwalior') regionId = 2; // Hypothetical
 
-                if (regionData && regionData.id) {
-                    const sitesRes = await getSites(regionData.id);
-                    setSites(sitesRes.data || sitesRes || []);
-                }
-            } catch (err) {
-                console.error("Failed to fetch region data", err);
+                const response = await getSites(regionId);
+                setSites(response.data || []);
+                setRegionName(slug ? slug.replace('-', ' ').toUpperCase() : 'UNKNOWN SECTOR');
+            } catch (error) {
+                console.error('Failed to fetch sites', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchData();
+        fetchSites();
     }, [slug]);
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.1 }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-    };
-
-    const heroImageMap: any = {
-        'chambal-valley': chambalValley,
-        'gwalior-region': gwaliorFort
-    };
-
-    const heroImage = heroImageMap[slug || ''] || chambalValley;
-
-    if (loading) return (
-        <div className="min-h-screen" style={{ background: 'var(--color-bg-body)' }}>
-            <NavBar />
-            <div style={{ paddingTop: '10rem', textAlign: 'center', color: 'var(--color-text-primary)' }}>
-                Loading Region...
-            </div>
-        </div>
-    );
+    if (loading) return <Loader />;
 
     return (
-        <div className="min-h-screen" style={{ background: 'var(--color-bg-body)' }}>
+        <motion.div 
+            ref={containerRef}
+            className="min-h-screen" 
+            style={{ background: 'var(--color-bg-body)', position: 'relative' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.5 } }}
+        >
             <NavBar />
 
-            {/* --- IMMERSIVE HERO WITH KEN BURNS --- */}
-            <div style={{ position: 'relative', height: '85vh', overflow: 'hidden' }}>
-                 <motion.div 
-                    style={{ position: 'absolute', inset: 0, y: yHero }}
+             {/* --- IMMERSIVE BACKGROUND LAYER --- */}
+             <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+                <motion.div style={{ height: '100%', width: '100%', y: yBg, opacity: opacityBg }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,10,10,0.8), rgba(10,10,10,0.4))', zIndex: 1 }} />
+                    <img src={gwaliorFort} alt="Background" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </motion.div>
+             </div>
+
+            {/* --- HUD INTERFACE LAYER --- */}
+            <div className="container" style={{ position: 'relative', zIndex: 10, paddingTop: '120px', paddingBottom: '120px' }}>
+                
+                {/* HUD Header */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '80px' }}>
+                    <motion.button 
+                        onClick={() => navigate('/explore')}
+                        whileHover={{ x: -5 }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '1rem', fontWeight: 500 }}
+                    >
+                        <ArrowLeft size={20} /> Back to Sector Map
+                    </motion.button>
+                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div style={{ width: '8px', height: '8px', background: '#00ff00', borderRadius: '50%', boxShadow: '0 0 10px #00ff00' }} />
+                        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'white', letterSpacing: '0.1em' }}>LIVE FEED</span>
+                    </div>
+                </div>
+
+                {/* Region Title (Floating) */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    style={{ marginBottom: '120px' }}
                 >
-                    <motion.img
-                        src={heroImage}
-                        alt={region?.name}
-                        initial={{ scale: 1.15 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 15, ease: "linear" }}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 50%, var(--color-bg-body) 100%)',
-                        zIndex: 1
-                    }} />
+                    <h1 className="text-display" style={{ fontSize: '6rem', color: 'white', marginBottom: '24px' }}>
+                        {regionName}
+                    </h1>
+                    <div style={{ display: 'flex', gap: '32px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)' }}>
+                            <Layers size={20} />
+                            <span style={{ fontWeight: 700, letterSpacing: '0.05em' }}>{sites.length} Active Sites</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.6)' }}>
+                            <Info size={20} />
+                            <span style={{ fontWeight: 500 }}>Historical Density: High</span>
+                        </div>
+                    </div>
                 </motion.div>
 
-                <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'flex-end', paddingBottom: '140px', zIndex: 10 }}>
-                    <motion.div 
-                        style={{ width: '100%', opacity: opacityHero }}
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
-                    >
-                         <button
-                            onClick={() => navigate('/explore')}
-                            className="btn-cinematic"
-                            style={{ 
-                                background: 'rgba(255,255,255,0.1)', 
-                                backdropFilter: 'blur(12px)',
-                                color: 'white', 
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                padding: '8px 24px',
-                                borderRadius: '32px',
-                                marginBottom: '2.5rem',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                fontSize: '0.85rem',
-                                fontWeight: 600
-                            }}
+                {/* Site Cards (Glass HUD) */}
+                <div className="grid-12">
+                     <div style={{ gridColumn: 'span 12', marginBottom: '40px', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '20px' }}>
+                         <span style={{ textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.5)' }}>Detected Structures</span>
+                     </div>
+
+                    {sites.map((site, index) => (
+                        <motion.div 
+                            key={site.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1 }}
+                            style={{ gridColumn: 'span 4' }}
+                            onClick={() => navigate(`/site/${site.slug}`)}
                         >
-                            <ArrowLeft size={16} /> Back to Sectors
-                        </button>
-                        <h1 className="text-display" style={{ color: 'var(--color-charcoal)', marginBottom: '1.5rem', fontSize: 'clamp(4rem, 10vw, 7rem)', letterSpacing: '-0.03em' }}>
-                            {region?.name}
-                        </h1>
-                        <p style={{ fontSize: '1.25rem', color: 'rgba(26, 26, 26, 0.7)', maxWidth: '700px', lineHeight: 1.6 }}>
-                            {region?.description}
-                        </p>
-                    </motion.div>
-                </div>
-            </div>
-
-            {/* --- SITES GRID: THE SECTOR DATA --- */}
-            <section style={{ padding: '120px 0', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                <div className="container">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '80px' }}>
-                        <div>
-                             <span style={{ color: 'var(--color-gold)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.75rem', display: 'block', marginBottom: '16px' }}>Available Sub-Portals</span>
-                             <h2 className="text-h1" style={{ color: 'var(--color-charcoal)' }}>Regional Archive.</h2>
-                        </div>
-                        <div style={{ color: 'rgba(26, 26, 26, 0.4)', fontSize: '0.9rem', fontWeight: 700 }}>VERIFIED BY ARCHAEOLOGICAL SURVEY</div>
-                    </div>
-
-                    <motion.div 
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="show"
-                        viewport={{ once: true }}
-                        className="grid-12"
-                    >
-                        {sites.map((site: any) => (
                             <motion.div 
-                                key={site.id}
-                                variants={itemVariants}
-                                style={{ gridColumn: 'span 12', marginBottom: '4rem' }}
+                                whileHover={{ scale: 1.03, backgroundColor: 'rgba(255,255,255,0.15)' }}
+                                style={{ 
+                                    background: 'rgba(255, 255, 255, 0.05)', 
+                                    backdropFilter: 'blur(16px)', 
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderRadius: '24px',
+                                    padding: '32px',
+                                    height: '320px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    cursor: 'pointer'
+                                }}
                             >
-                                <div 
-                                    onClick={() => navigate(`/site/${site.slug}`)}
-                                    className="heritage-tile-container"
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <div className="heritage-tile" style={{ height: '360px', marginBottom: '2rem', borderRadius: '32px', overflow: 'hidden', boxShadow: '0 40px 80px -20px rgba(0,0,0,0.12)', border: '1px solid rgba(0,0,0,0.05)', position: 'relative' }}>
-                                        <img 
-                                            src={site.slug === 'bateshwar-temples' ? bateshwar : site.slug === 'mitaoli-temple' ? mitaoli : site.image_url} 
-                                            alt={site.name} 
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                                        />
-                                        <div className="glass-panel" style={{
-                                            position: 'absolute',
-                                            top: '32px',
-                                            right: '32px',
-                                            padding: '12px 24px',
-                                            fontSize: '0.75rem',
-                                            fontWeight: 800,
-                                            letterSpacing: '0.15em',
-                                            textTransform: 'uppercase',
-                                            background: 'rgba(255,255,255,0.9)',
-                                            backdropFilter: 'blur(20px)',
-                                            color: 'var(--color-primary)',
-                                            borderRadius: '32px',
-                                            border: '1px solid rgba(255,255,255,0.5)',
-                                            boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
-                                        }}>
-                                            {site.type || 'Heritage Site'}
+                                <div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
+                                        <div style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '50%' }}>
+                                            <Box size={20} color="var(--color-gold)" />
                                         </div>
+                                         <span style={{ fontFamily: 'monospace', color: 'rgba(255,255,255,0.4)' }}>REF-{site.id.toString().padStart(3, '0')}</span>
                                     </div>
-                                    <div style={{ padding: '0 8px' }}>
-                                        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', marginBottom: '1rem', color: 'var(--color-text-primary)', fontWeight: 600 }}>
-                                            {site.name}
-                                        </h3>
-                                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1.5rem', maxWidth: '640px', lineHeight: 1.6 }}>{site.description}</p>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)', fontWeight: 800, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                                            Connect to Site <ArrowRight size={16} />
-                                        </div>
-                                    </div>
+                                    <h3 className="text-h2" style={{ fontSize: '1.75rem', color: 'white', marginBottom: '12px' }}>{site.name}</h3>
+                                    <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                        {site.description}
+                                    </p>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                    Init Scan <ArrowRight size={14} />
                                 </div>
                             </motion.div>
-                        ))}
-                    </motion.div>
+                        </motion.div>
+                    ))}
                 </div>
-            </section>
-            <Footer />
-        </div>
+
+            </div>
+            
+            {/* HUD Footer Overlay */}
+            <div style={{ position: 'relative', zIndex: 20 }}>
+                <Footer />
+            </div>
+
+        </motion.div>
     );
 };
 

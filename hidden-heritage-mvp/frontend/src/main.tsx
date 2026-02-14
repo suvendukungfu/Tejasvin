@@ -45,26 +45,38 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
+import { AnimatePresence } from 'framer-motion';
+
+const AnimatedRoutes = () => {
+    const location = useLocation();
+    
+    return (
+        <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Home />} />
+                <Route path="/explore" element={<Explore />} />
+                <Route path="/region/:slug" element={<RegionDetail />} />
+                <Route path="/site/:slug" element={<SiteDetail />} />
+                <Route path="/book" element={<TripBuilder />} />
+                <Route path="/bookings" element={<Bookings />} />
+                <Route path="/feedback" element={<Feedback />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/antigravity" element={<AntigravityPage />} />
+            </Routes>
+        </AnimatePresence>
+    );
+};
+
 const App = () => {
     return (
         <BrowserRouter>
             <AuthProvider>
                 <Layout>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/explore" element={<Explore />} />
-                        <Route path="/region/:slug" element={<RegionDetail />} />
-                        <Route path="/site/:slug" element={<SiteDetail />} />
-                        <Route path="/book" element={<TripBuilder />} />
-                        <Route path="/bookings" element={<Bookings />} />
-                        <Route path="/feedback" element={<Feedback />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/admin" element={<AdminDashboard />} />
-                        <Route path="/pricing" element={<Pricing />} />
-                        <Route path="/antigravity" element={<AntigravityPage />} />
-                    </Routes>
+                    <AnimatedRoutes />
                 </Layout>
             </AuthProvider>
         </BrowserRouter>
