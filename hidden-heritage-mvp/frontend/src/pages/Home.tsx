@@ -171,7 +171,7 @@ const Home = () => {
 
                     <div className="grid-12">
                         <div style={{ gridColumn: 'span 4' }}>
-                            <div className="glass-panel" style={{ height: '500px', padding: '40px', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+                            <div className="heritage-tile" style={{ height: '500px', padding: '40px', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
                                 <PlayCircle size={48} color="var(--color-gold)" style={{ margin: '0 auto 32px auto' }} />
                                 <h3 style={{ fontSize: '1.75rem', marginBottom: '16px', color: 'white', fontFamily: 'var(--font-display)' }}>Virtual Pilgrimage</h3>
                                 <p style={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, marginBottom: '32px' }}>
@@ -212,21 +212,21 @@ const Home = () => {
 
                     <div className="grid-12">
                         <div style={{ gridColumn: 'span 4' }}>
-                            <div style={{ padding: '64px 40px', background: 'white', borderRadius: '32px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.05)' }}>
+                            <div className="heritage-tile" style={{ padding: '64px 40px' }}>
                                 <Users size={32} color="var(--color-gold)" style={{ marginBottom: '24px' }} />
                                 <div style={{ fontSize: '3rem', fontWeight: 600, color: 'var(--color-charcoal)', fontFamily: 'var(--font-display)', marginBottom: '8px' }}>12k+</div>
                                 <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'rgba(26, 26, 26, 0.4)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Preservationists Joined</div>
                             </div>
                         </div>
                         <div style={{ gridColumn: 'span 4' }}>
-                            <div style={{ padding: '64px 40px', background: 'white', borderRadius: '32px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.05)' }}>
+                            <div className="heritage-tile" style={{ padding: '64px 40px' }}>
                                 <Globe size={32} color="var(--color-gold)" style={{ marginBottom: '24px' }} />
                                 <div style={{ fontSize: '3rem', fontWeight: 600, color: 'var(--color-charcoal)', fontFamily: 'var(--font-display)', marginBottom: '8px' }}>850</div>
                                 <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'rgba(26, 26, 26, 0.4)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Sites Digitized</div>
                             </div>
                         </div>
                         <div style={{ gridColumn: 'span 4' }}>
-                            <div style={{ padding: '64px 40px', background: 'var(--color-charcoal)', borderRadius: '32px', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.2)' }}>
+                            <div className="heritage-tile" style={{ padding: '64px 40px', background: 'var(--color-charcoal)' }}>
                                 <Compass size={32} color="var(--color-gold)" style={{ marginBottom: '24px' }} />
                                 <div style={{ fontSize: '3rem', fontWeight: 600, color: 'var(--color-gold)', fontFamily: 'var(--font-display)', marginBottom: '8px' }}>100%</div>
                                 <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Accuracy Guaranteed</div>

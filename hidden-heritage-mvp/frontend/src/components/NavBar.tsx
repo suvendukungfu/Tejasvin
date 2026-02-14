@@ -47,9 +47,9 @@ const NavBar = () => {
             height: '88px', 
             zIndex: 1000,
             transition: 'all 0.4s var(--ease-out)',
-            background: scrolled ? 'rgba(249, 247, 242, 0.8)' : 'transparent',
-            backdropFilter: scrolled ? 'blur(20px)' : 'none',
-            borderBottom: scrolled ? '1px solid rgba(26, 26, 26, 0.05)' : '1px solid transparent',
+            background: scrolled ? 'rgba(249, 247, 242, 0.85)' : 'transparent',
+            backdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'none',
+            borderBottom: scrolled ? 'var(--border-subtle)' : '1px solid transparent',
         }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
                 {/* Logo Area */}
@@ -114,7 +114,8 @@ const NavBar = () => {
                                 {isActive(link.path) && (
                                     <motion.div 
                                         layoutId="active-pill"
-                                        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'var(--color-gold)', borderRadius: '2px' }} 
+                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                        style={{ position: 'absolute', bottom: -4, left: 0, right: 0, height: '2px', background: 'var(--color-gold)', borderRadius: '2px', boxShadow: '0 0 8px var(--color-gold)' }} 
                                     />
                                 )}
                             </button>
