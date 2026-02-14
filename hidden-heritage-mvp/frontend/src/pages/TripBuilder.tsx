@@ -11,6 +11,9 @@ import { GripVertical, Trash2, Plus, Info, Map as MapIcon, Clock } from 'lucide-
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import MapPreview from '../components/MapPreview';
 
+// Heritage Cinematic Assets
+import navigatorHero from '../assets/heritage/navigator.png';
+
 // --- Components ---
 
 const SortableItem = ({ id, site, onRemove }: { id: number, site: any, onRemove: (id: number) => void }) => {
@@ -30,7 +33,9 @@ const SortableItem = ({ id, site, onRemove }: { id: number, site: any, onRemove:
             layout
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className={`itinerary-card ${isDragging ? 'dragging' : ''}`}
+            whileHover={{ scale: 1.01, x: 5 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className={`itinerary-card group ${isDragging ? 'dragging' : ''}`}
         >
              <div className="card-glass-content" style={{ 
                  display: 'flex', 
@@ -205,9 +210,9 @@ const TripBuilder = () => {
                  <motion.div style={{ position: 'absolute', inset: 0, y: yHero, scale: 1.1, zIndex: 0 }}>
                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, var(--color-bg-body) 100%)', zIndex: 1 }} />
                     <img 
-                        src="https://images.unsplash.com/photo-1540959733332-e94e270b2d42?auto=format&fit=crop&q=80&w=2000" 
+                        src={navigatorHero} 
                         alt="Cartography" 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(30%) contrast(1.1) brightness(0.8)' }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(10%) contrast(1.1) brightness(0.8)' }}
                     />
                 </motion.div>
 
