@@ -1,7 +1,10 @@
 import NavBar from '../components/NavBar';
 import { useState } from 'react';
 import { Star, Send, MessageSquare } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+
+// Heritage Cinematic Assets
+import fieldReportHero from '../assets/heritage/field_report.png';
 
 const Feedback = () => {
     const [form, setForm] = useState({ name: '', email: '', message: '', rating: 0 });
@@ -19,36 +22,58 @@ const Feedback = () => {
         }, 1500);
     };
 
+    const { scrollY } = useScroll();
+    const yHero = useTransform(scrollY, [0, 500], [0, 150]);
+
     return (
         <div className="min-h-screen bg-bg-body relative overflow-hidden">
             <NavBar />
             
-            {/* Ambient Background Elements */}
-            <div style={{ position: 'absolute', top: '10%', right: '-5%', width: '400px', height: '400px', background: 'var(--color-accent)', filter: 'blur(120px)', opacity: 0.1, zIndex: 0 }} />
-            <div style={{ position: 'absolute', bottom: '10%', left: '-5%', width: '500px', height: '500px', background: 'var(--color-primary)', filter: 'blur(150px)', opacity: 0.05, zIndex: 0 }} />
+            {/* Cinematic Hero */}
+            <section style={{ height: '50vh', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+                 <motion.div style={{ position: 'absolute', inset: 0, y: yHero, scale: 1.1, zIndex: 0 }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, var(--color-bg-body) 100%)', zIndex: 1 }} />
+                    <img 
+                        src={fieldReportHero} 
+                        alt="Field Report" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(10%) contrast(1.1) brightness(0.8)' }}
+                    />
+                </motion.div>
 
-            <div className="container" style={{ position: 'relative', zIndex: 10, padding: '10rem 2rem 6rem' }}>
-                <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1 }}
+                    >
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                            <span style={{ height: '1px', width: '40px', background: 'var(--color-accent)' }}></span>
+                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent)' }}>The Traveler's Log</span>
+                        </div>
+                        <h1 className="text-display" style={{ fontSize: 'clamp(3rem, 5vw, 4.5rem)', color: 'white', lineHeight: 1 }}>
+                            Inscribe Your <br/>
+                            <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)', fontWeight: 400, color: 'var(--color-accent)' }}>Chronicle.</span>
+                        </h1>
+                    </motion.div>
+                </div>
+            </section>
+
+            <div className="container" style={{ position: 'relative', zIndex: 10, padding: '4rem 2rem 8rem', marginTop: '-4rem' }}>
+                <div style={{ maxWidth: '1100px', margin: '0 auto', background: 'white', padding: '4rem', borderRadius: '32px', boxShadow: '0 20px 40px rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.05)' }}>
                     
-                    <div className="grid-12" style={{ alignItems: 'center', gap: '4rem' }}>
+                    <div className="grid-12" style={{ alignItems: 'start', gap: '4rem' }}>
                         
                         {/* Left Side: Content */}
                         <div style={{ gridColumn: 'span 5' }}>
                             <motion.div
                                 initial={{ opacity: 0, x: -30 }}
-                                animate={{ opacity: 1, x: 0 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ duration: 1 }}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                                    <span style={{ height: '1px', width: '40px', background: 'var(--color-accent)' }}></span>
-                                    <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent)' }}>The Traveler's Log</span>
-                                </div>
-                                <h1 className="text-display" style={{ fontSize: 'clamp(3rem, 5vw, 4rem)', lineHeight: 1.1, marginBottom: '2rem' }}>
-                                    Inscribe Your <br/>
-                                    <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)', fontWeight: 400, color: 'var(--color-accent)' }}>Chronicle.</span>
-                                </h1>
-                                <p className="text-body" style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem', lineHeight: 1.6 }}>
-                                    Every journey contributes to the legacy. Share your discoveries, challenges, and stories from the path.
+                                <h3 className="text-h3" style={{ fontSize: '1.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)' }}>Field Report</h3>
+                                <p className="text-body" style={{ color: 'var(--color-text-secondary)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+                                    Every journey contributes to the legacy. Share your discoveries, challenges, and stories from the path to help us preserve the heritage of Gwalior.
                                 </p>
 
                                 <div style={{ marginTop: '3rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

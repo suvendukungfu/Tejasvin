@@ -4,6 +4,10 @@ import { Calendar, Eye, MapPin, Search } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { getTripsByUser } from '../services/api';
 
+// Heritage Cinematic Assets
+import archivalHero from '../assets/heritage/archival_record.png';
+import mitaoliThumb from '../assets/heritage/mitaoli.png';
+
 const Bookings = () => {
     // State for bookings
     const [bookings, setBookings] = useState<any[]>([]);
@@ -23,7 +27,7 @@ const Bookings = () => {
                     date: new Date(trip.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
                     amount: trip.total_cost,
                     status: 'Confirmed',
-                    image: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg',
+                    image: mitaoliThumb,
                     sitesCount: trip.site_ids?.length || 0
                 }));
                 setBookings(formatted);
@@ -59,7 +63,7 @@ const Bookings = () => {
                  <motion.div style={{ position: 'absolute', inset: 0, y: yHero, scale: 1.1, zIndex: 0 }}>
                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, var(--color-bg-body) 100%)', zIndex: 1 }} />
                     <img 
-                        src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000" 
+                        src={archivalHero} 
                         alt="Library" 
                         style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.7) contrast(1.1)' }}
                     />
