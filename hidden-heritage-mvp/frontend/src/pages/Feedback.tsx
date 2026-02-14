@@ -6,6 +6,9 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 // Heritage Cinematic Assets
 import fieldReportHero from '../assets/heritage/field_report.png';
 
+// Services
+import { submitFeedback } from '../services/api';
+
 const Feedback = () => {
     const [form, setForm] = useState({ name: '', email: '', message: '', rating: 0 });
     const [hoverRating, setHoverRating] = useState(0);
@@ -15,11 +18,15 @@ const Feedback = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        // Mock API call
-        setTimeout(() => {
-            setLoading(false);
+        try {
+            await submitFeedback(form);
             setSent(true);
-        }, 1500);
+        } catch (error) {
+            console.error("Feedback failed", error);
+            alert("Failed to inscribe your log. The neural archives may be offline.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const { scrollY } = useScroll();

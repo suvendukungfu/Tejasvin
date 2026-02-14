@@ -21,15 +21,25 @@ const Bookings = () => {
                 // Hardcoded user ID for MVP. In prod, get from AuthContext
                 const res = await getTripsByUser(1); 
                 
-                const formatted = (res.data || []).map((trip: any) => ({
-                    id: `EXP-${trip.id.toString().padStart(4, '0')}`,
-                    destination: trip.name,
-                    date: new Date(trip.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
-                    amount: trip.total_cost,
-                    status: 'Confirmed',
-                    image: mitaoliThumb,
-                    sitesCount: trip.site_ids?.length || 0
-                }));
+                const formatted = (res.data || []).map((trip: any) => {
+                    // Robust JSON parsing for MySQL return values
+                    let sites = [];
+                    try {
+                        sites = typeof trip.site_ids === 'string' ? JSON.parse(trip.site_ids) : trip.site_ids;
+                    } catch (e) {
+                        sites = trip.site_ids || [];
+                    }
+
+                    return {
+                        id: `EXP-${trip.id.toString().padStart(4, '0')}`,
+                        destination: trip.name,
+                        date: new Date(trip.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
+                        amount: trip.total_cost,
+                        status: 'Confirmed',
+                        image: mitaoliThumb, // Future: specific site image lookup
+                        sitesCount: Array.isArray(sites) ? sites.length : 0
+                    };
+                });
                 setBookings(formatted);
             } catch (err) {
                 console.error("Failed to fetch bookings", err);
