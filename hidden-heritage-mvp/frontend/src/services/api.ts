@@ -167,6 +167,20 @@ export const getSafetyScore = (siteId: number) => fetchWithFallback(
     }
 );
 
+export const getMe = () => fetchWithFallback(
+    () => api.get('/auth/me'),
+    null // No mock fallback for auth check, let it fail if backend down for security
+);
+
+export const createPaymentIntent = (data: any) => fetchWithFallback(
+    () => api.post('/payment/create-intent', data),
+    {
+        client_secret: 'mock_secret_' + Math.random().toString(36).substring(7),
+        amount: data.amount,
+        currency: 'inr'
+    }
+);
+
 export const AssetUrl = (path: string) => path;
 
 export default api;

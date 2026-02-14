@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPaymentIntent } from '../services/api';
 import { X, CreditCard, Lock, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -13,17 +14,31 @@ const PaymentModal = ({ isOpen, onClose, amount, onSuccess }: PaymentModalProps)
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const handlePay = () => {
+    const handlePay = async () => {
         setProcessing(true);
-        // Simulate Stripe API call
-        setTimeout(() => {
+        try {
+            // Call backend to create intent (mock or real stripe)
+            const res = await createPaymentIntent({ 
+                amount, 
+                tripId: 0 // In real flow, we'd pass the actual trip ID here
+            });
+            
+            if (res.data) {
+                // Simulate Stripe confirmation time
+                setTimeout(() => {
+                    setProcessing(false);
+                    setSuccess(true);
+                    setTimeout(() => {
+                        onSuccess();
+                        setSuccess(false); 
+                    }, 1000);
+                }, 1500);
+            }
+        } catch (err) {
+            console.error("Payment failed", err);
             setProcessing(false);
-            setSuccess(true);
-            setTimeout(() => {
-                onSuccess();
-                setSuccess(false); // Reset for next time
-            }, 1000);
-        }, 2000);
+            alert("Payment failed. Please try again.");
+        }
     };
 
     return (

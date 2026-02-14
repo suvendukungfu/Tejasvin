@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import NavBar from '../components/NavBar';
 import { Calendar, Eye, MapPin, Search } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -9,6 +10,7 @@ import archivalHero from '../assets/heritage/archival_record.png';
 import mitaoliThumb from '../assets/heritage/mitaoli.png';
 
 const Bookings = () => {
+    const { user } = useAuth();
     // State for bookings
     const [bookings, setBookings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -17,9 +19,11 @@ const Bookings = () => {
 
     useEffect(() => {
         const fetchBookings = async () => {
+            if (!user?.id) return;
+
             try {
-                // Hardcoded user ID for MVP. In prod, get from AuthContext
-                const res = await getTripsByUser(1); 
+                // Dynamic user ID from AuthContext
+                const res = await getTripsByUser(user.id); 
                 
                 const formatted = (res.data || []).map((trip: any) => {
                     // Robust JSON parsing for MySQL return values
@@ -49,7 +53,7 @@ const Bookings = () => {
         };
 
         fetchBookings();
-    }, []);
+    }, [user]);
 
     const containerVariants = {
         hidden: { opacity: 0 },

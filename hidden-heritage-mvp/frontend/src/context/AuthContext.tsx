@@ -21,19 +21,37 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+    const [loading, setLoading] = useState(true);
 
+    // Persist session on boot
     useEffect(() => {
-        if (token) {
-            // Here we would validate token with /me endpoint in a real app
-            // For MVP, we trust the existing user state or re-fetch
-        }
-    }, [token]);
+        const checkAuth = async () => {
+            const storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                // Set default header immediately for the check
+                axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+                try {
+                    const res = await axios.get('http://localhost:5001/api/auth/me'); // Direct call to avoid circular dep with api.ts if imported
+                    if (res.data) {
+                         setUser(res.data);
+                         setToken(storedToken);
+                    } else {
+                        throw new Error('No user data');
+                    }
+                } catch (err) {
+                    console.error('Session expired', err);
+                    logout();
+                }
+            }
+            setLoading(false);
+        };
+        checkAuth();
+    }, []);
 
     const login = (newToken: string, newUser: User) => {
         localStorage.setItem('token', newToken);
         setToken(newToken);
         setUser(newUser);
-        // Set default axios header
         axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
     };
 
@@ -45,8 +63,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!token }}>
-            {children}
+        <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!user }}>
+            {!loading && children}
         </AuthContext.Provider>
     );
 };
