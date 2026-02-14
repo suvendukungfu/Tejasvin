@@ -1,172 +1,202 @@
 import NavBar from '../components/NavBar';
-import { Users, Heart, Globe, Award } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Globe, Shield, ArrowRight, BookOpen, Fingerprint } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
 
 const About = () => {
+    const navigate = useNavigate();
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
+    
+    // Parallax & Scale Transforms
+    const yContent = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+    const opacityHero = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+
+    const values = [
+        {
+            icon: <Shield size={32} />,
+            title: "Digital Preservation",
+            desc: "Archiving the unarchived. We use high-fidelity photogrammetry to ensure no artifact is lost to the erosion of time."
+        },
+        {
+            icon: <Fingerprint size={32} />,
+            title: "The Human Mark",
+            desc: "We prioritize oral histories and local folklore, capturing the human spirit that lived within the stone."
+        },
+        {
+            icon: <Globe size={32} />,
+            title: "Community Growth",
+            desc: "Our revenue directly funds local artisans and site custodians, creating a sustainable loop of heritage care."
+        }
+    ];
+
     return (
-        <div className="min-h-screen bg-bg-body">
+        <div ref={containerRef} style={{ background: 'var(--color-bg-body)', position: 'relative' }}>
             <NavBar />
             
-            {/* Hero Section */}
-            <div className="relative text-center text-white" style={{ padding: '8rem 2rem 6rem', marginBottom: '4rem' }}>
-                <div 
-                    className="absolute inset-0 z-0" 
-                    style={{ 
-                        backgroundColor: '#2C2420', // Fallback color
-                        backgroundImage: 'url("https://www.mptourism.com/web/images/about/history-banner-new.jpg")', 
-                        backgroundSize: 'cover', 
-                        backgroundPosition: 'center',
-                        filter: 'brightness(0.6)'
-                    }}
-                />
-                <div className="container relative z-10" style={{ maxWidth: '800px' }}>
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        style={{ fontSize: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', textShadow: '0 4px 30px rgba(0,0,0,0.9)', color: '#FFFFFF' }}
-                    >
-                        About Hidden Heritage
-                    </motion.h1>
-                    <motion.p 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        style={{ fontSize: '1.2rem', lineHeight: 1.6, color: '#FFFFFF', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
-                    >
-                        We are more than a travel platform. We are a collective dedicated to keeping the echoes of history alive. 
-                        Every stone has a voice, and we are here to listen.
-                    </motion.p>
-                </div>
-            </div>
+            {/* Ambient Background Glows */}
+            <div style={{ position: 'absolute', top: '10%', left: '-10%', width: '800px', height: '800px', background: 'var(--color-accent)', filter: 'blur(180px)', opacity: 0.05, zIndex: 0 }} />
+            
+            {/* --- HERO: THE MANIFESTO OPENER --- */}
+            <section style={{ height: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+                <motion.div style={{ position: 'absolute', inset: 0, opacity: opacityHero, zIndex: 0 }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(250,250,250,0) 50%, var(--color-bg-body) 100%)', zIndex: 1 }} />
+                    <img 
+                        src="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&q=80&w=2000" 
+                        alt="Ancient Ruins" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.15, filter: 'sepia(0.3) contrast(1.1)' }}
+                    />
+                </motion.div>
 
-            <div className="container" style={{ padding: '0 2rem 4rem' }}>
+                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+                    <div className="grid-12">
+                        <div style={{ gridColumn: 'span 8' }}>
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+                            >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem' }}>
+                                    <span style={{ height: '1px', width: '60px', background: 'var(--color-accent)' }}></span>
+                                    <span style={{ textTransform: 'uppercase', letterSpacing: '0.3em', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent)' }}>
+                                        The Collective Manifesto
+                                    </span>
+                                </div>
+                                <h1 className="text-display" style={{ marginBottom: '3rem', lineHeight: 1.05 }}>
+                                    We protect what <br/>
+                                    the world <span style={{ fontStyle: 'italic', color: 'var(--color-accent)', fontFamily: 'var(--font-display)' }}>forgot.</span>
+                                </h1>
+                                <p style={{ fontSize: '1.5rem', color: 'var(--color-text-primary)', maxWidth: '700px', lineHeight: 1.6, fontWeight: 300, opacity: 0.8 }}>
+                                    Hidden Heritage is a high-tech archival guild dedicated to mapping the subcontinent's invisible history. We believe every ruin has a voice, and every brick carries a memory.
+                                </p>
+                            </motion.div>
+                        </div>
+                    </div>
+                </div>
                 
-                {/* Mission Values */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '6rem' }}>
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="card glass" 
-                        style={{ padding: '2.5rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.6)' }}
-                    >
-                        <div style={{ color: 'var(--color-primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                            <Globe size={48} strokeWidth={1.5} />
+                {/* Scroll Indicator */}
+                <motion.div 
+                    animate={{ y: [0, 10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    style={{ position: 'absolute', bottom: '40px', left: '50%', transform: 'translateX(-50%)', opacity: 0.3 }}
+                >
+                    <div style={{ width: '1px', height: '60px', background: 'var(--color-primary)' }} />
+                </motion.div>
+            </section>
+
+            {/* --- STORY: EDITORIAL SPLIT --- */}
+            <section className="section-pad" style={{ background: 'white' }}>
+                <div className="container">
+                    <motion.div style={{ y: yContent }}>
+                        <div className="grid-12" style={{ alignItems: 'center' }}>
+                            <div style={{ gridColumn: 'span 5' }}>
+                                <motion.div
+                                    initial={{ opacity: 0, x: -30 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 1 }}
+                                >
+                                    <h2 className="text-h1" style={{ marginBottom: '2rem' }}>Born from Dust.</h2>
+                                    <p className="text-body" style={{ marginBottom: '2.5rem', color: 'var(--color-text-secondary)' }}>
+                                        Our journey began in the silence of a forgotten stepwell in Bundelkhand. There were no plaques, no ticket counters—only the deep, resonant history of a people whose stories were being erased by the passage of time.
+                                    </p>
+                                    <div style={{ padding: '2.5rem', background: '#F9F9F9', borderLeft: '4px solid var(--color-accent)', borderRadius: '0 24px 24px 0', marginBottom: '3rem' }}>
+                                        <blockquote style={{ fontSize: '1.4rem', fontStyle: 'italic', fontFamily: 'var(--font-display)', color: 'var(--color-primary)', lineHeight: 1.5 }}>
+                                            "A civilization is not remembered by its wars, but by the quiet beauty of the structures it left behind for the dreamers."
+                                        </blockquote>
+                                        <cite style={{ display: 'block', marginTop: '1.5rem', fontStyle: 'normal', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-accent)' }}>
+                                            — Founder's Log, 2024
+                                        </cite>
+                                    </div>
+                                    <button onClick={() => navigate('/explore')} className="btn-cinematic" style={{ background: 'rgba(0,0,0,0.05)', color: 'var(--color-primary)', border: '1px solid rgba(0,0,0,0.1)' }}>
+                                        See the Archive <ArrowRight size={18} />
+                                    </button>
+                                </motion.div>
+                            </div>
+
+                            <div style={{ gridColumn: '7 / span 6' }}>
+                                <motion.div 
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 1.2 }}
+                                    className="heritage-tile"
+                                    style={{ height: '700px', borderRadius: '40px', boxShadow: '0 60px 120px -20px rgba(0,0,0,0.15)' }}
+                                >
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1590050752117-23a9d7fc2140?auto=format&fit=crop&q=80&w=1200" 
+                                        alt="Archivist at Work" 
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                    <div style={{ position: 'absolute', bottom: '40px', left: '40px', right: '40px' }}>
+                                        <div className="glass-panel" style={{ padding: '2rem', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.5)', borderRadius: '32px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                                                    <BookOpen size={20} />
+                                                </div>
+                                                <div>
+                                                    <div style={{ fontWeight: 800, fontSize: '0.75rem', letterSpacing: '0.15em', color: 'var(--color-accent)', textTransform: 'uppercase' }}>Current Focus</div>
+                                                    <div style={{ fontWeight: 600, fontSize: '1.1rem', color: 'var(--color-primary)' }}>The Chambal Ravine Project</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </div>
                         </div>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Legacy</h3>
-                        <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>Documenting sites before they are lost to time, creating a digital archive for future generations.</p>
-                    </motion.div>
-                    
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="card glass" 
-                        style={{ padding: '2.5rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.6)' }}
-                    >
-                        <div style={{ color: 'var(--color-primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                            <Heart size={48} strokeWidth={1.5} />
-                        </div>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Devotion</h3>
-                        <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>Fueled by a deep love for history and culture, ensuring the narratives of the past remain vibrant.</p>
-                    </motion.div>
-                    
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="card glass" 
-                        style={{ padding: '2.5rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.6)' }}
-                    >
-                        <div style={{ color: 'var(--color-primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                            <Users size={48} strokeWidth={1.5} />
-                        </div>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Community</h3>
-                        <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>Connecting travelers with local guides and stories, fostering a network of heritage guardians.</p>
                     </motion.div>
                 </div>
+            </section>
 
-                {/* Team Section */}
-                <div style={{ marginBottom: '4rem' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                        <span style={{ color: 'var(--color-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.9rem' }}>The Minds Behind</span>
-                        <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', marginTop: '0.5rem' }}>Our Team</h2>
+            {/* --- VALUES: THE CODEX --- */}
+            <section className="section-pad" style={{ background: '#FBFBFB' }}>
+                <div className="container">
+                    <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
+                        <span style={{ color: 'var(--color-accent)', fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.8rem' }}>The Guardians' Codex</span>
+                        <h2 className="text-h1" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>Built on Honor.</h2>
+                        <p style={{ margin: '0 auto', maxWidth: '600px', fontSize: '1.1rem' }}>Our operations are guided by a strict ethical framework to protect the sites we love.</p>
                     </div>
-                    
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-                        {/* Team Member 1 */}
-                        <motion.div 
-                            whileHover={{ y: -5 }}
-                            className="card glass" 
-                            style={{ overflow: 'hidden', border: '1px solid rgba(255,255,255,0.6)', padding: 0 }}
-                        >
-                            <img 
-                                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/India_-_Delhi_portrait_of_a_man_-_4780.jpg" 
-                                alt="Arjun Verma" 
-                                style={{ width: '100%', height: '320px', objectFit: 'cover', objectPosition: 'top' }}
-                            />
-                            <div style={{ padding: '1.75rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Arjun Verma</h3>
-                                <p style={{ color: 'var(--color-primary)', fontSize: '0.9rem', marginBottom: '1rem', fontWeight: 600, opacity: 0.8 }}>Founder & Lead Explorer</p>
-                                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                                    An archaeologist turned tech entrepreneur, Arjun wants to make history accessible to everyone.
-                                </p>
-                            </div>
-                        </motion.div>
-                        
-                        {/* Team Member 2 */}
-                        <motion.div 
-                            whileHover={{ y: -5 }}
-                            className="card glass" 
-                            style={{ overflow: 'hidden', border: '1px solid rgba(255,255,255,0.6)', padding: 0 }}
-                        >
-                            <img 
-                                src="https://upload.wikimedia.org/wikipedia/commons/3/33/Indian_woman_portrait.jpg" 
-                                alt="Priya Singh" 
-                                style={{ width: '100%', height: '320px', objectFit: 'cover', objectPosition: 'top' }}
-                            />
-                            <div style={{ padding: '1.75rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Priya Singh</h3>
-                                <p style={{ color: 'var(--color-primary)', fontSize: '0.9rem', marginBottom: '1rem', fontWeight: 600, opacity: 0.8 }}>Head of Curation</p>
-                                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                                    With a PhD in History, Priya ensures every story we tell is accurate and engaging.
-                                </p>
-                            </div>
-                        </motion.div>
 
-                        {/* Team Member 3 */}
-                        <motion.div 
-                            whileHover={{ y: -5 }}
-                            className="card glass" 
-                            style={{ overflow: 'hidden', border: '1px solid rgba(255,255,255,0.6)', padding: 0 }}
-                        >
-                            <img 
-                                src="https://upload.wikimedia.org/wikipedia/commons/d/db/Indian_male_portrait.jpg" 
-                                alt="Rahul Mehta" 
-                                style={{ width: '100%', height: '320px', objectFit: 'cover', objectPosition: 'top' }}
-                            />
-                            <div style={{ padding: '1.75rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Rahul Mehta</h3>
-                                <p style={{ color: 'var(--color-primary)', fontSize: '0.9rem', marginBottom: '1rem', fontWeight: 600, opacity: 0.8 }}>Technology Lead</p>
-                                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                                    Building the platform that connects the past with the future.
-                                </p>
-                            </div>
-                        </motion.div>
+                    <div className="grid-12">
+                        {values.map((v, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.2, duration: 0.8 }}
+                                style={{ gridColumn: 'span 4' }}
+                            >
+                                <div className="heritage-tile" style={{ padding: '4rem 3rem', background: 'white', height: '100%', borderRadius: '32px', textAlign: 'center' }}>
+                                    <div style={{ display: 'inline-flex', padding: '1.5rem', background: 'rgba(200, 163, 89, 0.1)', borderRadius: '24px', color: 'var(--color-accent)', marginBottom: '2.5rem' }}>
+                                        {v.icon}
+                                    </div>
+                                    <h3 style={{ fontSize: '1.5rem', marginBottom: '1.25rem', fontFamily: 'var(--font-display)' }}>{v.title}</h3>
+                                    <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>{v.desc}</p>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
+            </section>
 
-                {/* Awards/Recognition (Optional) */}
-                <div style={{ textAlign: 'center', padding: '4rem 0', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-text-secondary)', fontWeight: 500, background: 'rgba(255,255,255,0.5)', padding: '0.75rem 2rem', borderRadius: '50px', backdropFilter: 'blur(4px)' }}>
-                        <Award size={24} className="text-secondary" /> 
-                        <span>Recognized by the Heritage Conservation Society of India</span>
-                    </div>
+            {/* --- FINALE --- */}
+            <section style={{ padding: '10rem 0', textAlign: 'center' }}>
+                <div className="container">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                    >
+                        <h2 className="text-display" style={{ marginBottom: '2.5rem', fontSize: 'clamp(3rem, 5vw, 4rem)' }}>The archives <br/> are open.</h2>
+                        <button onClick={() => navigate('/register')} className="btn-cinematic btn-primary" style={{ padding: '22px 64px', fontSize: '1.1rem', fontWeight: 700 }}>
+                            Join the Expedition
+                        </button>
+                    </motion.div>
                 </div>
-
-            </div>
+            </section>
         </div>
     );
 };
