@@ -1,9 +1,8 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Compass, Menu, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-
+import { Compass, Menu, X, Circle, ArrowRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -21,7 +20,7 @@ const NavBar = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
+            setScrolled(window.scrollY > 50);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -30,160 +29,205 @@ const NavBar = () => {
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     const navLinks = [
-        { name: 'Home', path: '/' },
-        { name: 'Explore', path: '/explore' },
-        { name: 'Journal', path: '/book' },
-        { name: 'About', path: '/about' }
+        { name: 'Signal', path: '/' },
+        { name: 'Atlas', path: '/explore' },
+        { name: 'Log', path: '/book' },
+        { name: 'Context', path: '/about' }
     ];
 
     const isActive = (path: string) => location.pathname === path;
 
     return (
-        <nav style={{ 
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '88px', 
-            zIndex: 1000,
-            transition: 'all 0.6s var(--ease-out)',
-            background: scrolled ? 'var(--color-surface-glass)' : 'transparent',
-            backdropFilter: scrolled ? 'var(--backdrop-blur)' : 'none',
-            borderBottom: scrolled ? 'var(--border-cinematic)' : '1px solid transparent',
-        }}>
-            <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
-                {/* Logo Area */}
-                <div
-                    onClick={() => navigate('/')}
-                    style={{
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '14px',
-                        color: 'var(--color-text-primary)',
-                        position: 'relative',
-                        zIndex: 1002
+        <>
+            <motion.nav 
+                initial={{ y: -100 }}
+                animate={{ y: 0 }}
+                style={{ 
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    padding: scrolled ? '20px' : '40px', 
+                    zIndex: 1000,
+                    transition: 'padding 0.4s var(--ease-neural)',
+                    pointerEvents: 'none' // Allow clicks through to scene
+                }}
+            >
+                <div 
+                    className="container" 
+                    style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center' 
                     }}
                 >
-                    <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '12px',
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--color-gold)',
-                        boxShadow: '0 0 20px -5px rgba(212, 175, 55, 0.3)'
-                    }}>
-                        <Compass size={22} strokeWidth={2} />
-                    </div>
-                    <span style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontWeight: 700,
-                        fontSize: '1.25rem',
-                        letterSpacing: '-0.03em',
-                        color: 'var(--color-text-primary)',
-                        opacity: scrolled ? 1 : (isActive('/') ? 1 : 0.9),
-                        textShadow: '0 0 20px rgba(0,0,0,0.5)'
-                    }}>Hidden Heritage</span>
-                </div>
+                    {/* Neural Brand Pill */}
+                    <motion.div
+                        onClick={() => navigate('/')}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                            pointerEvents: 'auto',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            background: scrolled ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.0)',
+                            backdropFilter: scrolled ? 'blur(20px)' : 'none',
+                            padding: '8px 16px',
+                            borderRadius: '100px',
+                            border: scrolled ? '1px solid rgba(0,0,0,0.05)' : '1px solid transparent',
+                            transition: 'background 0.4s, border 0.4s'
+                        }}
+                    >
+                        <Compass size={24} color="var(--color-neural-accent)" strokeWidth={1.5} />
+                        <span style={{
+                            fontFamily: 'var(--font-display)',
+                            fontWeight: 600,
+                            fontSize: '1.1rem',
+                            color: 'var(--color-text-primary)',
+                            opacity: scrolled ? 1 : 0.9,
+                        }}>Hidden Heritage</span>
+                    </motion.div>
 
-                {/* Desktop Menu */}
-                <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                    <div style={{ 
+                    {/* Desktop Contextual Nav (Magnetic) */}
+                    <div className="desktop-menu" style={{ 
+                        pointerEvents: 'auto',
+                        background: 'rgba(255,255,255,0.6)',
+                        backdropFilter: 'blur(20px)',
+                        padding: '6px',
+                        borderRadius: '100px',
+                        border: '1px solid rgba(255,255,255,0.4)',
                         display: 'flex',
-                        gap: '24px'
+                        gap: '4px',
+                        boxShadow: '0 10px 30px -10px rgba(0,0,0,0.05)'
                     }}>
                         {navLinks.map((link) => (
-                            <button
-                                key={link.name}
-                                onClick={() => navigate(link.path)}
-                                style={{
-                                    fontSize: '0.95rem',
-                                    fontWeight: 500,
-                                    letterSpacing: '0.02em',
-                                    color: isActive(link.path) ? 'var(--color-gold)' : 'rgba(255, 255, 255, 0.6)',
-                                    background: 'transparent',
-                                    transition: 'all 0.3s var(--ease-out)',
-                                    position: 'relative',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    padding: '8px 0'
-                                }}
-                            >
-                                {link.name}
-                                {isActive(link.path) && (
-                                    <motion.div 
-                                        layoutId="active-pill"
-                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                        style={{ position: 'absolute', bottom: -4, left: 0, right: 0, height: '1px', background: 'var(--color-gold)', boxShadow: '0 0 10px var(--color-gold)' }} 
-                                    />
-                                )}
-                            </button>
+                            <MagneticItem key={link.name}>
+                                <button
+                                    onClick={() => navigate(link.path)}
+                                    style={{
+                                        fontSize: '0.85rem',
+                                        fontWeight: 500,
+                                        letterSpacing: '0.02em',
+                                        color: isActive(link.path) ? 'white' : 'var(--color-text-primary)',
+                                        background: isActive(link.path) ? 'var(--color-text-primary)' : 'transparent',
+                                        transition: 'background 0.3s, color 0.3s',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        padding: '10px 24px',
+                                        borderRadius: '100px',
+                                        position: 'relative',
+                                        zIndex: 2
+                                    }}
+                                >
+                                    {link.name}
+                                </button>
+                            </MagneticItem>
                         ))}
                     </div>
 
-                    <div style={{ width: '1px', height: '24px', background: 'rgba(0,0,0,0.1)', margin: '0 16px' }} />
-
-                    {auth.user ? (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{auth.user.name.split(' ')[0]}</span>
-                            <button
-                                onClick={auth.logout}
+                    {/* Auth Status Endpoint */}
+                    <div style={{ pointerEvents: 'auto' }}>
+                        {auth.user ? (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
+                                <Circle size={8} fill="#10B981" color="#10B981" />
+                                {auth.user.name.split(' ')[0]}
+                            </div>
+                        ) : (
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => navigate('/login')}
+                                className="desktop-menu"
                                 style={{ 
-                                    padding: '8px 20px', 
-                                    borderRadius: '100px', 
-                                    border: '1px solid rgba(0,0,0,0.1)',
-                                    fontSize: '0.875rem',
+                                    padding: '10px 24px', 
+                                    fontSize: '0.9rem',
+                                    background: 'var(--color-text-primary)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '100px',
+                                    cursor: 'pointer',
                                     fontWeight: 500,
-                                    transition: 'all 0.2s',
-                                    background: 'transparent',
-                                    cursor: 'pointer'
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px'
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.05)'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                             >
-                                Logout
-                            </button>
-                        </div>
-                    ) : (
-                        <button
-                            onClick={() => navigate('/login')}
-                            className="btn-cinematic btn-outline"
-                            style={{ padding: '10px 24px', fontSize: '0.9rem' }}
+                                Connect <ArrowRight size={14} />
+                            </motion.button>
+                        )}
+                        
+                         {/* Mobile Trigger */}
+                         <button 
+                            className="mobile-toggle" 
+                            onClick={toggleMenu} 
+                            style={{ 
+                                display: 'none', 
+                                background: 'white',
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                                border: 'none',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                            }}
                         >
-                            Sign In
+                            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
-                    )}
+                    </div>
                 </div>
-
-                {/* Mobile Menu Toggle */}
-                <button 
-                    className="mobile-toggle" 
-                    onClick={toggleMenu} 
-                    style={{ 
-                        display: 'none', 
-                        color: 'var(--color-text-primary)',
-                        zIndex: 1002,
-                        position: 'relative',
-                        background: 'transparent',
-                        border: 'none',
-                        cursor: 'pointer'
-                    }}
-                >
-                    {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-                </button>
-            </div>
-            
+            </motion.nav>
              <style>{`
                 @media (max-width: 900px) {
                     .desktop-menu { display: none !important; }
-                    .mobile-toggle { display: block !important; }
+                    .mobile-toggle { display: flex !important; }
                 }
             `}</style>
-        </nav>
+        </>
+    );
+};
+
+// --- MAGNETIC ITEM COMPONENT ---
+const MagneticItem = ({ children }: { children: React.ReactNode }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    
+    // Use motion values for raw input
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    // Smooth them with springs
+    const springConfig = { type: "spring", stiffness: 150, damping: 15, mass: 0.1 };
+    const springX = useSpring(x, springConfig);
+    const springY = useSpring(y, springConfig);
+
+    const handleMouse = (e: React.MouseEvent) => {
+        const { clientX, clientY } = e;
+        const rect = ref.current?.getBoundingClientRect();
+        if (rect) {
+            const { height, width, left, top } = rect;
+            const middleX = clientX - (left + width / 2);
+            const middleY = clientY - (top + height / 2);
+            x.set(middleX * 0.2); // Sensitivity
+            y.set(middleY * 0.2);
+        }
+    };
+
+    const reset = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            ref={ref}
+            onMouseMove={handleMouse}
+            onMouseLeave={reset}
+            style={{ x: springX, y: springY }}
+        >
+            {children}
+        </motion.div>
     );
 };
 

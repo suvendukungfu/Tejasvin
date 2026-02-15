@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import { MapPin, Clock, ArrowLeft, Shield, Sparkles, Share2, Calendar, IndianRupee } from 'lucide-react';
+import { MapPin, Clock, ArrowLeft, Shield, Sparkles, Calendar, Box, ScanLine } from 'lucide-react';
 import { getSiteBySlug, getSafetyScore, getAiStory } from '../services/api';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import MapPreview from '../components/MapPreview';
 
 // Heritage Cinematic Assets
 import bateshwar from '../assets/heritage/bateshwar.png';
@@ -21,24 +20,30 @@ const SiteDetail = () => {
     const [safety, setSafety] = useState<any>(null);
     const [aiStory, setAiStory] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-    const [isMapOpen, setIsMapOpen] = useState(false);
+    const [scanning, setScanning] = useState(true); // New Scanning State
 
     // Parallax & Cinematic effects
-    const yHero = useTransform(scrollY, [0, 600], ["0%", "25%"]);
-    const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
+    const yHero = useTransform(scrollY, [0, 800], ["0%", "40%"]);
+    const opacityHero = useTransform(scrollY, [0, 500], [1, 0]);
 
     useEffect(() => {
         const fetchData = async () => {
             if (!slug) return;
+            // Initiate "Scan"
             setLoading(true);
+            setScanning(true);
+            
             try {
-                const siteData = await getSiteBySlug(slug);
-                setSite(siteData.data || siteData);
+                // Determine ID based on slug (Mock logic for demo)
+                // Real app would get ID from slug response
+                const siteDataRes = await getSiteBySlug(slug);
+                const siteData = siteDataRes.data || siteDataRes;
+                setSite(siteData);
 
                 if (siteData) {
-                    const [safetyRes, storyRes] = await Promise.all([
+                     const [safetyRes, storyRes] = await Promise.all([
                         getSafetyScore(siteData.id || 1),
-                        getAiStory({ siteName: siteData.name, persona: 'Tourist', slug: siteData.slug })
+                        getAiStory({ siteName: siteData.name, persona: 'Archaeologist', slug: siteData.slug })
                     ]);
                     setSafety(safetyRes.data || safetyRes);
                     setAiStory(storyRes.data || storyRes);
@@ -47,6 +52,8 @@ const SiteDetail = () => {
                 console.error("Failed to fetch details", error);
             } finally {
                 setLoading(false);
+                // Artificial scan delay for effect
+                setTimeout(() => setScanning(false), 800);
             }
         };
 
@@ -61,13 +68,22 @@ const SiteDetail = () => {
 
     const heroImage = heroImageMap[slug || ''] || site?.image_url;
 
+    // Scan Line Animation
+    const scanVariants = {
+        scanning: {
+            top: ["0%", "100%"],
+            opacity: [0, 1, 0],
+            transition: { duration: 1.5, repeat: Infinity, ease: "linear" }
+        }
+    };
+
     if (loading) {
         return (
-            <div className="min-h-screen" style={{ background: 'var(--color-bg-body)' }}>
-                <NavBar />
-                <div style={{ paddingTop: '10rem', textAlign: 'center', color: 'var(--color-text-primary)' }}>
-                    Loading Site Intel...
-                </div>
+            <div style={{ height: '100vh', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-gold)' }}>
+                <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                    <ScanLine size={48} />
+                    <div style={{ marginTop: '16px', letterSpacing: '0.2em', fontSize: '0.8rem' }}>INITIALIZING L.I.D.A.R. SCAN</div>
+                </motion.div>
             </div>
         );
     }
@@ -75,177 +91,233 @@ const SiteDetail = () => {
     if (!site) return <div>Site not found</div>;
 
     return (
-        <div className="min-h-screen" style={{ background: 'var(--color-bg-body)' }}>
+        <div className="min-h-screen" style={{ background: '#050505', color: '#FFF' }}>
             <NavBar />
 
-            {/* --- CINEMATIC SITE HERO --- */}
-            <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-                <motion.div 
-                    style={{ position: 'absolute', inset: 0, y: yHero }}
-                >
-                    <motion.img
-                        src={heroImage}
-                        alt={site.name}
-                        initial={{ scale: 1.1 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 12, ease: "linear" }}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 60%, var(--color-bg-body) 100%)',
-                        zIndex: 1
-                    }} />
+            {/* --- IMMERSIVE BACKDROP (GLOBAL) --- */}
+            <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+                <motion.div style={{ position: 'absolute', inset: 0, y: yHero, opacity: opacityHero }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(5,5,5,0.3), #050505)', zIndex: 2 }} />
+                    <img src={heroImage} alt="Background" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(20%) contrast(1.1)' }} />
                 </motion.div>
+            </div>
 
-                <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'flex-end', paddingBottom: '140px', zIndex: 10 }}>
-                    <motion.div 
-                        style={{ width: '100%', opacity: opacityHero }}
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+            {/* --- HUD INTERFACE --- */}
+            <div className="container" style={{ position: 'relative', zIndex: 10, paddingTop: '100px' }}>
+                
+                {/* HUD Header */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '60px' }}>
+                     <motion.button 
+                        onClick={() => navigate(-1)}
+                        whileHover={{ x: -5 }}
+                        style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
                     >
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="btn-cinematic"
-                            style={{
-                                color: 'white',
-                                background: 'rgba(255,255,255,0.1)',
-                                backdropFilter: 'blur(16px)',
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                padding: '8px 20px',
-                                borderRadius: '32px',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                marginBottom: '2.5rem',
-                                fontSize: '0.85rem',
-                                fontWeight: 600
-                            }}
-                        >
-                            <ArrowLeft size={16} /> Back to Region
-                        </button>
-                        
-                        <h1 className="text-display" style={{ color: '#FFFFFF', marginBottom: '1.5rem', fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', lineHeight: 1.1 }}>
-                            {site.name}
-                        </h1>
-                        
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', color: '#FFFFFF', opacity: 0.95 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <MapPin size={20} color="var(--color-accent)" />
-                                <span style={{ fontSize: '1.25rem', fontWeight: 500 }}>Morena, Madhya Pradesh</span>
-                            </div>
-                            <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.3)' }} />
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                                <Share2 size={20} />
-                                <span style={{ fontSize: '1.25rem' }}>Share Story</span>
-                            </div>
+                        <ArrowLeft size={20} /> <span style={{ letterSpacing: '0.1em', fontSize: '0.85rem' }}>RETURN TO SECTOR</span>
+                    </motion.button>
+
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)' }}>
+                             <div style={{ width: '6px', height: '6px', background: 'var(--color-gold)', borderRadius: '50%', boxShadow: '0 0 8px var(--color-gold)' }} />
+                             <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em' }}>DATA STREAM ACTIVE</span>
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>
+                            LAT: {site.latitude?.toFixed(4) || '26.7577'} • LON: {site.longitude?.toFixed(4) || '78.1729'}
                         </div>
                     </motion.div>
                 </div>
-            </div>
 
-            {/* --- CORE NARRATIVE LAYOUT --- */}
-            <div className="container" style={{ position: 'relative', zIndex: 20, marginTop: '-80px' }}>
                 <div className="grid-12">
-                    
-                    {/* Left: Preservation Narrative */}
-                    <div style={{ gridColumn: 'span 8', paddingRight: '4rem' }}>
+                    {/* Left Data Column (Technical) */}
+                    <div style={{ gridColumn: 'span 3', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                        
+                        {/* Data Crystal: Context */}
                         <motion.div 
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="glass-panel" 
-                            style={{ padding: '4rem', background: 'white', borderRadius: '32px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 40px 100px -20px rgba(0,0,0,0.08)' }}
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            style={{ 
+                                background: 'rgba(255, 255, 255, 0.03)', 
+                                backdropFilter: 'blur(20px)', 
+                                border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                borderRadius: '16px', 
+                                padding: '24px' 
+                            }}
                         >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '2rem' }}>
-                                <Shield size={24} color="var(--color-gold)" />
-                                <span style={{ textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 800, fontSize: '0.75rem', color: 'var(--color-gold)' }}>Verified Research</span>
-                            </div>
-                            
-                            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', marginBottom: '2rem', color: 'var(--color-primary)' }}>Historical Context</h2>
-                            <p style={{ fontSize: '1.25rem', color: 'rgba(26, 26, 26, 0.7)', lineHeight: 1.8, marginBottom: '2.5rem' }}>
-                                {site.description}
-                            </p>
+                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', letterSpacing: '0.1em', marginBottom: '8px', textTransform: 'uppercase' }}>Classification</div>
+                            <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>{site.type || 'Heritage Site'}</div>
+                        </motion.div>
 
-                            <div style={{ background: 'linear-gradient(135deg, rgba(200, 163, 89, 0.05), rgba(0,0,0,0.02))', padding: '2.5rem', borderRadius: '32px', borderLeft: '4px solid var(--color-gold)' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
-                                    <Sparkles size={20} color="var(--color-gold)" />
-                                    <h4 style={{ margin: 0, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, fontSize: '0.9rem' }}>AI Narrated Legend</h4>
-                                </div>
-                                <p style={{ margin: 0, fontStyle: 'italic', fontSize: '1.125rem', color: 'var(--color-primary)', opacity: 0.8, lineHeight: 1.6 }}>
-                                    {aiStory?.story || "Connecting to neural archives for site-specific lore..."}
-                                </p>
+                         {/* Data Crystal: Era */}
+                         <motion.div 
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                            style={{ 
+                                background: 'rgba(255, 255, 255, 0.03)', 
+                                backdropFilter: 'blur(20px)', 
+                                border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                borderRadius: '16px', 
+                                padding: '24px' 
+                            }}
+                        >
+                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', letterSpacing: '0.1em', marginBottom: '8px', textTransform: 'uppercase' }}>Est. Era</div>
+                            <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>8th - 10th Century</div>
+                        </motion.div>
+
+                        {/* Data Crystal: Safety */}
+                         <motion.div 
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.4 }}
+                            style={{ 
+                                background: 'rgba(10, 20, 10, 0.3)', 
+                                backdropFilter: 'blur(20px)', 
+                                border: '1px solid rgba(100, 255, 100, 0.1)', 
+                                borderRadius: '16px', 
+                                padding: '24px' 
+                            }}
+                        >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                <div style={{ color: '#4ADE80', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Safety Index</div>
+                                <Shield size={14} color="#4ADE80" />
+                            </div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#4ADE80' }}>
+                                {safety?.score || '9.8'} <span style={{ fontSize: '0.85rem', fontWeight: 400, opacity: 0.7 }}>/ 10</span>
                             </div>
                         </motion.div>
 
-                        {/* Spatial Data Preview */}
-                        <div style={{ marginTop: '4rem' }}>
-                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                                <h3 className="text-h2" style={{ margin: 0 }}>Spatial Mapping</h3>
-                                <button onClick={() => setIsMapOpen(!isMapOpen)} className="btn-cinematic" style={{ border: '1px solid var(--color-gold)', color: 'var(--color-gold)', borderRadius: '32px' }}>
-                                    {isMapOpen ? 'Close View' : 'Launch Full Map'}
-                                </button>
-                             </div>
-                             
-                             <div style={{ height: '450px', borderRadius: '32px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
-                                <MapPreview sites={[site]} />
-                             </div>
-                        </div>
                     </div>
 
-                    {/* Right: Site Intelligence Panel */}
-                    <div style={{ gridColumn: 'span 4' }}>
-                        <div style={{ position: 'sticky', top: '120px' }}>
-                             {/* Safety Matrix */}
-                             <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '32px', marginBottom: '2rem', background: 'var(--color-charcoal)', color: 'white' }}>
-                                <h4 style={{ margin: '0 0 2rem 0', textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 800 }}>Site Intelligence</h4>
-                                
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
-                                            <Shield size={16} /> Heritage Safety
-                                        </div>
-                                        <div style={{ fontWeight: 800, color: '#4ADE80' }}>{safety?.score || '9.8'}/10</div>
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
-                                            <Clock size={16} /> Peak Access
-                                        </div>
-                                        <div style={{ fontWeight: 700 }}>06:30 - 18:00</div>
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
-                                            <IndianRupee size={16} /> Access Fee
-                                        </div>
-                                        <div style={{ fontWeight: 700 }}>₹25.00</div>
-                                    </div>
+                    {/* Center: Main Viewport (Crystalline) */}
+                    <div style={{ gridColumn: 'span 6', position: 'relative' }}>
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.8 }}
+                            style={{ marginBottom: '40px', textAlign: 'center' }}
+                        >
+                             <h1 className="text-display" style={{ fontSize: '4.5rem', marginBottom: '16px', textShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>{site.name}</h1>
+                             <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', opacity: 0.8 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <MapPin size={16} /> Madhya Pradesh
                                 </div>
-
-                                <button 
-                                    onClick={() => navigate('/trip-builder')}
-                                    className="btn-cinematic btn-primary" 
-                                    style={{ width: '100%', marginTop: '2.5rem', background: 'var(--color-gold)', color: 'var(--color-charcoal)', borderRadius: '32px' }}
-                                >
-                                    Add to Expedition
-                                </button>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <Clock size={16} /> 2h 30m Access
+                                </div>
                              </div>
+                        </motion.div>
 
-                             {/* Booking Context */}
-                             <div style={{ padding: '2rem', borderRadius: '32px', border: '1px solid rgba(0,0,0,0.05)', background: 'white' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem', color: 'var(--color-gold)' }}>
-                                    <Calendar size={20} />
-                                    <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>Nearby Accommodations</span>
+                        {/* Narrative Glass Slab */}
+                        <motion.div 
+                            initial={{ y: 40, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.4 }}
+                            className="glass-panel"
+                            style={{ 
+                                padding: '48px', 
+                                background: 'rgba(0,0,0,0.4)', 
+                                backdropFilter: 'blur(40px)', 
+                                borderRadius: '32px',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                position: 'relative',
+                                overflow: 'hidden'
+                            }}
+                        >
+                            {/* Scanning Overlay Effect */}
+                            <motion.div 
+                                style={{ 
+                                    position: 'absolute', 
+                                    left: 0, 
+                                    right: 0, 
+                                    height: '2px', 
+                                    background: 'linear-gradient(to right, transparent, var(--color-gold), transparent)', 
+                                    pointerEvents: 'none',
+                                    zIndex: 10
+                                }}
+                                variants={scanVariants}
+                                animate={scanning ? "scanning" : { opacity: 0 }}
+                            />
+
+                            <h2 style={{ fontSize: '1.75rem', marginBottom: '24px', fontFamily: 'var(--font-display)', color: 'var(--color-gold)' }}>Visual Analysis</h2>
+                            <p style={{ fontSize: '1.1rem', lineHeight: 1.7, opacity: 0.9, marginBottom: '32px' }}>
+                                {site.description}
+                            </p>
+
+                            <div style={{ padding: '24px', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', borderLeft: '3px solid var(--color-gold)' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                                    <Sparkles size={16} color="var(--color-gold)" /> 
+                                    <span style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', fontWeight: 700 }}>AI Reconstruction</span>
                                 </div>
-                                <p style={{ fontSize: '0.85rem', color: 'rgba(0,0,0,0.5)', lineHeight: 1.6 }}>
-                                    Secure institutional-grade lodging through our curated heritage network.
+                                <p style={{ fontStyle: 'italic', opacity: 0.8 }}>
+                                   "{aiStory?.story || 'Analyzing architectural patterns...'}"
                                 </p>
-                             </div>
-                        </div>
+                            </div>
+
+                        </motion.div>
                     </div>
+
+                    {/* Right: Actions (Control Panel) */}
+                    <div style={{ gridColumn: 'span 3', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                         <motion.div 
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                            style={{ 
+                                background: 'rgba(255, 255, 255, 0.03)', 
+                                backdropFilter: 'blur(20px)', 
+                                border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                borderRadius: '16px', 
+                                padding: '24px' 
+                            }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                                <Box size={20} color="var(--color-gold)" />
+                                <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>AR Portal</span>
+                            </div>
+                            <p style={{ fontSize: '0.85rem', opacity: 0.6, marginBottom: '20px' }}>
+                                View this site in 1:1 scale using the Antigravity engine.
+                            </p>
+                            <button 
+                                onClick={() => navigate('/antigravity')}
+                                style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}
+                            >
+                                Launch AR Session
+                            </button>
+                        </motion.div>
+
+                        <motion.div 
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.4 }}
+                           style={{ 
+                                background: 'white', 
+                                borderRadius: '16px', 
+                                padding: '24px',
+                                color: 'var(--color-charcoal)' 
+                            }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                                <Calendar size={20} color="var(--color-charcoal)" />
+                                <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>Mission Planning</span>
+                            </div>
+                             <button 
+                                onClick={() => navigate('/trip-builder')}
+                                className="btn-primary"
+                                style={{ width: '100%', padding: '16px', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
+                            >
+                                Add to Expedition
+                            </button>
+                        </motion.div>
+                    </div>
+
                 </div>
             </div>
+            
             <div style={{ height: '120px' }} />
             <Footer />
         </div>

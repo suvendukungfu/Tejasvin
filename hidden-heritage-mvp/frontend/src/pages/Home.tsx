@@ -2,195 +2,203 @@ import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-
-// Heritage Cinematic Assets
-import chambalValley from '../assets/heritage/chambal_valley.png';
-
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Compass, ArrowRight, Shield, Zap, Layers, Box } from 'lucide-react';
+import { ArrowRight, Compass, Layers, Zap, Box, Brain } from 'lucide-react';
+
+// Heritage Assets
+import chambalValley from '../assets/heritage/chambal_valley.png';
+import navigatorHero from '../assets/heritage/navigator.png';
 
 const Home = () => {
-    const navigate = useNavigate();
     const containerRef = useRef(null);
-    
-    // Global Scroll for Scene Orchestration
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
     });
 
-    // Smooth physics for camera movement
-    const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20, restDelta: 0.001 });
+    // Neural Easing (Smoother, more cognitive)
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 20, restDelta: 0.001 });
 
     return (
-        <div ref={containerRef} style={{ background: 'var(--color-bg-body)', minHeight: '400vh', perspective: 'var(--perspective-deep)' }}>
+        <div ref={containerRef} style={{ height: '450vh', background: 'var(--color-bg-body)' }}>
             <NavBar />
 
-            {/* --- SCENE I: PORTAL (ARRIVAL) --- */}
-            {/* Logic: Fixed at top, fades out and scales down as user scrolls */}
+            {/* --- 1. SIGNAL (ARRIVAL) --- */}
             <div style={{ height: '100vh', position: 'sticky', top: 0, overflow: 'hidden', zIndex: 10 }}>
-                <PortalScene progress={smoothProgress} />
+                <SignalScene progress={smoothProgress} />
             </div>
 
-            {/* --- SCENE II: STORY (UNDERSTANDING) --- */}
-            {/* Logic: Enters from bottom, becomes main focus */}
+            {/* --- 2. MEMORY (STORY) --- */}
             <div style={{ height: '100vh', position: 'sticky', top: 0, overflow: 'hidden', zIndex: 20, pointerEvents: 'none' }}>
-                <StoryScene progress={smoothProgress} />
+                <MemoryScene progress={smoothProgress} />
             </div>
 
-            {/* --- SCENE III: EXPLORATION (GATEWAYS) --- */}
+            {/* --- 3. EXPLORATION (GATEWAY) --- */}
             <div style={{ height: '100vh', position: 'sticky', top: 0, overflow: 'hidden', zIndex: 30, pointerEvents: 'none' }}>
-                <ExplorationScene progress={smoothProgress} navigate={navigate} />
+                <ExplorationScene progress={smoothProgress} />
             </div>
 
-             {/* --- SCENE IV: IMPACT (FINAL) --- */}
+             {/* --- 4. MEANING (IMPACT) --- */}
             <div style={{ height: '100vh', position: 'sticky', top: 0, overflow: 'hidden', zIndex: 40, pointerEvents: 'none' }}>
-                <ImpactScene progress={smoothProgress} navigate={navigate} />
+                <MeaningScene progress={smoothProgress} />
             </div>
-            
-            {/* Spacer to allow scrolling */}
-            <div style={{ height: '100vh' }} /> 
+
+            {/* Scroll Spacer */}
+            <div style={{ height: '50vh' }} />
         </div>
     );
 };
 
-// --- SCENE COMPONENTS ---
+// --- SCENES ---
 
-const PortalScene = ({ progress }: { progress: any }) => {
+const SignalScene = ({ progress }: { progress: any }) => {
     const opacity = useTransform(progress, [0, 0.2], [1, 0]);
-    const scale = useTransform(progress, [0, 0.2], [1, 0.9]);
-    const y = useTransform(progress, [0, 0.2], ["0%", "-10%"]);
+    const scale = useTransform(progress, [0, 0.2], [1, 0.95]);
+    const y = useTransform(progress, [0, 0.2], ["0%", "-5%"]);
 
     return (
-        <motion.section style={{ height: '100%', width: '100%', position: 'absolute', inset: 0, opacity, scale, y, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {/* Atmospheric Background */}
-            <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-                <img src={chambalValley} alt="Atmosphere" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(249, 247, 242, 0.5), var(--color-bg-body))' }} />
+        <motion.section style={{ height: '100%', position: 'absolute', inset: 0, opacity, scale, y, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ position: 'absolute', inset: 0 }}>
+                <img src={chambalValley} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(1.1) contrast(0.95)' }} alt="Atmosphere" />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(249, 247, 242, 0.6), var(--color-bg-body))' }} />
             </div>
-
-            {/* Floating Headline */}
+            
             <div className="container" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
                 <motion.div 
-                    initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.2, ease: [0.2, 0, 0, 1] }}
                 >
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '100px', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.4)', marginBottom: '32px' }}>
-                        <div style={{ width: '8px', height: '8px', background: 'var(--color-gold)', borderRadius: '50%' }} />
-                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-charcoal)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Spatial OS v2.0 Online</span>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '12px 24px', borderRadius: '100px', background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)', marginBottom: '40px' }}>
+                        <Brain size={16} color="var(--color-neural-accent)" />
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-primary)' }}>Neural Interface Active</span>
                     </div>
-                    <h1 className="text-display" style={{ color: 'var(--color-charcoal)', marginBottom: '24px' }}>Hidden Heritage</h1>
-                    <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)', letterSpacing: '0.02em' }}>The world's first spatial culture engine.</p>
+                    
+                    <h1 className="text-display" style={{ marginBottom: '24px', letterSpacing: '-0.03em' }}>
+                        Hidden <span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-neural-accent)' }}>Heritage</span>
+                    </h1>
+                    
+                    <p style={{ fontSize: '1.25rem', maxWidth: '500px', margin: '0 auto', color: 'var(--color-text-primary)', opacity: 0.8 }}>
+                        A cognitive pathway to the forgotten architectures of India.
+                    </p>
                 </motion.div>
             </div>
         </motion.section>
     );
 };
 
-const StoryScene = ({ progress }: { progress: any }) => {
-    // Active range: 0.2 to 0.5
+const MemoryScene = ({ progress }: { progress: any }) => {
+    // 0.2 -> 0.5
     const opacity = useTransform(progress, [0.15, 0.25, 0.45, 0.55], [0, 1, 1, 0]);
-    const scale = useTransform(progress, [0.15, 0.25, 0.45, 0.55], [0.9, 1, 1, 0.9]);
+    const scale = useTransform(progress, [0.15, 0.25, 0.45, 0.55], [0.95, 1, 1, 0.95]);
     const pointerEvents = useTransform(progress, (v: number) => (v > 0.2 && v < 0.5 ? 'auto' : 'none'));
 
     return (
-        <motion.section style={{ height: '100%', width: '100%', position: 'absolute', inset: 0, opacity, scale, pointerEvents, display: 'flex', alignItems: 'center', background: 'var(--color-bg-body)' }}>
+        <motion.section style={{ height: '100%', position: 'absolute', inset: 0, opacity, scale, pointerEvents, background: 'var(--color-bg-body)', display: 'flex', alignItems: 'center' }}>
             <div className="container">
                 <div className="grid-12" style={{ alignItems: 'center' }}>
                     <div style={{ gridColumn: 'span 5' }}>
-                        <span style={{ color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.875rem' }}>// 01. Context Layer</span>
-                        <h2 className="text-h1" style={{ marginTop: '24px', marginBottom: '32px', color: 'var(--color-charcoal)' }}>Preservation as<br/>User Interface.</h2>
-                        <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
-                            We don't just archive history; we spatialize it. Every site is reconstructed as a navigable digital object, float-locked to its original geolocation coordinates.
+                        <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-neural-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '24px' }}>
+                            01. Memory Layer
+                        </span>
+                        <h2 className="text-h1" style={{ marginBottom: '32px' }}>
+                            History is not static.<br/>
+                            It is a <span style={{ textDecoration: 'underline', textDecorationColor: 'var(--color-neural-accent)' }}>living signal</span>.
+                        </h2>
+                        <p style={{ fontSize: '1.125rem', lineHeight: 1.7, marginBottom: '40px' }}>
+                            We have reconstructed the Chambal Valley not as a list of sites, but as a connected neural network of culture, geology, and stories.
                         </p>
-                    </div>
-                    <div style={{ gridColumn: '7 / span 6' }}>
-                        <div className="glass-panel" style={{ height: '500px', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-warm)' }}>
-                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(200, 163, 89, 0.1), transparent)' }} />
-                             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-                                 <Layers size={64} color="var(--color-gold)" style={{ opacity: 0.5, marginBottom: '24px' }} />
-                                 <div style={{ fontWeight: 700, fontSize: '2rem', color: 'var(--color-charcoal)' }}>+400m Depth</div>
-                                 <div style={{ color: 'var(--color-text-secondary)' }}>Lidar Point Cloud Quality</div>
+                     </div>
+                     <div style={{ gridColumn: '7 / span 6' }}>
+                         <div className="neural-node" style={{ height: '500px', position: 'relative', overflow: 'hidden' }}>
+                             <img src={navigatorHero} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.1 }} />
+                             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                 <motion.div 
+                                    animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                    style={{ width: '200px', height: '200px', borderRadius: '50%', border: '1px solid var(--color-neural-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                 >
+                                     <div style={{ width: '10px', height: '10px', background: 'var(--color-neural-accent)', borderRadius: '50%' }} />
+                                 </motion.div>
                              </div>
-                        </div>
-                    </div>
+                             <div style={{ position: 'absolute', bottom: '32px', left: '32px' }}>
+                                 <div style={{ fontWeight: 700 }}>Node: Bateshwar</div>
+                                 <div style={{ fontSize: '0.8rem', opacity: 0.6 }}>Signal Strength: 98%</div>
+                             </div>
+                         </div>
+                     </div>
                 </div>
             </div>
         </motion.section>
     );
 };
 
-const ExplorationScene = ({ progress, navigate }: { progress: any, navigate: any }) => {
-    // Active range: 0.5 to 0.8
+const ExplorationScene = ({ progress }: { progress: any }) => {
+    // 0.5 -> 0.8
     const opacity = useTransform(progress, [0.45, 0.55, 0.75, 0.85], [0, 1, 1, 0]);
-    const x = useTransform(progress, [0.45, 0.55], [100, 0]);
+    const x = useTransform(progress, [0.45, 0.55], [50, 0]);
     const pointerEvents = useTransform(progress, (v: number) => (v > 0.5 && v < 0.8 ? 'auto' : 'none'));
+    const navigate = useNavigate();
+
+    const modules = [
+        { title: "Expedition", desc: "Physical journey planning.", icon: Compass, link: "/book" },
+        { title: "AR Portal", desc: "Immersive object analysis.", icon: Box, link: "/antigravity" },
+        { title: "Deep Scan", desc: "Full heritage index.", icon: Layers, link: "/explore" }
+    ];
 
     return (
-         <motion.section style={{ height: '100%', width: '100%', position: 'absolute', inset: 0, opacity, x, pointerEvents, display: 'flex', alignItems: 'center', background: 'var(--color-bg-body)' }}>
+        <motion.section style={{ height: '100%', position: 'absolute', inset: 0, opacity, x, pointerEvents, background: 'var(--color-bg-body)', display: 'flex', alignItems: 'center' }}>
             <div className="container">
                 <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-                     <h2 className="text-display" style={{ fontSize: '4rem', color: 'var(--color-charcoal)' }}>Active Sectors</h2>
+                    <h2 className="text-display" style={{ fontSize: '3.5rem' }}>Select Pathway</h2>
                 </div>
                 
                 <div className="grid-12">
-                     {[
-                         { icon: Compass, label: "Expedition Mode", text: "Walk the valley.", link: "/book" },
-                         { icon: Box, label: "Object Viewer", text: "Inspect artifacts in 3D.", link: "/antigravity", highlight: true },
-                         { icon: Shield, label: "Secure Access", text: "Vault safety protocols.", link: "/explore" }
-                     ].map((item, i) => (
-                         <div key={i} style={{ gridColumn: 'span 4' }}>
-                             <motion.div 
-                                whileHover={{ y: -10, scale: 1.02 }}
-                                className="heritage-tile"
-                                style={{ 
-                                    padding: '40px', 
-                                    height: '400px', 
-                                    display: 'flex', 
-                                    flexDirection: 'column', 
-                                    justifyContent: 'space-between',
-                                    background: item.highlight ? 'var(--color-charcoal)' : 'rgba(255,255,255,0.5)'
-                                }}
-                             >
-                                 <item.icon size={32} color={item.highlight ? 'var(--color-gold)' : 'var(--color-charcoal)'} />
-                                 <div>
-                                     <h3 style={{ fontSize: '1.5rem', color: item.highlight ? 'white' : 'var(--color-charcoal)', marginBottom: '8px' }}>{item.label}</h3>
-                                     <p style={{ color: item.highlight ? 'rgba(255,255,255,0.6)' : 'var(--color-text-secondary)' }}>{item.text}</p>
-                                 </div>
-                                 <button onClick={() => navigate(item.link)} style={{ alignSelf: 'flex-start', background: 'transparent', border: 'none', color: item.highlight ? 'var(--color-gold)' : 'var(--color-charcoal)', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                     Launch <ArrowRight size={16} />
-                                 </button>
-                             </motion.div>
-                         </div>
-                     ))}
+                    {modules.map((m, i) => (
+                        <div key={i} style={{ gridColumn: 'span 4' }}>
+                            <motion.div 
+                                className="neural-node"
+                                whileHover={{ scale: 1.02, y: -5 }}
+                                style={{ height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', cursor: 'pointer' }}
+                                onClick={() => navigate(m.link)}
+                            >
+                                <div style={{ width: '64px', height: '64px', background: 'rgba(26,26,26,0.03)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                                    <m.icon size={28} color="var(--color-text-primary)" />
+                                </div>
+                                <h3 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>{m.title}</h3>
+                                <p style={{ fontSize: '1rem', opacity: 0.7, marginBottom: '32px' }}>{m.desc}</p>
+                                <span style={{ fontSize: '0.875rem', fontWeight: 600, borderBottom: '1px solid var(--color-neural-text)' }}>Access Module</span>
+                            </motion.div>
+                        </div>
+                    ))}
                 </div>
             </div>
-         </motion.section>
+        </motion.section>
     );
 };
 
-const ImpactScene = ({ progress, navigate }: { progress: any, navigate: any }) => {
-    // Active range: 0.8 to 1.0
+const MeaningScene = ({ progress }: { progress: any }) => {
+    // 0.8 -> 1.0
     const opacity = useTransform(progress, [0.75, 0.85], [0, 1]);
-    const scale = useTransform(progress, [0.75, 0.85], [1.1, 1]);
+    const scale = useTransform(progress, [0.75, 0.85], [0.95, 1]);
     const pointerEvents = useTransform(progress, (v: number) => (v > 0.8 ? 'auto' : 'none'));
+    const navigate = useNavigate();
 
     return (
-        <motion.section style={{ height: '100%', width: '100%', position: 'absolute', inset: 0, opacity, scale, pointerEvents, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-charcoal)' }}>
-            <div className="container" style={{ textAlign: 'center', color: 'white' }}>
-                 <div style={{ marginBottom: '40px' }}>
-                    <Zap size={64} color="var(--color-gold)" style={{ margin: '0 auto 24px auto' }} />
-                    <h2 className="text-display" style={{ fontSize: '5rem', color: 'white' }}>System Ready.</h2>
-                    <p style={{ fontSize: '1.5rem', color: 'rgba(255,255,255,0.6)', maxWidth: '600px', margin: '0 auto' }}>
-                        The Heritage OS is waiting for your input.
-                    </p>
-                 </div>
-                 <button onClick={() => navigate('/register')} className="btn-cinematic" style={{ background: 'var(--color-gold)', color: 'var(--color-charcoal)', padding: '24px 64px', fontSize: '1.25rem' }}>
-                     Initialize Session
-                 </button>
+        <motion.section style={{ height: '100%', position: 'absolute', inset: 0, opacity, scale, pointerEvents, background: 'var(--color-neural-text)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="container" style={{ textAlign: 'center' }}>
+                <Zap size={48} color="var(--color-neural-accent)" style={{ margin: '0 auto 32px auto' }} />
+                <h2 className="text-display" style={{ color: 'white', marginBottom: '24px' }}>
+                    System Status: <span style={{ color: 'var(--color-neural-accent)' }}>Waiting</span>
+                </h2>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.25rem', marginBottom: '48px', maxWidth: '600px', margin: '0 auto 48px auto' }}>
+                    The neural link is established. Initialize your session to begin data persistence.
+                </p>
+                <button onClick={() => navigate('/book')} className="btn-neural" style={{ background: 'white', color: 'black' }}>
+                    Initialize Session <ArrowRight size={18} />
+                </button>
             </div>
-            <div style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+             <div style={{ position: 'absolute', bottom: 0, width: '100%' }}>
                 <Footer />
             </div>
         </motion.section>

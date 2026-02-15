@@ -1,82 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* --- 🏛️ HERITAGE AI-ADAPTIVE SYSTEM (FUTURE FORWARD) --- */
+  /* --- 🧠 NEURAL HERITAGE INTERFACE v1.0 --- */
   
-  /* Core Palette (Future Sandstone) */
-  --color-sandstone: #F9F7F2;    /* Warm Organic Background */
-  --color-charcoal: #1A1A1A;     /* Deep Editorial Text */
-  --color-gold: #C8A359;         /* Antique Gold Accents */
+  /* 1. Neural Palette (Cognitive warmth) */
+  --color-neural-bg: #F9F7F2;      /* Sandstone: Calm base */
+  --color-neural-text: #1A1A1A;    /* Charcoal: High contrast focus */
+  --color-neural-accent: #C8A359;  /* Gold: Signal / Attention */
+  --color-neural-void: #050505;    /* Deep space for AR */
   
-  /* Semantic Mappings */
-  --color-primary: var(--color-charcoal);
-  --color-accent: var(--color-gold);
-  --color-bg-body: var(--color-sandstone);
+  /* Semantic Aliases */
+  --color-bg-body: var(--color-neural-bg);
+  --color-text-primary: var(--color-neural-text);
+  --color-text-secondary: rgba(26, 26, 26, 0.65);
+  --color-border-subtle: rgba(26, 26, 26, 0.08);
   
-  /* AI-Adaptive Materials (Living Light) */
-  --color-surface-glass: rgba(255, 255, 255, 0.4);
-  --color-surface-glass-hover: rgba(255, 255, 255, 0.6);
-  --backdrop-blur: blur(24px);
+  /* 2. Glass Materials (VisionOS / Google X) */
+  --glass-surface: rgba(255, 255, 255, 0.6);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+  --glass-blur: blur(20px);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
   
-  /* Typography Scale */
-  --font-display: 'Playfair Display', serif;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  /* 3. Cognitive Motion (Neural Easing) */
+  /* Think: Synapse firing - quick activation, slow decay */
+  --ease-neural: cubic-bezier(0.2, 0, 0, 1); 
+  --duration-pulse: 800ms;
+  --duration-flow: 1200ms;
   
-  --text-display: clamp(4rem, 10vw, 8rem);     /* Cinematic Headlines */
-  --text-h1: clamp(3rem, 6vw, 5rem);           /* Section Headers */
-  --text-h2: clamp(1.5rem, 3vw, 2.5rem);       /* Editorial Subheaders */
-  --text-body: 1.125rem;                       /* 18px Base Readability */
+  /* 4. Spatial Grid (8px Rhythm) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-12: 96px;
   
-  /* Grid & Spacing Primitives (8px System) */
-  --grid-columns: 12;
-  --grid-gap: 24px;
   --container-max: 1440px;
+  --grid-gap: 24px;
   
-  --space-unit: 8px;
-  --space-8: 8px;
-  --space-16: 16px;
-  --space-24: 24px;
-  --space-32: 32px;
-  --space-64: 64px;
-  --space-120: 160px;
+  /* 5. Typography (Editorial) */
+  --font-display: 'Playfair Display', serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
   
-  /* Cinematic Elevation (Organic) */
-  --shadow-warm: 0 20px 60px -10px rgba(200, 163, 89, 0.15); /* Warm Glow */
-  --shadow-portal: 0 40px 100px -20px rgba(0, 0, 0, 0.1);
-  --border-cinematic: 1px solid rgba(26, 26, 26, 0.05);
-  --border-subtle: 1px solid rgba(26, 26, 26, 0.02);
+  --h-display: clamp(3.5rem, 8vw, 6rem);
+  --h-title: clamp(2.5rem, 5vw, 3.5rem);
+  --h-section: clamp(1.5rem, 3vw, 2.25rem);
+  --text-body: 1.125rem; /* 18px */
   
-  /* Inner Lighting */
-  --highlight-inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
-  
-  /* Radii */
-  --radius-portal: 48px;
-  --radius-standard: 32px;
-  --radius-interactive: 120px;
-
-  /* --- SPATIAL OS PHYSICS --- */
-  --z-bedrock: -10;
-  --z-ground: 0;
-  --z-float: 10;
-  --z-hud: 100;
-  
-  --scale-inspect: 1.05;
-  --perspective-deep: 1000px;
-  
-  --ease-cam: cubic-bezier(0.45, 0, 0.55, 1); /* Cinema Camera Ease */
-
-  /* Legacy Compat */
-  --color-text-primary: var(--color-charcoal);
-  --color-text-secondary: rgba(26, 26, 26, 0.6);
-  --color-text-tertiary: rgba(26, 26, 26, 0.4);
-  --color-text-inverse: #FFFFFF;
-  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
-  --duration-short: 300ms;
-  --duration-medium: 600ms;
-  --duration-long: 1000ms;
+  /* 6. Neural Depth (Z-Axis) */
+  --layer-base: 0;
+  --layer-float: 10;
+  --layer-overlay: 100;
+  --layer-hud: 1000;
 }
 
-/* --- GLOBAL RESET --- */
+/* --- RESET & BASE --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -84,8 +63,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -97,149 +76,101 @@ body {
   overflow-x: hidden;
 }
 
-/* --- TYPOGRAPHY UTILITIES --- */
-h1, h2, h3, h4, h5, h6 {
+/* --- TYPOGRAPHY --- */
+h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 600; /* Regular weight for elegance */
-  color: var(--color-text-primary);
-  line-height: var(--leading-tight);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 p {
-  max-width: 65ch; /* Optimal reading length */
+  max-width: 65ch;
   color: var(--color-text-secondary);
 }
 
-/* --- GRID SYSTEM --- */
+.text-display { font-size: var(--h-display); }
+.text-h1 { font-size: var(--h-title); }
+.text-h2 { font-size: var(--h-section); }
+
+/* --- LAYOUT UTILITIES --- */
 .container {
-  max-width: var(--container-width);
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--space-4); /* 32px gutters */
+  padding: 0 var(--space-4);
 }
 
 .grid-12 {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--column-gap);
+  gap: var(--grid-gap);
 }
 
-/* --- COMPONENT TOKENS --- */
+/* --- NEURAL COMPONENTS --- */
 
-/* 1. Cinematic Buttons (Product Level) */
-.btn-cinematic {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 20px 40px;
-  border-radius: var(--radius-interactive);
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: -0.01em;
-  transition: all var(--duration-medium) var(--ease-out);
-  cursor: pointer;
-  border: none;
-  white-space: nowrap;
+/* 1. Neural Nodes (Cards) */
+.neural-node {
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 24px;
+  padding: var(--space-4);
+  transition: transform 0.6s var(--ease-neural), box-shadow 0.6s var(--ease-neural);
 }
 
-.btn-primary {
-  background: var(--color-charcoal);
-  color: #FFF;
-  box-shadow: var(--shadow-warm);
-}
-
-.btn-primary:hover {
-  background: #000;
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid rgba(26, 26, 26, 0.1);
-  color: var(--color-charcoal);
-}
-
-.btn-outline:hover {
-  border-color: var(--color-charcoal);
-  background: rgba(26, 26, 26, 0.02);
-}
-
-/* 2. Glass Panels (VisionOS) */
-.glass-panel {
-  background: var(--color-surface-glass);
-  backdrop-filter: var(--backdrop-blur);
-  -webkit-backdrop-filter: var(--backdrop-blur);
-  border: var(--border-cinematic);
-  box-shadow: var(--shadow-warm);
-  border-radius: var(--radius-standard);
-}
-
-/* 3. Heritage Tiles (Living Portals) */
-.heritage-tile {
-  background: var(--color-surface-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: var(--border-subtle);
-  border-top: var(--border-cinematic);
-  box-shadow: var(--shadow-warm), var(--highlight-inner);
-  border-radius: var(--radius-standard);
-  overflow: hidden;
-  transition: transform var(--duration-medium) var(--ease-out), background var(--duration-medium) var(--ease-out), box-shadow var(--duration-medium) var(--ease-out);
-}
-
-.heritage-tile:hover {
-  transform: translateY(-8px) scale(1.02);
-  background: var(--color-surface-glass-hover);
-  box-shadow: var(--shadow-portal), var(--highlight-inner);
+.neural-node:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(200, 163, 89, 0.15); /* Gold glow */
   border-color: rgba(200, 163, 89, 0.3);
 }
 
+/* 2. Synapse Buttons */
+.btn-neural {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: var(--color-neural-text);
+  color: white;
+  border-radius: 100px;
+  border: none;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.4s var(--ease-neural);
+}
+
+.btn-neural:hover {
+  background: black;
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.btn-neural-ghost {
+  background: transparent;
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  color: var(--color-neural-text);
+  padding: 14px 28px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-neural-ghost:hover {
+  border-color: var(--color-neural-text);
+  background: rgba(26, 26, 26, 0.02);
+}
+
 /* --- UTILITIES --- */
-.text-max-width {
-  max-width: 640px;
+.section-pad {
+  padding: 120px 0;
 }
 
-.editorial-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--grid-gap);
-  align-items: start;
-}
-
-.text-gradient-gold {
-  background: linear-gradient(135deg, var(--color-gold-muted) 0%, var(--color-gold) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-}
-
-.section-editorial {
-  padding: var(--space-120) 0;
-}
-
-/* --- MOTION PRIMITIVES --- */
-.fade-up-enter {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp var(--duration-long) var(--ease-out) forwards;
-}
-
-@keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- MEDIA QUERIES --- */
+/* Mobile */
 @media (max-width: 900px) {
   .grid-12 {
     grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-  
-  :root {
-    --space-section: 64px;
-    --container-width: 100%;
   }
 }

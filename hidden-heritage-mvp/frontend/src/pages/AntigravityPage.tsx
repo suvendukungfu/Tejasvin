@@ -1,13 +1,23 @@
+import { useState, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AntigravityScene from '../components/AntigravityScene';
-import { ArrowLeft, Cpu, Activity, ShieldCheck, Database } from 'lucide-react';
-import { motion } from 'framer-motion';
+// Lazy load the heavy 3D scene
+const AntigravityScene = lazy(() => import('../components/AntigravityScene'));
+import { ArrowLeft, Cpu, Globe, Loader as LoaderIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AntigravityPage = () => {
     const navigate = useNavigate();
+    const [selectedPortal, setSelectedPortal] = useState('bateshwar');
+    const [launching, setLaunching] = useState(false);
+
+    const handleLaunch = () => {
+        setLaunching(true);
+        // Simulate launch sequence length
+        setTimeout(() => setLaunching(false), 3000);
+    };
 
     return (
-        <div style={{ width: '100vw', height: '100vh', position: 'relative', background: 'var(--color-charcoal)', overflow: 'hidden' }}>
+        <div style={{ width: '100vw', height: '100vh', position: 'relative', background: '#020202', overflow: 'hidden', color: 'white' }}>
             
             {/* --- IMMERSIVE HUD OVERLAY --- */}
             
@@ -29,10 +39,13 @@ const AntigravityPage = () => {
                         fontSize: '0.75rem',
                         fontWeight: 800,
                         letterSpacing: '0.15em',
-                        textTransform: 'uppercase'
+                        textTransform: 'uppercase',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px'
                     }}
                 >
-                    <ArrowLeft size={16} /> Disconnect from Portal
+                    <ArrowLeft size={16} /> Disconnect
                 </motion.button>
 
                 <motion.div 
@@ -44,35 +57,87 @@ const AntigravityPage = () => {
                         <Cpu size={14} color="var(--color-accent)" /> 
                         <span>Neural Link: Stable</span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Activity size={14} color="#4ADE80" /> 
-                        <span>Latency: 12ms</span>
-                    </div>
                 </motion.div>
             </div>
 
-            {/* Side Readouts: Archival Data */}
-            <div style={{ position: 'absolute', left: '40px', bottom: '100px', zIndex: 50, color: 'white', maxWidth: '300px' }}>
+            {/* Side Readouts: Portal Selector */}
+            <div style={{ position: 'absolute', left: '40px', bottom: '100px', zIndex: 50, color: 'white', maxWidth: '350px' }}>
                  <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
                 >
-                    <div style={{ fontSize: '0.7rem', color: 'var(--color-gold)', fontWeight: 800, marginBottom: '1rem', letterSpacing: '0.2em' }}>HERITAGE HUD v5.0</div>
-                    <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', marginBottom: '1.5rem', lineHeight: 1.1 }}>The Spatial Archive.</h1>
-                    <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, marginBottom: '2rem' }}>
-                        You are currently viewing a high-fidelity digital twin of a Bateshwar pillar fragment. Use your neural bridge to manipulate the object in 3D space.
-                    </p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>
-                            <ShieldCheck size={16} color="var(--color-accent)" /> Authenticated Site: Gwalior Region
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>
-                            <Database size={16} color="var(--color-accent)" /> Data Source: Photogrammetry Scan #812
-                        </div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--color-gold)', fontWeight: 800, marginBottom: '1rem', letterSpacing: '0.2em' }}>ANTIGRAVITY ENGINE v5.0</div>
+                    <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', marginBottom: '1.5rem', lineHeight: 1.1 }}>Command Center.</h1>
+                    
+                    <div style={{ display: 'flex', gap: '12px', marginBottom: '2rem' }}>
+                         {['bateshwar', 'mitaoli', 'padavali'].map((portal) => (
+                             <button 
+                                key={portal}
+                                onClick={() => setSelectedPortal(portal)}
+                                style={{ 
+                                    padding: '12px 16px', 
+                                    background: selectedPortal === portal ? 'var(--color-gold)' : 'rgba(255,255,255,0.1)', 
+                                    color: selectedPortal === portal ? 'black' : 'white',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 700,
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.1em'
+                                }}
+                             >
+                                 {portal}
+                             </button>
+                         ))}
                     </div>
+
+                    <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, marginBottom: '2rem' }}>
+                        Ready to simulate 1:1 scale environment for <span style={{ color: 'white' }}>{selectedPortal.toUpperCase()}</span>. Ensure your viewport is calibrated.
+                    </p>
+
+                    <button 
+                        onClick={handleLaunch}
+                        style={{ 
+                            width: '100%', 
+                            padding: '20px', 
+                            background: 'white', 
+                            color: 'black', 
+                            border: 'none', 
+                            borderRadius: '12px', 
+                            fontSize: '0.9rem', 
+                            fontWeight: 700, 
+                            letterSpacing: '0.1em',
+                            textTransform: 'uppercase',
+                            cursor: 'pointer',
+                            boxShadow: '0 0 30px rgba(255,255,255,0.2)'
+                        }}
+                    >
+                        Initialize Simulation
+                    </button>
                 </motion.div>
             </div>
+
+            {/* Launch Overlay */}
+            <AnimatePresence>
+                {launching && (
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, background: 'black', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}
+                    >
+                         <motion.div 
+                            animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} 
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                         >
+                            <Globe size={64} color="var(--color-gold)" />
+                        </motion.div>
+                         <div style={{ marginTop: '24px', letterSpacing: '0.3em', fontSize: '0.8rem', color: 'var(--color-gold)' }}>GENERATING WORLD...</div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Corner Scan Line Decorations */}
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', border: '1px solid rgba(255,255,255,0.05)', zIndex: 10 }} />
@@ -80,7 +145,13 @@ const AntigravityPage = () => {
             <div style={{ position: 'absolute', top: '20px', right: '20px', width: '1px', height: '100px', background: 'rgba(255,255,255,0.2)', zIndex: 10 }} />
 
             {/* 3D Scene */}
-            <AntigravityScene />
+            <Suspense fallback={
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.3)' }}>
+                    <LoaderIcon className="animate-spin" />
+                </div>
+            }>
+                <AntigravityScene />
+            </Suspense>
 
             {/* Background Grain/Noise Overlay */}
             <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(https://grainy-gradients.vercel.app/noise.svg)', opacity: 0.05, pointerEvents: 'none', zIndex: 5 }} />

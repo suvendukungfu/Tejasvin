@@ -9,7 +9,7 @@ export const createPaymentIntent = async (req: any, res: Response) => {
         // In a real app, call Stripe API here.
         // For MVP, we simulate success.
 
-        console.log(`Creating payment intent for User ${userId}, Trip ${tripId}, Amount: ${amount}`);
+
 
         // Mock response
         const mockIntent = {

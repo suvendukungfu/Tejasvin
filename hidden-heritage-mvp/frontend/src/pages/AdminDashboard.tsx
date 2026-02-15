@@ -3,6 +3,7 @@ import NavBar from '../components/NavBar';
 import axios from 'axios';
 import { LayoutDashboard, Users, CreditCard, AlertCircle, CheckCircle, Trash2, TrendingUp, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
+import MapPreview from '../components/MapPreview';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState<any>(null);
@@ -87,6 +88,29 @@ const AdminDashboard = () => {
                         icon={<AlertCircle size={20} />}
                         accent="var(--color-warning)"
                     />
+                </div>
+
+                <div style={{ marginBottom: '2rem' }}>
+                    <div className="glass-panel" style={{ 
+                        padding: '0', 
+                        height: '400px', 
+                        borderRadius: '32px',
+                        overflow: 'hidden',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        boxShadow: '0 30px 60px -12px rgba(0,0,0,0.25)',
+                        position: 'relative'
+                    }}>
+                        <div style={{ position: 'absolute', top: 20, left: 20, zIndex: 10, display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', padding: '8px 16px', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <div style={{ width: '8px', height: '8px', background: 'var(--color-success)', borderRadius: '50%', boxShadow: '0 0 10px var(--color-success)' }}></div>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', color: 'white' }}>LIVE FIELD OPERATIONS</span>
+                        </div>
+                        <MapPreview sites={[
+                            { id: 101, name: "Agent Alpha", latitude: 26.2183, longitude: 78.1828, type: "Survey Team", image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Gwalior_Fort_view.jpg/640px-Gwalior_Fort_view.jpg" },
+                            { id: 102, name: "Agent Bravo", latitude: 26.61, longitude: 78.33, type: "Restoration Crew", image_url: "https://upload.wikimedia.org/wikipedia/commons/8/87/Bateshwar_Hindu_temples_Morena_Madhya_Pradesh_9.jpg" },
+                            { id: 103, name: "Drone Unit 4", latitude: 26.43, longitude: 78.22, type: "Aerial Recon", image_url: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg" },
+                             { id: 104, name: "Logistics Convoy", latitude: 26.20, longitude: 78.15, type: "Transport", image_url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Teli_Ka_Mandir.jpg" }
+                        ]} />
+                    </div>
                 </div>
 
                 <div className="grid-12" style={{ alignItems: 'start' }}>

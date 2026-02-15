@@ -1,25 +1,28 @@
-# Hidden Heritage | The Digital Archive
+# Hidden Heritage | Neural Heritage Interface
 
-> **Status**: v1.0 Production Candidate (Google UX / Cinematic Sandstone)
+> **Status**: v1.0.0 Gold Master (Production Ready)
 
-Hidden Heritage is an immersive digital platform dedicated to preserving and showcasing India's forgotten historical sites. It combines rigorous historical curation with WebXR technology to bring the past to life.
+Hidden Heritage has been reimagined as a **Neural Heritage Interface**—a cognitive, spatial computing platform that treats history as a living signal. It moves beyond traditional web design into an attention-guided narrative experience.
 
 ![Hero](/public/hero-preview.jpg)
 
-## 🌟 Key Features
+## 🧠 Core Intelligence
 
-### 1. Cinematic Storytelling
+### 1. Neural Navigation
 
-- **Immersive Narratives**: A 5-scene scrolling journey on the home page.
-- **Editorial Layouts**: Split-screen designs inspired by high-end travel journalism.
-- **Motion Design**: "Fade + Up" entrance animations and parallax depth.
+- **Contextual Awareness**: The `NavBar` dissolves and reconstructs itself based on user focus, mimicking a heads-up display.
+- **Cognitive Flow**: `Home.tsx` uses a "Signal -> Memory -> Exploration" narrative structure, orchestrated by custom neural easing curves (`cubic-bezier(0.2, 0, 0, 1)`).
 
-### 2. The Design System (Cinematic Sandstone)
+### 2. Spatial Operating System
 
-- **Palette**: Deep charcoal (`#1A1A1A`), Antique Gold (`#C8A359`), and Product White (`#FAFAFA`).
-- **Typography**: `Playfair Display` for emotive headings, `Inter` for clean UI.
-- **Grid**: A strict 12-column grid system with 8px vertical rhythm.
-- **Glassmorphism**: Frosted glass panels for modern, layered depth.
+- **Holographic Depth**: Site details (`RegionDetail`, `SiteDetail`) float as AR-style HUDs over cinematic backgrounds.
+- **Antigravity Engine**: A dedicated WebXR portal (`AntigravityPage`) for 1:1 artifact simulation.
+
+### 3. The "Future Sandstone" Design System
+
+- **Palette**: A calm, intellectual trio of `#F9F7F2` (Sandstone), `#1A1A1A` (Charcoal), and `#C8A359` (Gold).
+- **Typography**: Editorial authority via `Playfair Display` and `Inter`.
+- **Motion**: Physics-based spring animations for a weightless feel.
 
 ### 3. Functional Modules
 
