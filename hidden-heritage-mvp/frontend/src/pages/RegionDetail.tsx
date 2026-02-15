@@ -61,7 +61,7 @@ const RegionDetail = () => {
         <motion.div 
             ref={containerRef}
             className="min-h-screen" 
-            style={{ background: 'var(--color-bg-body)', position: 'relative' }}
+            style={{ background: 'var(--color-spatial-bg)', position: 'relative' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
@@ -71,7 +71,7 @@ const RegionDetail = () => {
              {/* --- IMMERSIVE BACKGROUND LAYER --- */}
              <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
                 <motion.div style={{ height: '100%', width: '100%', y: yBg, opacity: opacityBg }}>
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,10,10,0.8), rgba(10,10,10,0.4))', zIndex: 1 }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(18,18,18,0.9), rgba(18,18,18,0.4))', zIndex: 1 }} />
                     <img src={gwaliorFort} alt="Background" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </motion.div>
              </div>
@@ -99,19 +99,35 @@ const RegionDetail = () => {
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    style={{ marginBottom: '120px' }}
+                    style={{ marginBottom: '80px' }}
                 >
                     <h1 className="text-display" style={{ fontSize: '6rem', color: 'white', marginBottom: '24px' }}>
                         {regionName}
                     </h1>
-                    <div style={{ display: 'flex', gap: '32px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)' }}>
+                    <div style={{ display: 'flex', gap: '32px', marginBottom: '48px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-spatial-accent)' }}>
                             <Layers size={20} />
                             <span style={{ fontWeight: 700, letterSpacing: '0.05em' }}>{sites.length} Active Sites</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.6)' }}>
                             <Info size={20} />
                             <span style={{ fontWeight: 500 }}>Historical Density: High</span>
+                        </div>
+                    </div>
+
+                    {/* Reading Mode Column */}
+                    <div className="grid-12">
+                        <div style={{ gridColumn: 'span 6', paddingRight: '40px' }}>
+                             <p style={{ 
+                                fontSize: '1.25rem', 
+                                lineHeight: 1.8, 
+                                color: 'rgba(255,255,255,0.9)', 
+                                fontFamily: 'var(--font-ui)',
+                                borderLeft: '1px solid var(--color-spatial-accent)',
+                                paddingLeft: '24px'
+                            }}>
+                                Enter a region where history is not just remembered, but physically felt. This sector contains high-fidelity neural scans of architectural marvels, waiting to be decoded.
+                            </p>
                         </div>
                     </div>
                 </motion.div>
@@ -133,7 +149,7 @@ const RegionDetail = () => {
                             onClick={() => navigate(`/site/${site.slug}`)}
                         >
                             <motion.div 
-                                whileHover={{ scale: 1.03, backgroundColor: 'rgba(255,255,255,0.15)' }}
+                                whileHover={{ scale: 1.03, backgroundColor: 'rgba(255,255,255,0.1)' }}
                                 style={{ 
                                     background: 'rgba(255, 255, 255, 0.05)', 
                                     backdropFilter: 'blur(16px)', 
@@ -150,7 +166,7 @@ const RegionDetail = () => {
                                 <div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
                                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '50%' }}>
-                                            <Box size={20} color="var(--color-gold)" />
+                                            <Box size={20} color="var(--color-spatial-accent)" />
                                         </div>
                                          <span style={{ fontFamily: 'monospace', color: 'rgba(255,255,255,0.4)' }}>REF-{site.id.toString().padStart(3, '0')}</span>
                                     </div>
@@ -159,7 +175,7 @@ const RegionDetail = () => {
                                         {site.description}
                                     </p>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-spatial-accent)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                                     Init Scan <ArrowRight size={14} />
                                 </div>
                             </motion.div>

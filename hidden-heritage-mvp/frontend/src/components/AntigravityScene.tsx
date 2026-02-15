@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Stars, Text, Float } from '@react-three/drei';
 import { XR, createXRStore } from '@react-three/xr';
 import * as THREE from 'three';
-import { Maximize } from 'lucide-react';
+import { ScanFace } from 'lucide-react';
 
 const store = createXRStore()
 
@@ -25,11 +25,11 @@ const PlaceholderModel = (props: any) => {
         onPointerOut={() => setHover(false)}>
         <dodecahedronGeometry args={[0.8, 0]} />
         <meshStandardMaterial 
-            color={hovered ? '#D4AF37' : '#C8A359'} 
+            color={hovered ? '#C8A359' : '#F9F7F2'} 
             roughness={0.1} 
-            metalness={0.8} 
-            emissive={hovered ? '#D4AF37' : 'black'}
-            emissiveIntensity={0.5}
+            metalness={0.9} 
+            emissive={hovered ? '#C8A359' : 'black'}
+            emissiveIntensity={0.2}
         />
         </mesh>
     </Float>
@@ -38,30 +38,28 @@ const PlaceholderModel = (props: any) => {
 
 const AntigravityScene: React.FC = () => {
     return (
-        <div style={{ width: '100vw', height: '100vh', background: 'var(--color-charcoal)' }}>
+        <div style={{ width: '100vw', height: '100vh', background: 'var(--color-spatial-void)' }}>
              <button 
                 onClick={() => store.enterAR()} 
-                className="btn-cinematic btn-primary"
+                className="btn-neural"
                 style={{ 
                     position: 'absolute', 
                     zIndex: 10, 
                     bottom: '64px', 
                     left: '50%', 
                     transform: 'translateX(-50%)',
-                    background: 'var(--color-gold)',
-                    color: 'var(--color-charcoal)',
-                    fontWeight: 800,
-                    letterSpacing: '0.1em',
-                    padding: '20px 48px'
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px'
                 }}
              >
-                <Maximize size={18} /> ENTER PORTAL
+                <ScanFace size={20} /> INITIALIZE AR PORTAL
              </button>
 
             <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
                 <XR store={store}>
                     {/* Atmospheric Lighting */}
-                    <ambientLight intensity={0.15} />
+                    <ambientLight intensity={0.2} />
                     <spotLight position={[10, 15, 10]} angle={0.3} penumbra={1} intensity={2} color="#C8A359" />
                     <pointLight position={[-10, -5, -5]} intensity={0.5} color="#F9F7F2" />
                     
@@ -78,12 +76,12 @@ const AntigravityScene: React.FC = () => {
                             anchorY="middle"
                             letterSpacing={0.2}
                         >
-                            THE DIGITAL PORTAL
+                            SPATIAL ARCHIVE
                         </Text>
                     </Float>
                     
                     <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-                    <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.3} />
+                    <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
                 </XR>
             </Canvas>
         </div>

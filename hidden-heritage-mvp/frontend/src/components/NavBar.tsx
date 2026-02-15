@@ -1,234 +1,133 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Compass, Menu, X, Circle, ArrowRight } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { Compass, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const NavBar = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-
-    // Safely use auth context
+    
+    // Auth hook
     let auth: any = {};
-    try {
-        auth = useAuth();
-    } catch (e) {
-        // Fallback
-    }
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
-    const navLinks = [
-        { name: 'Signal', path: '/' },
-        { name: 'Atlas', path: '/explore' },
-        { name: 'Log', path: '/book' },
-        { name: 'Context', path: '/about' }
-    ];
+    try { auth = useAuth(); } catch (e) {}
 
     const isActive = (path: string) => location.pathname === path;
 
     return (
         <>
-            <motion.nav 
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                style={{ 
+            <motion.nav
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1.2, ease: "circOut" }}
+                style={{
                     position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    padding: scrolled ? '20px' : '40px', 
+                    top: '24px',
+                    left: '50%',
+                    transform: 'translateX(-50%)', // Centered pill
                     zIndex: 1000,
-                    transition: 'padding 0.4s var(--ease-neural)',
-                    pointerEvents: 'none' // Allow clicks through to scene
+                    x: '-50%' // Framer motion transform adjustment
                 }}
             >
-                <div 
-                    className="container" 
-                    style={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
-                        alignItems: 'center' 
-                    }}
-                >
-                    {/* Neural Brand Pill */}
-                    <motion.div
-                        onClick={() => navigate('/')}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        style={{
-                            pointerEvents: 'auto',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px',
-                            background: scrolled ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.0)',
-                            backdropFilter: scrolled ? 'blur(20px)' : 'none',
-                            padding: '8px 16px',
-                            borderRadius: '100px',
-                            border: scrolled ? '1px solid rgba(0,0,0,0.05)' : '1px solid transparent',
-                            transition: 'background 0.4s, border 0.4s'
-                        }}
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: 'var(--material-glass)',
+                    backdropFilter: 'var(--material-blur)',
+                    WebkitBackdropFilter: 'var(--material-blur)',
+                    padding: '8px 8px 8px 16px', // Balanced padding
+                    borderRadius: '100px',
+                    border: 'var(--material-glass-border)',
+                    boxShadow: 'var(--material-shadow-float)',
+                }}>
+                    
+                    {/* Brand Signet */}
+                    <div 
+                        onClick={() => navigate('/')} 
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginRight: '8px' }}
                     >
-                        <Compass size={24} color="var(--color-neural-accent)" strokeWidth={1.5} />
-                        <span style={{
-                            fontFamily: 'var(--font-display)',
-                            fontWeight: 600,
-                            fontSize: '1.1rem',
-                            color: 'var(--color-text-primary)',
-                            opacity: scrolled ? 1 : 0.9,
-                        }}>Hidden Heritage</span>
-                    </motion.div>
+                        <Compass size={20} color="var(--color-spatial-accent)" strokeWidth={2} />
+                        <span style={{ 
+                            fontFamily: 'var(--font-display)', 
+                            fontWeight: 600, 
+                            fontSize: '1rem', 
+                            letterSpacing: '-0.01em',
+                            color: 'var(--color-spatial-text)' 
+                        }}>
+                            Hidden Heritage
+                        </span>
+                    </div>
 
-                    {/* Desktop Contextual Nav (Magnetic) */}
-                    <div className="desktop-menu" style={{ 
-                        pointerEvents: 'auto',
-                        background: 'rgba(255,255,255,0.6)',
-                        backdropFilter: 'blur(20px)',
-                        padding: '6px',
-                        borderRadius: '100px',
-                        border: '1px solid rgba(255,255,255,0.4)',
-                        display: 'flex',
-                        gap: '4px',
-                        boxShadow: '0 10px 30px -10px rgba(0,0,0,0.05)'
-                    }}>
-                        {navLinks.map((link) => (
-                            <MagneticItem key={link.name}>
-                                <button
-                                    onClick={() => navigate(link.path)}
-                                    style={{
-                                        fontSize: '0.85rem',
-                                        fontWeight: 500,
-                                        letterSpacing: '0.02em',
-                                        color: isActive(link.path) ? 'white' : 'var(--color-text-primary)',
-                                        background: isActive(link.path) ? 'var(--color-text-primary)' : 'transparent',
-                                        transition: 'background 0.3s, color 0.3s',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        padding: '10px 24px',
-                                        borderRadius: '100px',
-                                        position: 'relative',
-                                        zIndex: 2
-                                    }}
-                                >
-                                    {link.name}
-                                </button>
-                            </MagneticItem>
+                    {/* Navigation Pills */}
+                    <div className="desktop-menu" style={{ display: 'flex', gap: '4px' }}>
+                        {[
+                            { name: 'Portal', path: '/' },
+                            { name: 'Atlas', path: '/explore' },
+                            { name: 'Log', path: '/book' },
+                            { name: 'Context', path: '/about' }
+                        ].map(link => (
+                            <motion.button
+                                key={link.path}
+                                onClick={() => navigate(link.path)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                style={{
+                                    background: isActive(link.path) ? 'var(--color-spatial-text)' : 'transparent',
+                                    color: isActive(link.path) ? 'white' : 'var(--color-text-primary)',
+                                    border: 'none',
+                                    padding: '8px 16px',
+                                    borderRadius: '100px',
+                                    fontSize: '0.85rem',
+                                    fontWeight: 500,
+                                    cursor: 'pointer',
+                                    transition: 'background 0.3s var(--ease-cinema)'
+                                }}
+                            >
+                                {link.name}
+                            </motion.button>
                         ))}
                     </div>
 
-                    {/* Auth Status Endpoint */}
-                    <div style={{ pointerEvents: 'auto' }}>
+                    {/* Auth Status */}
+                    <div style={{ marginLeft: '8px' }}>
                         {auth.user ? (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
-                                <Circle size={8} fill="#10B981" color="#10B981" />
-                                {auth.user.name.split(' ')[0]}
+                            <div style={{ width: '36px', height: '36px', background: 'var(--color-bg-body)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>{auth.user.name.charAt(0)}</span>
                             </div>
                         ) : (
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                            <button 
                                 onClick={() => navigate('/login')}
-                                className="desktop-menu"
-                                style={{ 
-                                    padding: '10px 24px', 
-                                    fontSize: '0.9rem',
-                                    background: 'var(--color-text-primary)',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '100px',
-                                    cursor: 'pointer',
-                                    fontWeight: 500,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px'
+                                style={{
+                                    width: '36px', 
+                                    height: '36px', 
+                                    borderRadius: '50%', 
+                                    background: 'var(--color-spatial-text)',
+                                    border: 'none', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    cursor: 'pointer'
                                 }}
                             >
-                                Connect <ArrowRight size={14} />
-                            </motion.button>
+                                <ArrowRight size={16} color="white" />
+                            </button>
                         )}
-                        
-                         {/* Mobile Trigger */}
-                         <button 
-                            className="mobile-toggle" 
-                            onClick={toggleMenu} 
-                            style={{ 
-                                display: 'none', 
-                                background: 'white',
-                                width: '40px',
-                                height: '40px',
-                                borderRadius: '50%',
-                                border: 'none',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                            }}
-                        >
-                            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-                        </button>
                     </div>
+
                 </div>
             </motion.nav>
+
+            {/* Mobile Menu Trigger (Bottom Right for Ergonomics) */}
              <style>{`
                 @media (max-width: 900px) {
                     .desktop-menu { display: none !important; }
-                    .mobile-toggle { display: flex !important; }
                 }
             `}</style>
         </>
     );
 };
 
-// --- MAGNETIC ITEM COMPONENT ---
-const MagneticItem = ({ children }: { children: React.ReactNode }) => {
-    const ref = useRef<HTMLDivElement>(null);
-    
-    // Use motion values for raw input
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-
-    // Smooth them with springs
-    const springConfig = { type: "spring", stiffness: 150, damping: 15, mass: 0.1 };
-    const springX = useSpring(x, springConfig);
-    const springY = useSpring(y, springConfig);
-
-    const handleMouse = (e: React.MouseEvent) => {
-        const { clientX, clientY } = e;
-        const rect = ref.current?.getBoundingClientRect();
-        if (rect) {
-            const { height, width, left, top } = rect;
-            const middleX = clientX - (left + width / 2);
-            const middleY = clientY - (top + height / 2);
-            x.set(middleX * 0.2); // Sensitivity
-            y.set(middleY * 0.2);
-        }
-    };
-
-    const reset = () => {
-        x.set(0);
-        y.set(0);
-    };
-
-    return (
-        <motion.div
-            ref={ref}
-            onMouseMove={handleMouse}
-            onMouseLeave={reset}
-            style={{ x: springX, y: springY }}
-        >
-            {children}
-        </motion.div>
-    );
-};
+// --- MAGNETIC ITEM COMPONENT REMOVED (Legacy) ---
+// The new Spatial HUD uses standard framer motion interactions.
 
 export default NavBar;

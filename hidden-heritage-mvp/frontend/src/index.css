@@ -1,58 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* --- 🧠 NEURAL HERITAGE INTERFACE v1.0 --- */
+  /* --- 🏛 SPATIAL HERITAGE OS v2.0 --- */
   
-  /* 1. Neural Palette (Cognitive warmth) */
-  --color-neural-bg: #F9F7F2;      /* Sandstone: Calm base */
-  --color-neural-text: #1A1A1A;    /* Charcoal: High contrast focus */
-  --color-neural-accent: #C8A359;  /* Gold: Signal / Attention */
-  --color-neural-void: #050505;    /* Deep space for AR */
+  /* 1. Spatial Palette (Warm Sandstone & Deep Void) */
+  --color-spatial-bg: #F9F7F2;      /* Sandstone: Physical, tactile base */
+  --color-spatial-void: #121212;    /* Deep Charcoal: The void behind the glass */
+  --color-spatial-accent: #C8A359;  /* Antique Gold: Cultural signal */
+  --color-spatial-text: #1A1A1A;    /* Ink: High readability */
+  --color-spatial-glass: rgba(255, 255, 255, 0.65); /* VisionOS Glass */
   
-  /* Semantic Aliases */
-  --color-bg-body: var(--color-neural-bg);
-  --color-text-primary: var(--color-neural-text);
-  --color-text-secondary: rgba(26, 26, 26, 0.65);
-  --color-border-subtle: rgba(26, 26, 26, 0.08);
+  /* Semantic Mappings */
+  --color-bg-body: var(--color-spatial-bg);
+  --color-text-primary: var(--color-spatial-text);
+  --color-text-secondary: rgba(26, 26, 26, 0.60);
+  --color-border-subtle: rgba(26, 26, 26, 0.06);
   
-  /* 2. Glass Materials (VisionOS / Google X) */
-  --glass-surface: rgba(255, 255, 255, 0.6);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.4);
-  --glass-blur: blur(20px);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  /* 2. Hyper-Glass Materials (VisionOS Standard) */
+  --material-glass: rgba(249, 247, 242, 0.7); /* Warm tinted glass */
+  --material-glass-border: 1px solid rgba(255, 255, 255, 0.4);
+  --material-glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+  --material-blur: blur(24px); /* Deep blur for depth perception */
+  --material-shadow-float: 0 12px 40px -8px rgba(0, 0, 0, 0.12);
+  --material-shadow-deep: 0 24px 60px -12px rgba(26, 26, 26, 0.2);
   
-  /* 3. Cognitive Motion (Neural Easing) */
-  /* Think: Synapse firing - quick activation, slow decay */
-  --ease-neural: cubic-bezier(0.2, 0, 0, 1); 
-  --duration-pulse: 800ms;
-  --duration-flow: 1200ms;
+  /* 3. Cinematic Motion (Director's Cut) */
+  --ease-cinema: cubic-bezier(0.16, 1, 0.3, 1); /* Apple-style spring */
+  --duration-entry: 1200ms;
+  --duration-hover: 400ms;
   
-  /* 4. Spatial Grid (8px Rhythm) */
-  --space-1: 8px;
-  --space-2: 16px;
-  --space-3: 24px;
-  --space-4: 32px;
-  --space-6: 48px;
-  --space-8: 64px;
-  --space-12: 96px;
+  /* 4. Editorial Typography */
+  --font-display: 'Playfair Display', serif; /* Cultural Authority */
+  --font-sans: 'Inter', system-ui, sans-serif; /* Modern Clarity */
   
-  --container-max: 1440px;
-  --grid-gap: 24px;
+  --type-h1: clamp(3rem, 6vw, 5.5rem);
+  --type-h2: clamp(2rem, 4vw, 3rem);
+  --type-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --type-body: 1.0625rem; /* 17px optimum reading size */
   
-  /* 5. Typography (Editorial) */
-  --font-display: 'Playfair Display', serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  /* 5. Z-Space Layers */
+  --z-background: -10;
+  --z-base: 0;
+  --z-mid: 100;
+  --z-floating: 500;
+  --z-hud: 1000;
+  --z-portal: 9999;
   
-  --h-display: clamp(3.5rem, 8vw, 6rem);
-  --h-title: clamp(2.5rem, 5vw, 3.5rem);
-  --h-section: clamp(1.5rem, 3vw, 2.25rem);
-  --text-body: 1.125rem; /* 18px */
+  /* 6. Spacing Primitive (8px) */
+  --unit: 8px;
+  --space-sm: calc(var(--unit) * 2);  /* 16px */
+  --space-md: calc(var(--unit) * 4);  /* 32px */
+  --space-lg: calc(var(--unit) * 8);  /* 64px */
+  --space-xl: calc(var(--unit) * 16); /* 128px */
   
-  /* 6. Neural Depth (Z-Axis) */
-  --layer-base: 0;
-  --layer-float: 10;
-  --layer-overlay: 100;
-  --layer-hud: 1000;
+  --layout-max: 1440px;
+  --layout-reading: 680px; /* Optimal line length */
 }
 
 /* --- RESET & BASE --- */
@@ -108,21 +110,22 @@ p {
 
 /* --- NEURAL COMPONENTS --- */
 
-/* 1. Neural Nodes (Cards) */
+/* 1. Spatial Nodes (Cards) */
 .neural-node {
-  background: var(--glass-surface);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: var(--glass-border);
+  background: var(--material-glass);
+  backdrop-filter: var(--material-blur);
+  -webkit-backdrop-filter: var(--material-blur);
+  border: var(--material-glass-border);
+  box-shadow: var(--material-shadow-float);
   border-radius: 24px;
   padding: var(--space-4);
-  transition: transform 0.6s var(--ease-neural), box-shadow 0.6s var(--ease-neural);
+  transition: transform 0.6s var(--ease-cinema), box-shadow 0.6s var(--ease-cinema);
 }
 
 .neural-node:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 20px 40px rgba(200, 163, 89, 0.15); /* Gold glow */
-  border-color: rgba(200, 163, 89, 0.3);
+  transform: translateY(-4px) scale(1.005);
+  box-shadow: var(--material-shadow-deep);
+  border-color: rgba(200, 163, 89, 0.4);
 }
 
 /* 2. Synapse Buttons */
@@ -131,36 +134,37 @@ p {
   align-items: center;
   gap: 12px;
   padding: 16px 32px;
-  background: var(--color-neural-text);
+  background: var(--color-spatial-text);
   color: white;
   border-radius: 100px;
   border: none;
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: 1rem;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  transition: all 0.4s var(--ease-neural);
+  transition: all 0.4s var(--ease-cinema);
 }
 
 .btn-neural:hover {
   background: black;
-  transform: scale(1.05);
+  transform: scale(1.04);
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
 .btn-neural-ghost {
   background: transparent;
   border: 1px solid rgba(26, 26, 26, 0.1);
-  color: var(--color-neural-text);
+  color: var(--color-spatial-text);
   padding: 14px 28px;
   border-radius: 100px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s var(--ease-cinema);
 }
 
 .btn-neural-ghost:hover {
-  border-color: var(--color-neural-text);
-  background: rgba(26, 26, 26, 0.02);
+  border-color: var(--color-spatial-text);
+  background: rgba(26, 26, 26, 0.03);
 }
 
 /* --- UTILITIES --- */
