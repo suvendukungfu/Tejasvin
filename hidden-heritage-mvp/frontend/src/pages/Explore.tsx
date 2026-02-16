@@ -76,20 +76,21 @@ const Explore = () => {
                 
                 setRegions(dataWithEnrichment || []);
 
-                // Enrich sites with specific images for the Atlas Map
+                // Enrich sites with specific images for the Atlas Map (Using reliable Wikimedia Commons)
                 const siteImageMap: Record<string, string> = {
-                    'bateshwar': 'https://images.unsplash.com/photo-1644917616149-165b4c48971f?q=80&w=800&auto=format&fit=crop',
-                    'mitawali': 'https://images.unsplash.com/photo-1591266042129-922649b5ae7d?q=80&w=800&auto=format&fit=crop',
-                    'chausath': 'https://images.unsplash.com/photo-1591266042129-922649b5ae7d?q=80&w=800&auto=format&fit=crop', // Mitawali alias
-                    'padavali': 'https://images.unsplash.com/photo-1628066532402-2c63677e52b2?q=80&w=800&auto=format&fit=crop',
-                    'kakanmath': 'https://images.unsplash.com/photo-1566324018374-c72064d5098d?q=80&w=800&auto=format&fit=crop',
-                    'garh': 'https://images.unsplash.com/photo-1572883454114-1cf0031a026e?q=80&w=800&auto=format&fit=crop', // Garh Kundar
-                    'chambal': 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop',
+                    'bateshwar': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bateshwar_Group_of_Temples_of_Morena%2C_Madhya_Pradesh.jpg/1024px-Bateshwar_Group_of_Temples_of_Morena%2C_Madhya_Pradesh.jpg',
+                    'mitawali': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg/1280px-Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg',
+                    'chausath': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg/1280px-Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg', // Mitawali alias
+                    'padavali': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/The_grand_entrance_of_Garhi_Padavali.jpg/1024px-The_grand_entrance_of_Garhi_Padavali.jpg',
+                    'kakanmath': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Kakanmath_Temple_%2824143370669%29.JPG/1024px-Kakanmath_Temple_%2824143370669%29.JPG',
+                    'garh': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Garh_Kundar.JPG/1024px-Garh_Kundar.JPG', // Garh Kundar
+                    'chambal': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Chambal-river-gorge.jpg/1280px-Chambal-river-gorge.jpg',
                 };
 
                 const enrichedSites = (sitesRes.data || []).map((site: Site) => {
                     const lowerName = site.name.toLowerCase();
-                    let imageUrl = 'https://images.unsplash.com/photo-1599661046289-e31897812906?q=80&w=800&auto=format&fit=crop'; // Default Fallback (Gwalior type)
+                    // Default Fallback (Gwalior Fort - Reliable Source)
+                    let imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Gwalior_Fort_view.jpg/1280px-Gwalior_Fort_view.jpg'; 
 
                     for (const [key, url] of Object.entries(siteImageMap)) {
                         if (lowerName.includes(key)) {
