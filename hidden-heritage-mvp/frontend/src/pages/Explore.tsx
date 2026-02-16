@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import { MapPin, ArrowRight, Compass, Map as MapIcon, Grid } from 'lucide-react';
+import { MapPin, ArrowRight, Compass, Map as MapIcon, Grid, Search, X } from 'lucide-react';
 import { getRegions, getSites } from '../services/api'; 
 import MapPreview from '../components/MapPreview';
 import 'leaflet/dist/leaflet.css';
@@ -40,6 +40,7 @@ const Explore = () => {
     const [allSites, setAllSites] = useState<Site[]>([]);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
+    const [searchQuery, setSearchQuery] = useState('');
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
 
@@ -82,6 +83,12 @@ const Explore = () => {
     };
 
     if (loading) return <Loader />;
+
+    // Filter Logic
+    const filteredRegions = regions.filter(r => 
+        r.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        r.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const featuredRegion = regions[0];
 
@@ -131,7 +138,7 @@ const Explore = () => {
 
                         {/* Controls Bar */}
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px' }}>
-                            {/* Filter Pill */}
+                            {/* Search Filter */}
                             <motion.div 
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -139,29 +146,40 @@ const Explore = () => {
                                 style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
-                                    gap: '8px',
+                                    gap: '12px',
                                     background: 'var(--material-glass)',
                                     backdropFilter: 'blur(16px)',
-                                    padding: '8px 8px 8px 24px',
+                                    padding: '8px 16px',
                                     borderRadius: '100px',
                                     border: 'var(--material-glass-border)',
-                                    boxShadow: 'var(--material-shadow-float)'
+                                    boxShadow: 'var(--material-shadow-float)',
+                                    minWidth: '300px'
                                 }}
                             >
-                                <span style={{ fontSize: '0.9rem', color: 'var(--color-spatial-text)', fontWeight: 500 }}>All Sectors</span>
-                                <div style={{ width: '1px', height: '16px', background: 'rgba(0,0,0,0.1)', margin: '0 8px' }} />
-                                <button style={{ 
-                                    background: 'var(--color-spatial-text)', 
-                                    color: 'white', 
-                                    border: 'none', 
-                                    borderRadius: '100px', 
-                                    padding: '8px 20px', 
-                                    fontSize: '0.8rem', 
-                                    fontWeight: 600, 
-                                    cursor: 'pointer' 
-                                }}>
-                                    FILTER
-                                </button>
+                                <Search size={18} color="var(--color-text-secondary)" />
+                                <input 
+                                    type="text" 
+                                    placeholder="Search sectors or keywords..." 
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        outline: 'none',
+                                        fontSize: '0.9rem',
+                                        color: 'var(--color-spatial-text)',
+                                        width: '100%',
+                                        fontFamily: 'var(--font-sans)'
+                                    }}
+                                />
+                                {searchQuery && (
+                                    <button 
+                                        onClick={() => setSearchQuery('')}
+                                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px' }}
+                                    >
+                                        <X size={14} color="var(--color-text-secondary)" />
+                                    </button>
+                                )}
                             </motion.div>
 
                             {/* View Toggle */}
@@ -221,8 +239,8 @@ const Explore = () => {
             <section style={{ padding: '0 0 160px 0', position: 'relative', zIndex: 20 }}>
                 <div className="container">
                     
-                    {/* Featured Section (Only in Grid View) */}
-                    {viewMode === 'grid' && featuredRegion && (
+                    {/* Featured Section (Only in Grid View & No Search) */}
+                    {viewMode === 'grid' && !searchQuery && featuredRegion && (
                         <motion.div 
                             initial={{ opacity: 0, y: 40 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -295,9 +313,15 @@ const Explore = () => {
                                 exit={{ opacity: 0 }}
                                 className="grid-12"
                             >
-                                {regions.map((region) => (
-                                    <HolographicCard key={region.id} region={region} navigate={navigate} />
-                                ))}
+                                {filteredRegions.length > 0 ? (
+                                    filteredRegions.map((region) => (
+                                        <HolographicCard key={region.id} region={region} navigate={navigate} />
+                                    ))
+                                ) : (
+                                    <div style={{ gridColumn: 'span 12', textAlign: 'center', padding: '80px 0', opacity: 0.5 }}>
+                                        <p style={{ fontSize: '1.2rem' }}>No sectors found matching your signal.</p>
+                                    </div>
+                                )}
                             </motion.div>
                         ) : (
                             <motion.div 
