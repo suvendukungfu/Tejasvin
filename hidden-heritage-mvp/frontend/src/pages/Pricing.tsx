@@ -89,7 +89,10 @@ const Pricing = () => {
                                     border: tier.popular ? `2px solid var(--color-accent)` : '1px solid rgba(255,255,255,0.1)',
                                     position: 'relative',
                                     overflow: 'hidden',
-                                    transition: 'border-color 0.3s'
+                                    transition: 'border-color 0.3s',
+                                    backgroundImage: 'url("https://images.unsplash.com/photo-1629197520643-0f2c00d413b5?auto=format&fit=crop&q=80&w=500")',
+                                    backgroundBlendMode: 'overlay',
+                                    backgroundSize: 'cover'
                                 }}
                             >
                                 {tier.popular && (

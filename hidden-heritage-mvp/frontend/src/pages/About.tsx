@@ -13,6 +13,9 @@ const About = () => {
     const yContent = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
     const opacityHero = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
+    // Textures
+    const ancientStone = "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?auto=format&fit=crop&q=80&w=2000";
+
     const values = [
         {
             icon: <Shield size={32} />,
@@ -150,7 +153,12 @@ const About = () => {
             </section>
 
             {/* --- VALUES: THE CODEX --- */}
-            <section className="section-pad" style={{ background: '#FBFBFB' }}>
+            <section className="section-pad" style={{ 
+                background: '#FBFBFB',
+                backgroundImage: `url(${ancientStone})`,
+                backgroundBlendMode: 'multiply',
+                backgroundSize: 'cover'
+            }}>
                 <div className="container">
                     <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
                         <span style={{ color: 'var(--color-accent)', fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.8rem' }}>The Guardians' Codex</span>

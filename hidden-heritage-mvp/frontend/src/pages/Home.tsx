@@ -10,6 +10,8 @@ import chambalValley from '../assets/heritage/chambal_valley.png';
 import bateshwarTemples from '../assets/heritage/bateshwar.png';
 import mitaoliThumb from '../assets/heritage/mitaoli.png';
 import navigatorMap from '../assets/heritage/navigator.png';
+import meaningBg from '../assets/heritage/chambal_valley.png'; // Fallback using existing asset since generation failed
+// Ideally we would use: const meaningBg = "https://images.unsplash.com/photo-1519681393798-38e43269d877";
 
 const Home = () => {
     const containerRef = useRef(null);
@@ -429,7 +431,10 @@ const MeaningScene = ({ progress }: { progress: any }) => {
                 inset: 0, 
                 opacity, 
                 pointerEvents, 
-                background: 'linear-gradient(to bottom, #F7F5F0, #EFECE6)', // Refined warm neutral base
+                background: 'linear-gradient(to bottom, #F7F5F0, #EFECE6)', 
+                backgroundImage: `url(${meaningBg})`,
+                backgroundSize: 'cover',
+                backgroundBlendMode: 'overlay',
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
