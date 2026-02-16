@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import { MapPin, Clock, ArrowLeft, Shield, Sparkles, Calendar, Box, ScanLine } from 'lucide-react';
 import { getSiteBySlug, getSafetyScore, getAiStory } from '../services/api';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import holographicGrid from '../assets/textures/holographic_grid.png';
 
 // Heritage Cinematic Assets
 import bateshwar from '../assets/heritage/bateshwar.png';
@@ -79,7 +80,7 @@ const SiteDetail = () => {
 
     if (loading) {
         return (
-            <div style={{ height: '100vh', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-gold)' }}>
+            <div style={{ height: '100vh', background: 'var(--color-spatial-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-spatial-accent)' }}>
                 <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }}>
                     <ScanLine size={48} />
                     <div style={{ marginTop: '16px', letterSpacing: '0.2em', fontSize: '0.8rem' }}>INITIALIZING L.I.D.A.R. SCAN</div>
@@ -91,13 +92,19 @@ const SiteDetail = () => {
     if (!site) return <div>Site not found</div>;
 
     return (
-        <div className="min-h-screen" style={{ background: '#050505', color: '#FFF' }}>
+        <div className="min-h-screen" style={{ 
+            background: 'var(--color-spatial-bg)', 
+            color: 'var(--color-spatial-text)',
+            backgroundImage: `url(${holographicGrid})`,
+            backgroundSize: '500px',
+            backgroundBlendMode: 'overlay'
+        }}>
             <NavBar />
 
             {/* --- IMMERSIVE BACKDROP (GLOBAL) --- */}
             <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
                 <motion.div style={{ position: 'absolute', inset: 0, y: yHero, opacity: opacityHero }}>
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(5,5,5,0.3), #050505)', zIndex: 2 }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(5,5,5,0.3), var(--color-spatial-bg))', zIndex: 2 }} />
                     <img src={heroImage} alt="Background" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(20%) contrast(1.1)' }} />
                 </motion.div>
             </div>
@@ -110,7 +117,7 @@ const SiteDetail = () => {
                      <motion.button 
                         onClick={() => navigate(-1)}
                         whileHover={{ x: -5 }}
-                        style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--color-spatial-text)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
                     >
                         <ArrowLeft size={20} /> <span style={{ letterSpacing: '0.1em', fontSize: '0.85rem' }}>RETURN TO SECTOR</span>
                     </motion.button>
@@ -121,11 +128,11 @@ const SiteDetail = () => {
                         transition={{ delay: 0.5 }}
                         style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}
                     >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)' }}>
-                             <div style={{ width: '6px', height: '6px', background: 'var(--color-gold)', borderRadius: '50%', boxShadow: '0 0 8px var(--color-gold)' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-spatial-accent)' }}>
+                             <div style={{ width: '6px', height: '6px', background: 'var(--color-spatial-accent)', borderRadius: '50%', boxShadow: '0 0 8px var(--color-spatial-accent)' }} />
                              <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em' }}>DATA STREAM ACTIVE</span>
                         </div>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--color-text-secondary)', fontFamily: 'monospace' }}>
                             LAT: {site.latitude?.toFixed(4) || '26.7577'} • LON: {site.longitude?.toFixed(4) || '78.1729'}
                         </div>
                     </motion.div>
@@ -141,14 +148,14 @@ const SiteDetail = () => {
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: 0.2 }}
                             style={{ 
-                                background: 'rgba(255, 255, 255, 0.03)', 
-                                backdropFilter: 'blur(20px)', 
-                                border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                background: 'var(--material-glass)', 
+                                backdropFilter: 'var(--material-blur)', 
+                                border: 'var(--material-glass-border)', 
                                 borderRadius: '16px', 
                                 padding: '24px' 
                             }}
                         >
-                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', letterSpacing: '0.1em', marginBottom: '8px', textTransform: 'uppercase' }}>Classification</div>
+                            <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.75rem', letterSpacing: '0.1em', marginBottom: '8px', textTransform: 'uppercase' }}>Classification</div>
                             <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>{site.type || 'Heritage Site'}</div>
                         </motion.div>
 
@@ -158,14 +165,14 @@ const SiteDetail = () => {
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: 0.3 }}
                             style={{ 
-                                background: 'rgba(255, 255, 255, 0.03)', 
-                                backdropFilter: 'blur(20px)', 
-                                border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                background: 'var(--material-glass)', 
+                                backdropFilter: 'var(--material-blur)', 
+                                border: 'var(--material-glass-border)', 
                                 borderRadius: '16px', 
                                 padding: '24px' 
                             }}
                         >
-                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', letterSpacing: '0.1em', marginBottom: '8px', textTransform: 'uppercase' }}>Est. Era</div>
+                            <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.75rem', letterSpacing: '0.1em', marginBottom: '8px', textTransform: 'uppercase' }}>Est. Era</div>
                             <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>8th - 10th Century</div>
                         </motion.div>
 
@@ -201,13 +208,13 @@ const SiteDetail = () => {
                             transition={{ duration: 0.8 }}
                             style={{ marginBottom: '40px', textAlign: 'center' }}
                         >
-                             <h1 className="text-display" style={{ fontSize: '4.5rem', marginBottom: '16px', textShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>{site.name}</h1>
+                             <h1 className="text-display" style={{ fontSize: '4.5rem', marginBottom: '16px', textShadow: '0 10px 30px rgba(0,0,0,0.5)', color: 'var(--color-spatial-text)' }}>{site.name}</h1>
                              <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', opacity: 0.8 }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <MapPin size={16} /> Madhya Pradesh
+                                    <MapPin size={16} color="var(--color-spatial-accent)" /> Madhya Pradesh
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <Clock size={16} /> 2h 30m Access
+                                    <Clock size={16} color="var(--color-spatial-accent)" /> 2h 30m Access
                                 </div>
                              </div>
                         </motion.div>
@@ -220,10 +227,10 @@ const SiteDetail = () => {
                             className="glass-panel"
                             style={{ 
                                 padding: '48px', 
-                                background: 'rgba(0,0,0,0.4)', 
-                                backdropFilter: 'blur(40px)', 
+                                background: 'var(--material-glass)', 
+                                backdropFilter: 'var(--material-blur)', 
                                 borderRadius: '32px',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: 'var(--material-glass-border)',
                                 position: 'relative',
                                 overflow: 'hidden'
                             }}
@@ -235,7 +242,7 @@ const SiteDetail = () => {
                                     left: 0, 
                                     right: 0, 
                                     height: '2px', 
-                                    background: 'linear-gradient(to right, transparent, var(--color-gold), transparent)', 
+                                    background: 'linear-gradient(to right, transparent, var(--color-spatial-accent), transparent)', 
                                     pointerEvents: 'none',
                                     zIndex: 10
                                 }}
@@ -243,15 +250,15 @@ const SiteDetail = () => {
                                 animate={scanning ? "scanning" : { opacity: 0 }}
                             />
 
-                            <h2 style={{ fontSize: '1.75rem', marginBottom: '24px', fontFamily: 'var(--font-display)', color: 'var(--color-gold)' }}>Visual Analysis</h2>
-                            <p style={{ fontSize: '1.1rem', lineHeight: 1.7, opacity: 0.9, marginBottom: '32px' }}>
+                            <h2 style={{ fontSize: '1.75rem', marginBottom: '24px', fontFamily: 'var(--font-display)', color: 'var(--color-spatial-accent)' }}>Visual Analysis</h2>
+                            <p style={{ fontSize: '1.1rem', lineHeight: 1.7, opacity: 0.9, marginBottom: '32px', color: 'var(--color-spatial-text)' }}>
                                 {site.description}
                             </p>
 
-                            <div style={{ padding: '24px', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', borderLeft: '3px solid var(--color-gold)' }}>
+                            <div style={{ padding: '24px', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', borderLeft: '3px solid var(--color-spatial-accent)' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                                    <Sparkles size={16} color="var(--color-gold)" /> 
-                                    <span style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', fontWeight: 700 }}>AI Reconstruction</span>
+                                    <Sparkles size={16} color="var(--color-spatial-accent)" /> 
+                                    <span style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', fontWeight: 700, color: 'var(--color-spatial-accent)' }}>AI Reconstruction</span>
                                 </div>
                                 <p style={{ fontStyle: 'italic', opacity: 0.8 }}>
                                    "{aiStory?.story || 'Analyzing architectural patterns...'}"
@@ -268,18 +275,18 @@ const SiteDetail = () => {
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: 0.3 }}
                             style={{ 
-                                background: 'rgba(255, 255, 255, 0.03)', 
-                                backdropFilter: 'blur(20px)', 
-                                border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                background: 'var(--material-glass)', 
+                                backdropFilter: 'var(--material-blur)', 
+                                border: 'var(--material-glass-border)', 
                                 borderRadius: '16px', 
                                 padding: '24px' 
                             }}
                         >
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                                <Box size={20} color="var(--color-gold)" />
+                                <Box size={20} color="var(--color-spatial-accent)" />
                                 <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>AR Portal</span>
                             </div>
-                            <p style={{ fontSize: '0.85rem', opacity: 0.6, marginBottom: '20px' }}>
+                            <p style={{ fontSize: '0.85rem', opacity: 0.6, marginBottom: '20px', color: 'var(--color-text-secondary)' }}>
                                 View this site in 1:1 scale using the Antigravity engine.
                             </p>
                             <button 
@@ -308,7 +315,7 @@ const SiteDetail = () => {
                              <button 
                                 onClick={() => navigate('/trip-builder')}
                                 className="btn-primary"
-                                style={{ width: '100%', padding: '16px', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
+                                style={{ width: '100%', padding: '16px', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, background: 'var(--color-charcoal)', color: 'white' }}
                             >
                                 Add to Expedition
                             </button>
