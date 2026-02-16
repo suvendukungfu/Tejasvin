@@ -3,16 +3,13 @@ import Loader from '../components/Loader';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import NavBar from '../components/NavBar';
-import { MapPin, ArrowRight, Compass, Map as MapIcon, Grid, Search, X } from 'lucide-react';
+import { ArrowRight, Compass, Map as MapIcon, Grid, Search, X } from 'lucide-react';
 import { getRegions, getSites } from '../services/api'; 
 import MapPreview from '../components/MapPreview';
 import 'leaflet/dist/leaflet.css';
 
 // Cinematic Assets
 import gwaliorFort from '../assets/heritage/gwalior_fort.png';
-import bateshwar from '../assets/heritage/bateshwar.png';
-import mitaoli from '../assets/heritage/mitaoli.png';
-import chambalValley from '../assets/heritage/chambal_valley.png';
 
 interface Region {
     id: number;
@@ -78,7 +75,32 @@ const Explore = () => {
                 }));
                 
                 setRegions(dataWithEnrichment || []);
-                setAllSites(sitesRes.data || []);
+
+                // Enrich sites with specific images for the Atlas Map
+                const siteImageMap: Record<string, string> = {
+                    'bateshwar': 'https://images.unsplash.com/photo-1644917616149-165b4c48971f?q=80&w=800&auto=format&fit=crop',
+                    'mitawali': 'https://images.unsplash.com/photo-1591266042129-922649b5ae7d?q=80&w=800&auto=format&fit=crop',
+                    'chausath': 'https://images.unsplash.com/photo-1591266042129-922649b5ae7d?q=80&w=800&auto=format&fit=crop', // Mitawali alias
+                    'padavali': 'https://images.unsplash.com/photo-1628066532402-2c63677e52b2?q=80&w=800&auto=format&fit=crop',
+                    'kakanmath': 'https://images.unsplash.com/photo-1566324018374-c72064d5098d?q=80&w=800&auto=format&fit=crop',
+                    'garh': 'https://images.unsplash.com/photo-1572883454114-1cf0031a026e?q=80&w=800&auto=format&fit=crop', // Garh Kundar
+                    'chambal': 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop',
+                };
+
+                const enrichedSites = (sitesRes.data || []).map((site: Site) => {
+                    const lowerName = site.name.toLowerCase();
+                    let imageUrl = 'https://images.unsplash.com/photo-1599661046289-e31897812906?q=80&w=800&auto=format&fit=crop'; // Default Fallback (Gwalior type)
+
+                    for (const [key, url] of Object.entries(siteImageMap)) {
+                        if (lowerName.includes(key)) {
+                            imageUrl = url;
+                            break;
+                        }
+                    }
+                    return { ...site, image_url: imageUrl };
+                });
+
+                setAllSites(enrichedSites);
             } catch (error) {
                 console.error('Failed to fetch atlas data', error);
             } finally {
