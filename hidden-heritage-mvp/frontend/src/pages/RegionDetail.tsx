@@ -6,9 +6,6 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Layers, Info, Box } from 'lucide-react';
-import holographicGrid from '../assets/textures/holographic_grid.png';
-
-// Using consistent cinematic asset for demo fallback
 import gwaliorFort from '../assets/heritage/gwalior_fort.png';
 
 interface Site {
@@ -29,19 +26,17 @@ const RegionDetail = () => {
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({ target: containerRef });
     
-    // Parallax & Fade for Background
-    const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-    const opacityBg = useTransform(scrollYProgress, [0, 0.8], [1, 0.5]);
+    // VisionOS Parallax: Gentle movement
+    const yHero = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+    const opacityHero = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
     useEffect(() => {
         const fetchSites = async () => {
             try {
-                // Determine ID based on slug (Mock logic for demo, real app would have slug-based endpoint)
-                // In a real scenario, the API would return region details + sites.
-                // Here we fetch sites for a region ID. assuming mapping for MVP.
+                // Mock logic for demo
                 let regionId = 1; 
                 if (slug === 'chambal-valley') regionId = 1;
-                if (slug === 'gwalior') regionId = 2; // Hypothetical
+                if (slug === 'gwalior') regionId = 2; 
 
                 const response = await getSites(regionId);
                 setSites(response.data || []);
@@ -62,129 +57,130 @@ const RegionDetail = () => {
         <motion.div 
             ref={containerRef}
             className="min-h-screen" 
-            style={{ 
-                background: 'var(--color-spatial-bg)', 
-                position: 'relative',
-                backgroundImage: `url(${holographicGrid})`,
-                backgroundSize: '500px',
-                backgroundBlendMode: 'overlay'
-            }}
+            style={{ background: 'var(--color-spatial-bg)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.5 } }}
+            exit={{ opacity: 0 }}
         >
             <NavBar />
 
-             {/* --- IMMERSIVE BACKGROUND LAYER --- */}
-             <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
-                <motion.div style={{ height: '100%', width: '100%', y: yBg, opacity: opacityBg }}>
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--color-spatial-bg), rgba(18,18,18,0.4))', zIndex: 1 }} />
-                    <img src={gwaliorFort} alt="Background" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+             {/* --- 1. SPATIAL HERO BACKGROUND --- */}
+             <div style={{ position: 'fixed', inset: 0, zIndex: 0, height: '100vh', width: '100vw' }}>
+                <motion.div style={{ height: '100%', width: '100%', y: yHero, opacity: opacityHero }}>
+                    <img src={gwaliorFort} alt="Background" style={{ width: '100%', height: '110%', objectFit: 'cover' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(234, 229, 219, 0.3)' }} /> {/* Warm tint */}
                 </motion.div>
              </div>
 
-            {/* --- HUD INTERFACE LAYER --- */}
-            <div className="container" style={{ position: 'relative', zIndex: 10, paddingTop: '120px', paddingBottom: '120px' }}>
+            {/* --- 2. FLOAT UI LAYER --- */}
+            <div className="container" style={{ position: 'relative', zIndex: 10, paddingTop: '160px', paddingBottom: '160px' }}>
                 
-                {/* HUD Header */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '80px' }}>
-                    <motion.button 
-                        onClick={() => navigate('/explore')}
-                        whileHover={{ x: -5 }}
-                        style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', border: 'none', color: 'var(--color-spatial-text)', cursor: 'pointer', fontSize: '1rem', fontWeight: 500 }}
-                    >
-                        <ArrowLeft size={20} /> Back to Sector Map
-                    </motion.button>
-                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'var(--material-glass)', backdropFilter: 'blur(10px)', borderRadius: '100px', border: 'var(--material-glass-border)' }}>
-                        <div style={{ width: '8px', height: '8px', background: 'var(--color-spatial-accent)', borderRadius: '50%', boxShadow: '0 0 10px var(--color-spatial-accent)' }} />
-                        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-spatial-text)', letterSpacing: '0.1em' }}>LIVE FEED</span>
-                    </div>
-                </div>
-
-                {/* Region Title (Floating) */}
-                <motion.div 
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    style={{ marginBottom: '80px' }}
+                {/* Back Link */}
+                <motion.button 
+                    onClick={() => navigate('/explore')}
+                    whileHover={{ x: -4 }}
+                    style={{ 
+                        background: 'rgba(255,255,255,0.8)', 
+                        backdropFilter: 'blur(12px)',
+                        padding: '12px 24px',
+                        borderRadius: '100px',
+                        border: 'none', 
+                        display: 'inline-flex', 
+                        alignItems: 'center', 
+                        gap: '8px', 
+                        color: 'var(--color-spatial-text)', 
+                        cursor: 'pointer', 
+                        fontSize: '0.9rem', 
+                        fontWeight: 600,
+                        marginBottom: '40px',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.05)' 
+                    }}
                 >
-                    <h1 className="text-display" style={{ fontSize: '6rem', color: 'var(--color-spatial-text)', marginBottom: '24px' }}>
+                    <ArrowLeft size={18} /> BACK TO ATLAS
+                </motion.button>
+
+                {/* Floating Title Card */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    transition={{ duration: 1.2, ease: [0.2, 0, 0, 1] }}
+                    className="glass-panel"
+                    style={{ 
+                        padding: '64px', 
+                        backdropFilter: 'blur(40px)', 
+                        backgroundColor: 'rgba(255, 255, 248, 0.75)',
+                        marginBottom: '80px',
+                        textAlign: 'center'
+                    }}
+                >
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--color-spatial-accent)', fontWeight: 700, letterSpacing: '0.15em', fontSize: '0.85rem', marginBottom: '24px' }}>
+                        <Layers size={16} /> HERITAGE SECTOR
+                    </div>
+                    <h1 className="text-display" style={{ marginBottom: '32px' }}>
                         {regionName}
                     </h1>
-                    <div style={{ display: 'flex', gap: '32px', marginBottom: '48px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-spatial-accent)' }}>
-                            <Layers size={20} />
-                            <span style={{ fontWeight: 700, letterSpacing: '0.05em' }}>{sites.length} Active Sites</span>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-secondary)' }}>
-                            <Info size={20} />
-                            <span style={{ fontWeight: 500 }}>Historical Density: High</span>
-                        </div>
-                    </div>
+                     <p style={{ fontSize: '1.25rem', lineHeight: 1.7, margin: '0 auto', opacity: 0.8, maxWidth: '700px' }}>
+                        Enter a region where history is not just remembered, but physically felt. This sector contains high-fidelity neural scans of architectural marvels.
+                    </p>
 
-                    {/* Reading Mode Column */}
-                    <div className="grid-12">
-                        <div style={{ gridColumn: 'span 6', paddingRight: '40px' }}>
-                             <p style={{ 
-                                fontSize: '1.25rem', 
-                                lineHeight: 1.8, 
-                                color: 'var(--color-spatial-text)', 
-                                fontFamily: 'var(--font-ui)',
-                                borderLeft: '1px solid var(--color-spatial-accent)',
-                                paddingLeft: '24px'
-                            }}>
-                                Enter a region where history is not just remembered, but physically felt. This sector contains high-fidelity neural scans of architectural marvels, waiting to be decoded.
-                            </p>
+                    <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'center', gap: '40px' }}>
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-spatial-accent)' }} />
+                            <span style={{ fontWeight: 600 }}>{sites.length} Active Sites</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981' }} />
+                            <span style={{ fontWeight: 600 }}>Live Feed</span>
                         </div>
                     </div>
                 </motion.div>
 
-                {/* Site Cards (Glass HUD) */}
+                {/* Site Cards Grid */}
                 <div className="grid-12">
-                     <div style={{ gridColumn: 'span 12', marginBottom: '40px', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '20px' }}>
-                         <span style={{ textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.2em', color: 'var(--color-text-secondary)' }}>Detected Structures</span>
+                     <div style={{ gridColumn: 'span 12', marginBottom: '32px', paddingLeft: '8px' }}>
+                         <span style={{ textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em', color: 'var(--color-text-secondary)', fontWeight: 600 }}>Available Sites</span>
                      </div>
 
                     {sites.map((site, index) => (
                         <motion.div 
                             key={site.id}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ delay: index * 0.1, duration: 1, ease: [0.2, 0, 0, 1] }}
                             style={{ gridColumn: 'span 4' }}
+                            whileHover="hover"
                             onClick={() => navigate(`/site/${site.slug}`)}
                         >
                             <motion.div 
-                                whileHover={{ scale: 1.03, backgroundColor: 'var(--material-glass)' }}
+                                className="glass-panel"
                                 style={{ 
-                                    background: 'var(--material-glass)', 
-                                    backdropFilter: 'var(--material-blur)', 
-                                    border: 'var(--material-glass-border)',
-                                    borderRadius: '24px',
-                                    padding: '32px',
-                                    height: '320px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
+                                    padding: '32px', 
+                                    minHeight: '280px', 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    justifyContent: 'space-between', 
                                     cursor: 'pointer',
-                                    boxShadow: 'var(--material-shadow-float)'
+                                    backgroundColor: 'rgba(255, 255, 255, 0.6)' 
                                 }}
+                                variants={{ hover: { transform: 'translateY(-8px) scale(1.02)' } }}
                             >
                                 <div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
-                                        <div style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '50%' }}>
-                                            <Box size={20} color="var(--color-spatial-accent)" />
-                                        </div>
-                                         <span style={{ fontFamily: 'monospace', color: 'var(--color-text-secondary)' }}>REF-{site.id.toString().padStart(3, '0')}</span>
+                                    <div style={{ marginBottom: '24px', opacity: 0.5 }}>
+                                        <Box size={20} />
                                     </div>
-                                    <h3 className="text-h2" style={{ fontSize: '1.75rem', color: 'var(--color-spatial-text)', marginBottom: '12px' }}>{site.name}</h3>
-                                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                    <h3 style={{ fontSize: '1.75rem', marginBottom: '16px', lineHeight: 1.1 }}>{site.name}</h3>
+                                    <p style={{ fontSize: '1rem', lineHeight: 1.5, opacity: 0.7, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                         {site.description}
                                     </p>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-spatial-accent)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                                    Init Scan <ArrowRight size={14} />
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
+                                    <motion.div 
+                                        style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                        variants={{ hover: { background: 'var(--color-spatial-text)', color: 'white' } }}
+                                    >
+                                        <ArrowRight size={18} />
+                                    </motion.div>
                                 </div>
                             </motion.div>
                         </motion.div>
@@ -193,11 +189,7 @@ const RegionDetail = () => {
 
             </div>
             
-            {/* HUD Footer Overlay */}
-            <div style={{ position: 'relative', zIndex: 20 }}>
-                <Footer />
-            </div>
-
+            <Footer />
         </motion.div>
     );
 };

@@ -1,60 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* --- 🏛 SPATIAL HERITAGE OS v2.0 --- */
+  /* --- 🏛 VISIONOS HERITAGE v3.0 --- */
   
-  /* 1. Spatial Palette (Warm Sandstone & Deep Void) */
-  --color-spatial-bg: #F9F7F2;      /* Sandstone: Physical, tactile base */
-  --color-spatial-void: #121212;    /* Deep Charcoal: The void behind the glass */
-  --color-spatial-accent: #C8A359;  /* Antique Gold: Cultural signal */
-  --color-spatial-text: #1A1A1A;    /* Ink: High readability */
-  --color-spatial-glass: rgba(255, 255, 255, 0.65); /* VisionOS Glass */
+  /* 1. Spatial Palette (Warm Neutral & Heritage) */
+  --color-spatial-bg: #EAE5DB;       /* Sandstone: Deeper, warmer, more tactile */
+  --color-spatial-ivory: #FFFFF8;    /* Ivory: For cards and elevated surfaces */
+  --color-spatial-void: #1C1917;     /* Warm Charcoal: Text and contrast */
+  --color-spatial-accent: #B08D55;   /* Muted Antique Gold: Matte finish, not shiny */
+  --color-spatial-text: #1C1917;     /* Primary Ink */
+  --color-text-secondary: rgba(28, 25, 23, 0.65);
   
   /* Semantic Mappings */
   --color-bg-body: var(--color-spatial-bg);
   --color-text-primary: var(--color-spatial-text);
-  --color-text-secondary: rgba(26, 26, 26, 0.60);
-  --color-border-subtle: rgba(26, 26, 26, 0.06);
   
   /* 2. Hyper-Glass Materials (VisionOS Standard) */
-  --material-glass: rgba(249, 247, 242, 0.7); /* Warm tinted glass */
+  /* Lighter, airier, more "optical" */
+  --material-glass: rgba(255, 255, 248, 0.65); 
+  --material-glass-heavy: rgba(255, 255, 248, 0.85);
   --material-glass-border: 1px solid rgba(255, 255, 255, 0.4);
-  --material-glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
-  --material-blur: blur(24px); /* Deep blur for depth perception */
-  --material-shadow-float: 0 12px 40px -8px rgba(0, 0, 0, 0.12);
-  --material-shadow-deep: 0 24px 60px -12px rgba(26, 26, 26, 0.2);
+  --material-glass-border-subtle: 1px solid rgba(28, 25, 23, 0.08);
+  --material-blur: blur(32px); /* Standard Apple Vision blur */
+  --material-blur-heavy: blur(60px);
+
+  /* Shadows: Diffused & Directional */
+  --material-shadow-float: 0 16px 48px -12px rgba(28, 25, 23, 0.12);
+  --material-shadow-deep: 0 32px 64px -16px rgba(28, 25, 23, 0.18);
+  --material-shadow-subtle: 0 4px 12px -4px rgba(28, 25, 23, 0.05);
   
-  /* 3. Cinematic Motion (Director's Cut) */
-  --ease-cinema: cubic-bezier(0.16, 1, 0.3, 1); /* Apple-style spring */
-  --duration-entry: 1200ms;
-  --duration-hover: 400ms;
+  /* 3. Cinematic Motion */
+  --ease-cinema: cubic-bezier(0.2, 0, 0, 1); /* "VisionOS" fluid ease */
+  --duration-entry: 1.4s;
+  --duration-hover: 0.6s;
   
   /* 4. Editorial Typography */
-  --font-display: 'Playfair Display', serif; /* Cultural Authority */
-  --font-sans: 'Inter', system-ui, sans-serif; /* Modern Clarity */
+  --font-display: 'Playfair Display', serif; 
+  --font-sans: 'Inter', system-ui, sans-serif; 
   
-  --type-h1: clamp(3rem, 6vw, 5.5rem);
-  --type-h2: clamp(2rem, 4vw, 3rem);
-  --type-h3: clamp(1.25rem, 2vw, 1.75rem);
-  --type-body: 1.0625rem; /* 17px optimum reading size */
+  --type-h1: clamp(3.5rem, 7vw, 6.5rem);
+  --type-h2: clamp(2.25rem, 4.5vw, 3.5rem);
+  --type-h3: clamp(1.5rem, 2.5vw, 2rem);
   
-  /* 5. Z-Space Layers */
-  --z-background: -10;
-  --z-base: 0;
-  --z-mid: 100;
-  --z-floating: 500;
-  --z-hud: 1000;
-  --z-portal: 9999;
+  /* 5. Spatial Units */
+  --radius-lg: 32px;
+  --radius-md: 20px;
+  --radius-sm: 12px;
   
-  /* 6. Spacing Primitive (8px) */
-  --unit: 8px;
-  --space-sm: calc(var(--unit) * 2);  /* 16px */
-  --space-md: calc(var(--unit) * 4);  /* 32px */
-  --space-lg: calc(var(--unit) * 8);  /* 64px */
-  --space-xl: calc(var(--unit) * 16); /* 128px */
-  
-  --layout-max: 1440px;
-  --layout-reading: 680px; /* Optimal line length */
+  --layout-max: 1600px;
+  --layout-content: 1200px;
 }
 
 /* --- RESET & BASE --- */
@@ -67,13 +61,14 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+  background-color: var(--color-spatial-bg);
 }
 
 body {
   font-family: var(--font-sans);
   background: var(--color-bg-body);
   color: var(--color-text-primary);
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -81,61 +76,77 @@ body {
 /* --- TYPOGRAPHY --- */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--color-spatial-text);
 }
 
 p {
   max-width: 65ch;
   color: var(--color-text-secondary);
+  font-weight: 400;
 }
 
-.text-display { font-size: var(--h-display); }
-.text-h1 { font-size: var(--h-title); }
-.text-h2 { font-size: var(--h-section); }
+.text-display { font-size: var(--type-h1); }
+.text-h1 { font-size: var(--type-h2); }
+.text-h2 { font-size: var(--type-h3); }
 
-/* --- LAYOUT UTILITIES --- */
+/* --- LAYOUT --- */
 .container {
-  max-width: var(--container-max);
+  max-width: var(--layout-content);
   margin: 0 auto;
-  padding: 0 var(--space-4);
+  padding: 0 32px;
 }
 
 .grid-12 {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--grid-gap);
+  gap: 32px;
 }
 
-/* --- NEURAL COMPONENTS --- */
+/* --- VISIONOS COMPONENTS --- */
 
-/* 1. Spatial Nodes (Cards) */
-.neural-node {
+/* 1. Spatial Panel (The Base Card) */
+.glass-panel {
   background: var(--material-glass);
   backdrop-filter: var(--material-blur);
   -webkit-backdrop-filter: var(--material-blur);
   border: var(--material-glass-border);
   box-shadow: var(--material-shadow-float);
-  border-radius: 24px;
-  padding: var(--space-4);
-  transition: transform 0.6s var(--ease-cinema), box-shadow 0.6s var(--ease-cinema);
+  border-radius: var(--radius-lg);
+  transition: transform var(--duration-hover) var(--ease-cinema), 
+              box-shadow var(--duration-hover) var(--ease-cinema);
 }
 
-.neural-node:hover {
-  transform: translateY(-4px) scale(1.005);
+.glass-panel:hover {
+  transform: translateY(-4px) scale(1.002);
   box-shadow: var(--material-shadow-deep);
-  border-color: rgba(200, 163, 89, 0.4);
 }
 
-/* 2. Synapse Buttons */
-.btn-neural {
+/* 2. Floating Pill (Navigation/Tags) */
+.glass-pill {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-spatial-text);
+  box-shadow: var(--material-shadow-subtle);
+}
+
+/* 3. Cinematic Button */
+.btn-cinema {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 32px;
+  padding: 20px 40px;
   background: var(--color-spatial-text);
-  color: white;
+  color: var(--color-spatial-ivory);
   border-radius: 100px;
   border: none;
   font-family: var(--font-sans);
@@ -143,38 +154,22 @@ p {
   font-size: 1rem;
   letter-spacing: -0.01em;
   cursor: pointer;
-  transition: all 0.4s var(--ease-cinema);
+  transition: all 0.5s var(--ease-cinema);
 }
 
-.btn-neural:hover {
-  background: black;
-  transform: scale(1.04);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
-
-.btn-neural-ghost {
-  background: transparent;
-  border: 1px solid rgba(26, 26, 26, 0.1);
-  color: var(--color-spatial-text);
-  padding: 14px 28px;
-  border-radius: 100px;
-  cursor: pointer;
-  transition: all 0.3s var(--ease-cinema);
-}
-
-.btn-neural-ghost:hover {
-  border-color: var(--color-spatial-text);
-  background: rgba(26, 26, 26, 0.03);
+.btn-cinema:hover {
+  transform: scale(1.03);
+  box-shadow: var(--material-shadow-float);
+  background: #000;
 }
 
 /* --- UTILITIES --- */
-.section-pad {
-  padding: 120px 0;
-}
+.section-pad { padding: 160px 0; }
+.text-gold { color: var(--color-spatial-accent); }
 
 /* Mobile */
 @media (max-width: 900px) {
-  .grid-12 {
-    grid-template-columns: 1fr;
-  }
+  .grid-12 { grid-template-columns: 1fr; }
+  .text-display { font-size: 3rem; }
+  .container { padding: 0 20px; }
 }
