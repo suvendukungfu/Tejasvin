@@ -58,12 +58,15 @@ const Explore = () => {
                 ]);
 
                 // Map slugs to local assets for diverse visuals
+                // Map slugs to curated cinematic assets (Unsplash High-Res)
                 const regionImageMap: Record<string, string> = {
-                    'chambal-valley': chambalValley,
-                    'gwalior': gwaliorFort,
-                    'bateshwar': bateshwar,
-                    'mitaoli': mitaoli,
-                    // Add more mappings as needed
+                    'chambal-valley': 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1600&auto=format&fit=crop', // Mountainous/Ravine feel
+                    'gwalior': 'https://images.unsplash.com/photo-1599661046289-e31897812906?q=80&w=1600&auto=format&fit=crop', // Fort walls
+                    'bateshwar': 'https://images.unsplash.com/photo-1644917616149-165b4c48971f?q=80&w=1600&auto=format&fit=crop', // Stone Temples
+                    'mitaoli': 'https://images.unsplash.com/photo-1591266042129-922649b5ae7d?q=80&w=1600&auto=format&fit=crop', // Circular/Architectural
+                    'padavali': 'https://images.unsplash.com/photo-1628066532402-2c63677e52b2?q=80&w=1600&auto=format&fit=crop', // Ruins/Carvings
+                    'kakanmath': 'https://images.unsplash.com/photo-1566324018374-c72064d5098d?q=80&w=1600&auto=format&fit=crop', // Isolated Temple Spire
+                    'garh-kundar': 'https://images.unsplash.com/photo-1572883454114-1cf0031a026e?q=80&w=1600&auto=format&fit=crop', // Hill Fort Silhouette
                 };
 
                 // Inject images and mock coordinates
@@ -295,15 +298,15 @@ const Explore = () => {
     );
 };
 
-// --- CINEMATIC VISIONOS TILE (Replaces Holographic) ---
+// --- CINEMATIC VISIONOS TILE (Redesigned: Full-Bleed & Layered) ---
 const CinematicTile = ({ region, index, navigate }: { region: Region, index: number, navigate: any }) => {
     return (
         <motion.div 
-            style={{ gridColumn: 'span 6', cursor: 'pointer', position: 'relative' }}
-            initial={{ opacity: 0, y: 40 }}
+            style={{ gridColumn: 'span 6', cursor: 'pointer', position: 'relative', marginBottom: '40px' }}
+            initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: index * 0.1, duration: 1, ease: [0.2, 0, 0, 1] }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: index * 0.1, duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
             whileHover="hover"
             onClick={() => navigate(`/region/${region.slug}`)}
         >
@@ -312,21 +315,21 @@ const CinematicTile = ({ region, index, navigate }: { region: Region, index: num
                     borderRadius: '24px', 
                     overflow: 'hidden', 
                     position: 'relative', 
-                    height: '520px',
-                    background: '#FFFFF8',
-                    boxShadow: 'var(--material-shadow-float)'
+                    height: '500px', // Increased height for cinematic feel
+                    background: '#EAE5D9', // Sandstone placeholder
+                    boxShadow: '0 20px 40px -10px rgba(0,0,0,0.15)',
+                    transformStyle: 'preserve-3d'
                 }}
                 variants={{
                     hover: { 
-                        y: -8, 
-                        scale: 1.005,
-                        boxShadow: 'var(--material-shadow-deep)'
+                        y: -12, 
+                        boxShadow: '0 40px 80px -20px rgba(0,0,0,0.25)'
                     }
                 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
             >
-                {/* Image Container with Zoom Effect */}
-                <div style={{ height: '70%', overflow: 'hidden', position: 'relative' }}>
+                {/* 1. Full-Bleed Image Layer */}
+                <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                      <motion.img 
                         src={region.banner_image} 
                         alt={region.name} 
@@ -334,39 +337,58 @@ const CinematicTile = ({ region, index, navigate }: { region: Region, index: num
                         variants={{
                             hover: { scale: 1.05 }
                         }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        transition={{ duration: 1.2, ease: "easeOut" }}
                     />
-                    {/* Inner Shadow Gradient */}
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.3), transparent)' }} />
+                    
+                    {/* Sandstone Tint Overlay (Unified System) */}
+                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(200, 163, 89, 0.05)', mixBlendMode: 'multiply' }} />
+                    
+                    {/* Cinematic Text Gradient (Bottom Up) */}
+                    <motion.div 
+                        style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 30%, transparent 60%)' }} 
+                        variants={{ hover: { opacity: 1 } }}
+                        initial={{ opacity: 0.8 }}
+                    />
                 </div>
 
-                {/* Content Block */}
-                <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', height: '30%', justifyContent: 'center' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                        <div>
-                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                                <MapPin size={14} color="var(--color-spatial-accent)" />
-                                <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', color: 'var(--color-spatial-accent)', textTransform: 'uppercase' }}>
-                                    Region 0{region.id}
-                                </span>
-                            </div>
-                            <h3 className="text-h2" style={{ fontSize: '2rem', marginBottom: '8px' }}>{region.name}</h3>
+                {/* 2. Content Layer (Floating) */}
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '40px' }}>
+                    
+                    {/* Top Detail: ID & Icon */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', opacity: 0.9 }}>
+                            <div style={{ width: '6px', height: '6px', background: 'var(--color-spatial-accent)', borderRadius: '50%' }} />
+                            <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase' }}>
+                                Region 0{region.id}
+                            </span>
                         </div>
-                        
+                    </div>
+
+                    {/* Title & Arrow Row */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                        <h3 className="text-display" style={{ fontSize: '2.5rem', color: 'white', margin: 0, lineHeight: 1.1, textShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+                            {region.name}
+                        </h3>
+
                         <motion.div 
-                            variants={{ hover: { x: 4, opacity: 1 } }}
-                            initial={{ opacity: 0.5 }}
+                            variants={{ 
+                                hover: { scale: 1, opacity: 1, x: 0 },
+                                initial: { scale: 0.9, opacity: 0.6, x: -10 }
+                            }}
+                            initial="initial"
                             style={{ 
-                                width: '40px', 
-                                height: '40px', 
+                                width: '48px', 
+                                height: '48px', 
                                 borderRadius: '50%', 
-                                border: '1px solid rgba(0,0,0,0.1)', 
+                                background: 'rgba(255,255,255,0.2)', 
+                                backdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(255,255,255,0.3)',
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 justifyContent: 'center' 
                             }}
                         >
-                            <ArrowRight size={18} color="var(--color-spatial-text)" />
+                            <ArrowRight size={20} color="white" />
                         </motion.div>
                     </div>
                 </div>
