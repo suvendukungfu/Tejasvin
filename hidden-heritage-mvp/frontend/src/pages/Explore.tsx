@@ -55,42 +55,42 @@ const Explore = () => {
                 ]);
 
                 // Map slugs to local assets for diverse visuals
-                // Map slugs to curated cinematic assets (Unsplash High-Res)
+                // Map slugs to curated cinematic assets (Unsplash High-Res - Warm & Architectural)
                 const regionImageMap: Record<string, string> = {
-                    'chambal-valley': 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1600&auto=format&fit=crop', // Mountainous/Ravine feel
-                    'gwalior': 'https://images.unsplash.com/photo-1599661046289-e31897812906?q=80&w=1600&auto=format&fit=crop', // Fort walls
-                    'bateshwar': 'https://images.unsplash.com/photo-1644917616149-165b4c48971f?q=80&w=1600&auto=format&fit=crop', // Stone Temples
-                    'mitaoli': 'https://images.unsplash.com/photo-1591266042129-922649b5ae7d?q=80&w=1600&auto=format&fit=crop', // Circular/Architectural
-                    'padavali': 'https://images.unsplash.com/photo-1628066532402-2c63677e52b2?q=80&w=1600&auto=format&fit=crop', // Ruins/Carvings
-                    'kakanmath': 'https://images.unsplash.com/photo-1566324018374-c72064d5098d?q=80&w=1600&auto=format&fit=crop', // Isolated Temple Spire
-                    'garh-kundar': 'https://images.unsplash.com/photo-1572883454114-1cf0031a026e?q=80&w=1600&auto=format&fit=crop', // Hill Fort Silhouette
+                    'chambal-valley': 'https://images.unsplash.com/photo-1504705759706-c5ee7158f8bb?q=80&w=1600&auto=format&fit=crop', // Aerial River/Canyon
+                    'gwalior': 'https://images.unsplash.com/photo-1600667363406-8968037b0365?q=80&w=1600&auto=format&fit=crop', // Fort Silhouette Warm
+                    'bateshwar': 'https://images.unsplash.com/photo-1622308644420-a94aa6be068c?q=80&w=1600&auto=format&fit=crop', // Stone Temples Warm
+                    'mitaoli': 'https://images.unsplash.com/photo-1596547608821-42eb4dc32658?q=80&w=1600&auto=format&fit=crop', // Circular Architecture
+                    'padavali': 'https://images.unsplash.com/photo-1628066532402-2c63677e52b2?q=80&w=1600&auto=format&fit=crop', // Carvings/Ruins
+                    'kakanmath': 'https://images.unsplash.com/photo-1598535348423-42d4850a581e?q=80&w=1600&auto=format&fit=crop', // Isolated Temple
+                    'garh-kundar': 'https://images.unsplash.com/photo-1522822459039-44474cc3f5c8?q=80&w=1600&auto=format&fit=crop', // Hill Fort
                 };
 
                 // Inject images and mock coordinates
                 const dataWithEnrichment = regionsRes.data.map((r: Region) => ({
                     ...r,
-                    banner_image: regionImageMap[r.slug] || r.banner_image || gwaliorFort, // Fallback to Gwalior if no match
+                    banner_image: regionImageMap[r.slug] || r.banner_image || gwaliorFort, 
                     latitude: r.latitude || 26.2183 + (Math.random() * 0.5 - 0.25),
                     longitude: r.longitude || 78.1828 + (Math.random() * 0.5 - 0.25)
                 }));
                 
                 setRegions(dataWithEnrichment || []);
 
-                // Enrich sites with specific images for the Atlas Map (Using reliable Wikimedia Commons)
+                // Enrich sites with specific images for the Atlas Map (Using Cinematic Unsplash)
                 const siteImageMap: Record<string, string> = {
-                    'bateshwar': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bateshwar_Group_of_Temples_of_Morena%2C_Madhya_Pradesh.jpg/1024px-Bateshwar_Group_of_Temples_of_Morena%2C_Madhya_Pradesh.jpg',
-                    'mitawali': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg/1280px-Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg',
-                    'chausath': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg/1280px-Chausath_Yogini_Temple%2C_Mitaoli%2C_Morena_006.jpg', // Mitawali alias
-                    'padavali': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/The_grand_entrance_of_Garhi_Padavali.jpg/1024px-The_grand_entrance_of_Garhi_Padavali.jpg',
-                    'kakanmath': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Kakanmath_Temple_%2824143370669%29.JPG/1024px-Kakanmath_Temple_%2824143370669%29.JPG',
-                    'garh': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Garh_Kundar.JPG/1024px-Garh_Kundar.JPG', // Garh Kundar
-                    'chambal': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Chambal-river-gorge.jpg/1280px-Chambal-river-gorge.jpg',
+                    'bateshwar': 'https://images.unsplash.com/photo-1622308644420-a94aa6be068c?q=80&w=800&auto=format&fit=crop',
+                    'mitawali': 'https://images.unsplash.com/photo-1596547608821-42eb4dc32658?q=80&w=800&auto=format&fit=crop',
+                    'chausath': 'https://images.unsplash.com/photo-1596547608821-42eb4dc32658?q=80&w=800&auto=format&fit=crop', 
+                    'padavali': 'https://images.unsplash.com/photo-1628066532402-2c63677e52b2?q=80&w=800&auto=format&fit=crop',
+                    'kakanmath': 'https://images.unsplash.com/photo-1598535348423-42d4850a581e?q=80&w=800&auto=format&fit=crop',
+                    'garh': 'https://images.unsplash.com/photo-1522822459039-44474cc3f5c8?q=80&w=800&auto=format&fit=crop',
+                    'chambal': 'https://images.unsplash.com/photo-1504705759706-c5ee7158f8bb?q=80&w=800&auto=format&fit=crop',
                 };
 
                 const enrichedSites = (sitesRes.data || []).map((site: Site) => {
                     const lowerName = site.name.toLowerCase();
-                    // Default Fallback (Gwalior Fort - Reliable Source)
-                    let imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Gwalior_Fort_view.jpg/1280px-Gwalior_Fort_view.jpg'; 
+                    // Default Fallback (Gwalior Fort - Warm/Cinematic)
+                    let imageUrl = 'https://images.unsplash.com/photo-1533230626359-573e86c2e393?q=80&w=800&auto=format&fit=crop'; 
 
                     for (const [key, url] of Object.entries(siteImageMap)) {
                         if (lowerName.includes(key)) {
@@ -123,7 +123,7 @@ const Explore = () => {
         <motion.div 
             ref={containerRef} 
             className="min-h-screen" 
-            style={{ background: 'var(--color-spatial-bg)' }}
+            style={{ background: '#F0EFEA' }} // Slightly warmer/lighter than sandstone for contrast
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -137,7 +137,7 @@ const Explore = () => {
                 <motion.div style={{ position: 'absolute', inset: 0, y: yHero, opacity: opacityHero, zIndex: 0 }}>
                     <img src={gwaliorFort} alt="Hero" style={{ width: '100%', height: '110%', objectFit: 'cover' }} />
                     {/* Frosted Glass Gradient from Bottom */}
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--color-spatial-bg) 5%, transparent 60%)' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #F0EFEA 5%, transparent 60%)' }} />
                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.2), transparent)' }} />
                 </motion.div>
 
@@ -321,7 +321,7 @@ const Explore = () => {
     );
 };
 
-// --- CINEMATIC VISIONOS TILE (Museum-Grade Refinement) ---
+// --- CINEMATIC VISIONOS TILE (Ultra-Premium Glass Edition) ---
 const CinematicTile = ({ region, index, navigate }: { region: Region, index: number, navigate: any }) => {
     return (
         <motion.div 
@@ -329,7 +329,7 @@ const CinematicTile = ({ region, index, navigate }: { region: Region, index: num
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ delay: index * 0.1, duration: 1.4, ease: [0.19, 1, 0.22, 1] }} // Slower, heavier ease
+            transition={{ delay: index * 0.1, duration: 1.4, ease: [0.19, 1, 0.22, 1] }}
             whileHover="hover"
             onClick={() => navigate(`/region/${region.slug}`)}
         >
@@ -339,7 +339,7 @@ const CinematicTile = ({ region, index, navigate }: { region: Region, index: num
                     overflow: 'hidden', 
                     position: 'relative', 
                     height: '520px', 
-                    background: '#F9F7F2', // Warm Sandstone base
+                    background: '#F0EFEA', // Base for loading state
                     boxShadow: '0 20px 40px -10px rgba(0,0,0,0.1)',
                     transformStyle: 'preserve-3d'
                 }}
@@ -351,75 +351,81 @@ const CinematicTile = ({ region, index, navigate }: { region: Region, index: num
                 }}
                 transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
             >
-                {/* 1. Full-Bleed Image Layer (Warm Toned) */}
+                {/* 1. Full-Bleed Image Layer */}
                 <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                      <motion.img 
                         src={region.banner_image} 
                         alt={region.name} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(0.15) contrast(1.05)' }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(0.1) contrast(1.05)' }} // Subtle cinematic warming
                         variants={{
-                            hover: { scale: 1.03 } // Subtle 1.03 scale
+                            hover: { scale: 1.05 } // Breathe effect
                         }}
-                        transition={{ duration: 1.2, ease: "easeOut" }}
-                    />
-                    
-                    {/* Soft Bottom Gradient (Transparent -> Warm Beige) */}
-                    <motion.div 
-                        style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #F9F7F2 5%, rgba(249, 247, 242, 0.8) 25%, transparent 50%)' }} 
-                        initial={{ opacity: 0.9 }}
+                        transition={{ duration: 1.4, ease: "easeOut" }}
                     />
                 </div>
 
-                {/* 2. Content Layer (Floating on Beige) */}
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '40px' }}>
-                    
-                    {/* Top Detail: Cube Icon */}
-                    <div style={{ position: 'absolute', top: '-400px', left: '32px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ 
-                            width: '32px', height: '32px', 
-                            background: 'rgba(255,255,255,0.3)', 
-                            backdropFilter: 'blur(10px)', 
-                            borderRadius: '8px', 
-                            display: 'flex', alignItems: 'center', justifyContent: 'center' 
-                        }}>
-                             <Grid size={14} color="white" />
+                {/* 2. Glass Panel Layer (The Ultra-Premium Touch) */}
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '24px' }}>
+                    <motion.div 
+                        style={{ 
+                            background: 'rgba(249, 247, 242, 0.6)', 
+                            backdropFilter: 'blur(12px)', 
+                            borderRadius: '20px', 
+                            padding: '24px 32px',
+                            borderTop: '1px solid rgba(255, 255, 255, 0.4)',
+                            borderLeft: '1px solid rgba(255, 255, 255, 0.2)',
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
+                        }}
+                        variants={{
+                            hover: { 
+                                backgroundColor: 'rgba(249, 247, 242, 0.85)',
+                                backdropFilter: 'blur(16px)'
+                            }
+                        }}
+                        transition={{ duration: 0.4 }}
+                    >
+                         {/* Top Detail: Cube Icon & ID */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                 <Grid size={12} color="var(--color-spatial-accent)" />
+                                 <span style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.15em', color: 'var(--color-spatial-accent)', textTransform: 'uppercase' }}>
+                                    Region 0{region.id}
+                                </span>
+                             </div>
                         </div>
-                    </div>
 
-                    {/* Title & Arrow Row */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                        <div>
-                             <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em', color: 'var(--color-spatial-accent)', textTransform: 'uppercase', marginBottom: '8px', display: 'block' }}>
-                                Region 0{region.id}
-                            </span>
-                            <h3 className="text-display" style={{ fontSize: '2.5rem', color: '#1a1a1a', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' }}>
+                        {/* Title & Arrow Row */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                            <h3 className="text-display" style={{ fontSize: '2.2rem', color: '#1a1a1a', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em', flex: 1 }}>
                                 {region.name}
                             </h3>
-                        </div>
 
-                        <motion.div 
-                            variants={{ 
-                                hover: { scale: 1, backgroundColor: 'rgba(26, 26, 26, 1)', x: 0 },
-                                initial: { scale: 1, backgroundColor: 'rgba(26, 26, 26, 0.1)', x: 0 }
-                            }}
-                            transition={{ duration: 0.4 }}
-                            style={{ 
-                                width: '48px', 
-                                height: '48px', 
-                                borderRadius: '50%', 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                justifyContent: 'center',
-                                backdropFilter: 'blur(10px)'
-                            }}
-                        >
-                            <ArrowRight size={20} color="white" />{/* Icon color needs to contrast with button bg */}
-                        </motion.div>
-                    </div>
+                            <motion.div 
+                                variants={{ 
+                                    hover: { scale: 1, backgroundColor: 'rgba(26, 26, 26, 1)', x: 0 },
+                                    initial: { scale: 1, backgroundColor: 'rgba(26, 26, 26, 0.1)', x: 0 }
+                                }}
+                                transition={{ duration: 0.4 }}
+                                style={{ 
+                                    width: '44px', 
+                                    height: '44px', 
+                                    borderRadius: '50%', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    marginLeft: '16px'
+                                }}
+                            >
+                                <ArrowRight size={18} color="white" />
+                            </motion.div>
+                        </div>
+                    </motion.div>
                 </div>
             </motion.div>
         </motion.div>
     );
 };
+
+export default Explore;
 
 export default Explore;
