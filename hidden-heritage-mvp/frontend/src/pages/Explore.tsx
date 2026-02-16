@@ -5,27 +5,12 @@ import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSp
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { MapPin, ArrowRight, Compass, Map as MapIcon, Grid } from 'lucide-react';
-import { getRegions } from '../services/api';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { getRegions, getSites } from '../services/api'; 
+import MapPreview from '../components/MapPreview';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-
-// Fix Leaflet Icon
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-
-let DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
-});
-
-L.Marker.prototype.options.icon = DefaultIcon;
 
 // Cinematic Assets
 import gwaliorFort from '../assets/heritage/gwalior_fort.png';
-// Import textures if available, otherwise fallback
 import holographicGrid from '../assets/textures/holographic_grid.png';
 
 interface Region {
@@ -39,9 +24,20 @@ interface Region {
     longitude?: number;
 }
 
+interface Site {
+    id: number;
+    name: string;
+    latitude: number;
+    longitude: number;
+    type: string;
+    slug?: string;
+    image_url?: string;
+}
+
 const Explore = () => {
     const navigate = useNavigate();
     const [regions, setRegions] = useState<Region[]>([]);
+    const [allSites, setAllSites] = useState<Site[]>([]);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
     const containerRef = useRef(null);
@@ -50,24 +46,31 @@ const Explore = () => {
     const yHero = useTransform(scrollYProgress, [0, 0.4], ["0%", "20%"]);
 
     useEffect(() => {
-        const fetchRegions = async () => {
+        const fetchData = async () => {
             try {
-                const response = await getRegions();
-                // Mock coordinates for demo if not present
-                const dataWithCoords = response.data.map((r: Region, _i: number) => ({
+                // Parallel fetch for regions and sites
+                const [regionsRes, sitesRes] = await Promise.all([
+                    getRegions(),
+                    getSites() // Fetch all sites for the Atlas
+                ]);
+
+                // Mock coordinates for regions if missing
+                const dataWithCoords = regionsRes.data.map((r: Region) => ({
                     ...r,
                     latitude: r.latitude || 26.2183 + (Math.random() * 0.5 - 0.25),
                     longitude: r.longitude || 78.1828 + (Math.random() * 0.5 - 0.25)
                 }));
+                
                 setRegions(dataWithCoords || []);
+                setAllSites(sitesRes.data || []);
             } catch (error) {
-                console.error('Failed to fetch regions', error);
+                console.error('Failed to fetch atlas data', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchRegions();
+        fetchData();
     }, []);
 
     const containerVariants = {
@@ -119,7 +122,11 @@ const Explore = () => {
                             </span>
                         </div>
                         <h1 className="text-display" style={{ color: 'var(--color-spatial-text)', maxWidth: '800px', marginBottom: '40px' }}>
-                            Select a <span style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: 'var(--color-spatial-accent)' }}>Coordinate.</span>
+                            {viewMode === 'grid' ? (
+                                <>Select a <span style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: 'var(--color-spatial-accent)' }}>Coordinate.</span></>
+                            ) : (
+                                <>The <span style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: 'var(--color-spatial-accent)' }}>Atlas.</span></>
+                            )}
                         </h1>
 
                         {/* Controls Bar */}
@@ -298,37 +305,10 @@ const Explore = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
-                                style={{ height: '70vh', borderRadius: '32px', overflow: 'hidden', boxShadow: 'var(--material-shadow-float)', border: '4px solid white' }}
+                                style={{ height: '75vh', borderRadius: '32px', overflow: 'hidden', boxShadow: 'var(--material-shadow-float)', border: '4px solid white' }}
                             >
-                                <MapContainer center={[26.2183, 78.1828]} zoom={8} style={{ height: '100%', width: '100%' }}>
-                                    <TileLayer
-                                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                                        attribution='Tiles &copy; Esri'
-                                    />
-                                    <TileLayer 
-                                         url="https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}{r}.png"
-                                         attribution='Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
-                                         opacity={0.4}
-                                    />
-                                    {regions.map((region) => (
-                                        <Marker 
-                                            key={region.id} 
-                                            position={[region.latitude || 26.2183, region.longitude || 78.1828]}
-                                            eventHandlers={{
-                                                click: () => {
-                                                    navigate(`/region/${region.slug}`);
-                                                },
-                                            }}
-                                        >
-                                            <Popup>
-                                                <div style={{ textAlign: 'center' }}>
-                                                    <strong>{region.name}</strong><br/>
-                                                    {region.sites_count} Sites
-                                                </div>
-                                            </Popup>
-                                        </Marker>
-                                    ))}
-                                </MapContainer>
+                                {/* Advanced Map Preview Component */}
+                                <MapPreview sites={allSites} />
                             </motion.div>
                         )}
                     </AnimatePresence>
