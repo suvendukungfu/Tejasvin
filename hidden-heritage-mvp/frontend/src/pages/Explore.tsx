@@ -11,6 +11,9 @@ import 'leaflet/dist/leaflet.css';
 
 // Cinematic Assets
 import gwaliorFort from '../assets/heritage/gwalior_fort.png';
+import bateshwar from '../assets/heritage/bateshwar.png';
+import mitaoli from '../assets/heritage/mitaoli.png';
+import chambalValley from '../assets/heritage/chambal_valley.png';
 
 interface Region {
     id: number;
@@ -55,14 +58,24 @@ const Explore = () => {
                     getSites() 
                 ]);
 
-                // Mock location data
-                const dataWithCoords = regionsRes.data.map((r: Region) => ({
+                // Map slugs to local assets for diverse visuals
+                const regionImageMap: Record<string, string> = {
+                    'chambal-valley': chambalValley,
+                    'gwalior': gwaliorFort,
+                    'bateshwar': bateshwar,
+                    'mitaoli': mitaoli,
+                    // Add more mappings as needed
+                };
+
+                // Inject images and mock coordinates
+                const dataWithEnrichment = regionsRes.data.map((r: Region) => ({
                     ...r,
+                    banner_image: regionImageMap[r.slug] || r.banner_image || gwaliorFort, // Fallback to Gwalior if no match
                     latitude: r.latitude || 26.2183 + (Math.random() * 0.5 - 0.25),
                     longitude: r.longitude || 78.1828 + (Math.random() * 0.5 - 0.25)
                 }));
                 
-                setRegions(dataWithCoords || []);
+                setRegions(dataWithEnrichment || []);
                 setAllSites(sitesRes.data || []);
             } catch (error) {
                 console.error('Failed to fetch atlas data', error);
