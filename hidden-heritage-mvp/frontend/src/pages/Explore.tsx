@@ -321,7 +321,7 @@ const Explore = () => {
     );
 };
 
-// --- CINEMATIC VISIONOS TILE (Redesigned: Full-Bleed & Layered) ---
+// --- CINEMATIC VISIONOS TILE (Museum-Grade Refinement) ---
 const CinematicTile = ({ region, index, navigate }: { region: Region, index: number, navigate: any }) => {
     return (
         <motion.div 
@@ -329,7 +329,7 @@ const CinematicTile = ({ region, index, navigate }: { region: Region, index: num
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ delay: index * 0.1, duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+            transition={{ delay: index * 0.1, duration: 1.4, ease: [0.19, 1, 0.22, 1] }} // Slower, heavier ease
             whileHover="hover"
             onClick={() => navigate(`/region/${region.slug}`)}
         >
@@ -338,80 +338,82 @@ const CinematicTile = ({ region, index, navigate }: { region: Region, index: num
                     borderRadius: '24px', 
                     overflow: 'hidden', 
                     position: 'relative', 
-                    height: '500px', // Increased height for cinematic feel
-                    background: '#EAE5D9', // Sandstone placeholder
-                    boxShadow: '0 20px 40px -10px rgba(0,0,0,0.15)',
+                    height: '520px', 
+                    background: '#F9F7F2', // Warm Sandstone base
+                    boxShadow: '0 20px 40px -10px rgba(0,0,0,0.1)',
                     transformStyle: 'preserve-3d'
                 }}
                 variants={{
                     hover: { 
-                        y: -12, 
-                        boxShadow: '0 40px 80px -20px rgba(0,0,0,0.25)'
+                        y: -8, 
+                        boxShadow: '0 40px 80px -20px rgba(0,0,0,0.15)'
                     }
                 }}
                 transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
             >
-                {/* 1. Full-Bleed Image Layer */}
+                {/* 1. Full-Bleed Image Layer (Warm Toned) */}
                 <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                      <motion.img 
                         src={region.banner_image} 
                         alt={region.name} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(0.15) contrast(1.05)' }}
                         variants={{
-                            hover: { scale: 1.05 }
+                            hover: { scale: 1.03 } // Subtle 1.03 scale
                         }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
                     />
                     
-                    {/* Sandstone Tint Overlay (Unified System) */}
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(200, 163, 89, 0.05)', mixBlendMode: 'multiply' }} />
-                    
-                    {/* Cinematic Text Gradient (Bottom Up) */}
+                    {/* Soft Bottom Gradient (Transparent -> Warm Beige) */}
                     <motion.div 
-                        style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 30%, transparent 60%)' }} 
-                        variants={{ hover: { opacity: 1 } }}
-                        initial={{ opacity: 0.8 }}
+                        style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #F9F7F2 5%, rgba(249, 247, 242, 0.8) 25%, transparent 50%)' }} 
+                        initial={{ opacity: 0.9 }}
                     />
                 </div>
 
-                {/* 2. Content Layer (Floating) */}
+                {/* 2. Content Layer (Floating on Beige) */}
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '40px' }}>
                     
-                    {/* Top Detail: ID & Icon */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', opacity: 0.9 }}>
-                            <div style={{ width: '6px', height: '6px', background: 'var(--color-spatial-accent)', borderRadius: '50%' }} />
-                            <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase' }}>
-                                Region 0{region.id}
-                            </span>
+                    {/* Top Detail: Cube Icon */}
+                    <div style={{ position: 'absolute', top: '-400px', left: '32px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ 
+                            width: '32px', height: '32px', 
+                            background: 'rgba(255,255,255,0.3)', 
+                            backdropFilter: 'blur(10px)', 
+                            borderRadius: '8px', 
+                            display: 'flex', alignItems: 'center', justifyContent: 'center' 
+                        }}>
+                             <Grid size={14} color="white" />
                         </div>
                     </div>
 
                     {/* Title & Arrow Row */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                        <h3 className="text-display" style={{ fontSize: '2.5rem', color: 'white', margin: 0, lineHeight: 1.1, textShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
-                            {region.name}
-                        </h3>
+                        <div>
+                             <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em', color: 'var(--color-spatial-accent)', textTransform: 'uppercase', marginBottom: '8px', display: 'block' }}>
+                                Region 0{region.id}
+                            </span>
+                            <h3 className="text-display" style={{ fontSize: '2.5rem', color: '#1a1a1a', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' }}>
+                                {region.name}
+                            </h3>
+                        </div>
 
                         <motion.div 
                             variants={{ 
-                                hover: { scale: 1, opacity: 1, x: 0 },
-                                initial: { scale: 0.9, opacity: 0.6, x: -10 }
+                                hover: { scale: 1, backgroundColor: 'rgba(26, 26, 26, 1)', x: 0 },
+                                initial: { scale: 1, backgroundColor: 'rgba(26, 26, 26, 0.1)', x: 0 }
                             }}
-                            initial="initial"
+                            transition={{ duration: 0.4 }}
                             style={{ 
                                 width: '48px', 
                                 height: '48px', 
                                 borderRadius: '50%', 
-                                background: 'rgba(255,255,255,0.2)', 
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255,255,255,0.3)',
                                 display: 'flex', 
                                 alignItems: 'center', 
-                                justifyContent: 'center' 
+                                justifyContent: 'center',
+                                backdropFilter: 'blur(10px)'
                             }}
                         >
-                            <ArrowRight size={20} color="white" />
+                            <ArrowRight size={20} color="white" />{/* Icon color needs to contrast with button bg */}
                         </motion.div>
                     </div>
                 </div>
