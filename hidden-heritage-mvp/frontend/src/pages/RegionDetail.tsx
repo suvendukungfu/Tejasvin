@@ -3,9 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import { getSites } from '../services/api'; 
 import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Layers, Info, Box } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Layers, Box } from 'lucide-react';
 import gwaliorFort from '../assets/heritage/gwalior_fort.png';
 
 interface Site {
@@ -189,7 +188,7 @@ const RegionDetail = () => {
 
             </div>
             
-            <Footer />
+            {/* <Footer /> removed - rendered globally in Layout */}
         </motion.div>
     );
 };

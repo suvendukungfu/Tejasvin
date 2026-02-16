@@ -3,7 +3,6 @@ import Loader from '../components/Loader';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 import { MapPin, ArrowRight, Compass, Map as MapIcon, Grid, Search, X } from 'lucide-react';
 import { getRegions, getSites } from '../services/api'; 
 import MapPreview from '../components/MapPreview';
@@ -291,7 +290,7 @@ const Explore = () => {
                 </div>
             </section>
             
-            <Footer />
+            {/* <Footer /> removed - rendered globally in Layout */}
         </motion.div>
     );
 };

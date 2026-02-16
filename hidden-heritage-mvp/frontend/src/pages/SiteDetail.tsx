@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 import { MapPin, Clock, ArrowLeft, Shield, Sparkles, Calendar, Box, ScanLine } from 'lucide-react';
 import { getSiteBySlug, getSafetyScore, getAiStory } from '../services/api';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -326,7 +325,7 @@ const SiteDetail = () => {
             </div>
             
             <div style={{ height: '120px' }} />
-            <Footer />
+            {/* <Footer /> removed - rendered globally in Layout */}
         </div>
     );
 };

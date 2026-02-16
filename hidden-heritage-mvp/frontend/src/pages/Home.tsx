@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, Compass, Zap, Box } from 'lucide-react';
 
@@ -552,7 +551,7 @@ const MeaningScene = ({ progress }: { progress: any }) => {
                 whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
             >
-               <Footer />
+                {/* <Footer /> removed - rendered globally in Layout */}
             </motion.div>
         </motion.section>
     );

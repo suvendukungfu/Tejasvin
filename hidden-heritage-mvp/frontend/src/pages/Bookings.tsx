@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 import { Calendar, Eye, MapPin, Search, Compass, Archive } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { getTripsByUser } from '../services/api';
@@ -270,7 +269,7 @@ const Bookings = () => {
                     )}
                 </motion.div>
             </div>
-            <Footer />
+            {/* <Footer /> removed - rendered globally in Layout */}
         </div>
     );
 };
