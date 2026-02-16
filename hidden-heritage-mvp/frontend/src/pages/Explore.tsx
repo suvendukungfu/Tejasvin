@@ -309,7 +309,11 @@ const Explore = () => {
                                 transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
                                 style={{ height: '75vh', borderRadius: '32px', overflow: 'hidden', boxShadow: 'var(--material-shadow-deep)', border: '4px solid white' }}
                             >
-                                <MapPreview sites={allSites} />
+                                <MapPreview 
+                                    sites={allSites} 
+                                    selectedSiteIds={[]} 
+                                    onToggleSite={() => {}} 
+                                />
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -425,7 +429,5 @@ const CinematicTile = ({ region, index, navigate }: { region: Region, index: num
         </motion.div>
     );
 };
-
-export default Explore;
 
 export default Explore;

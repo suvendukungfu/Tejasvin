@@ -30,6 +30,8 @@ interface Site {
 
 interface MapPreviewProps {
     sites: Site[];
+    selectedSiteIds: number[];
+    onToggleSite: (id: number) => void;
 }
 
 // Haversine formula
@@ -63,8 +65,7 @@ const MapController = ({ center, zoom, selectedSites }: { center: [number, numbe
     return null;
 };
 
-const MapPreview = ({ sites }: MapPreviewProps) => {
-    const [selectedSiteIds, setSelectedSiteIds] = useState<number[]>([]);
+const MapPreview = ({ sites, selectedSiteIds, onToggleSite }: MapPreviewProps) => {
     const [optimizedRoute, setOptimizedRoute] = useState<Site[] | null>(null);
     const [mapMode, setMapMode] = useState<'dark' | 'satellite'>('dark');
 
@@ -77,11 +78,14 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
         ? [lastSelected.latitude, lastSelected.longitude] 
         : (sites.length > 0 ? [sites[0].latitude, sites[0].longitude] : defaultCenter);
 
-    const toggleSiteSelection = (id: number) => {
+    // Reset route if selection changes from outside
+    useEffect(() => {
         setOptimizedRoute(null);
-        setSelectedSiteIds(prev => 
-            prev.includes(id) ? prev.filter(siteId => siteId !== id) : [...prev, id]
-        );
+    }, [selectedSiteIds.length]);
+
+    // Handle internal toggle that calls parent
+    const toggleSiteSelection = (id: number) => {
+        onToggleSite(id);
     };
 
     const handlePlanRoute = () => {
@@ -123,14 +127,14 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
     // Custom Icons with System Variables
     const createNumberedIcon = (number: number) => L.divIcon({
         className: 'custom-icon',
-        html: `<div style="background-color: var(--color-spatial-accent); color: var(--color-spatial-text); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.5); font-size: 0.75rem;">${number}</div>`,
+        html: `<div style="background-color: #B89550; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-size: 0.75rem;">${number}</div>`,
         iconSize: [28, 28],
         iconAnchor: [14, 14]
     }) as L.DivIcon;
 
     const createSelectedIcon = () => L.divIcon({
         className: 'custom-icon-selected',
-        html: `<div style="background-color: var(--color-spatial-text); color: var(--color-spatial-accent); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-spatial-accent); box-shadow: 0 0 15px var(--color-spatial-accent);"></div>`,
+        html: `<div style="background-color: #2A2A2A; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border: 2px solid #B89550;"></div>`,
         iconSize: [24, 24],
         iconAnchor: [12, 12]
     }) as L.DivIcon;
@@ -143,30 +147,30 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
     }) as L.DivIcon;
 
     return (
-        <div style={{ position: 'relative', height: '100%', width: '100%', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ position: 'relative', height: '100%', width: '100%', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(184, 149, 80, 0.2)' }}>
             
             {/* Control Panel */}
             <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '8px' }}>
                 
                 {/* Layer Toggle */}
-                <div style={{ background: 'var(--material-glass)', backdropFilter: 'blur(10px)', padding: '4px', borderRadius: '100px', display: 'flex', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', padding: '4px', borderRadius: '100px', display: 'flex', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
                     <button 
                         onClick={() => setMapMode('dark')}
-                        title="Neural Map"
-                        style={{ background: mapMode === 'dark' ? 'rgba(0,0,0,0.1)' : 'transparent', color: mapMode === 'dark' ? 'var(--color-spatial-text)' : 'rgba(0,0,0,0.5)', border: 'none', padding: '8px', borderRadius: '50%', cursor: 'pointer', display: 'flex' }}
+                        title="Neutral Map"
+                        style={{ background: mapMode === 'dark' ? 'rgba(0,0,0,0.05)' : 'transparent', color: mapMode === 'dark' ? '#2A2A2A' : '#8E8E8E', border: 'none', padding: '8px', borderRadius: '50%', cursor: 'pointer', display: 'flex' }}
                     >
                         <MapIcon size={16} />
                     </button>
                     <button 
                         onClick={() => setMapMode('satellite')}
                         title="Satellite Feed"
-                        style={{ background: mapMode === 'satellite' ? 'rgba(0,0,0,0.1)' : 'transparent', color: mapMode === 'satellite' ? 'var(--color-spatial-text)' : 'rgba(0,0,0,0.5)', border: 'none', padding: '8px', borderRadius: '50%', cursor: 'pointer', display: 'flex' }}
+                        style={{ background: mapMode === 'satellite' ? 'rgba(0,0,0,0.05)' : 'transparent', color: mapMode === 'satellite' ? '#2A2A2A' : '#8E8E8E', border: 'none', padding: '8px', borderRadius: '50%', cursor: 'pointer', display: 'flex' }}
                     >
                         <Satellite size={16} />
                     </button>
                 </div>
 
-                <div style={{ background: 'var(--material-glass)', backdropFilter: 'blur(10px)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--color-spatial-accent)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em' }}>
+                <div style={{ background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.05)', color: '#B89550', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.05em', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
                     {selectedSiteIds.length} TARGETS LOCKED
                 </div>
                 
@@ -174,18 +178,19 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                     onClick={handlePlanRoute}
                     disabled={selectedSiteIds.length < 2}
                     style={{ 
-                        fontSize: '0.75rem',
-                        padding: '0.75rem 1.5rem',
+                        fontSize: '0.7rem',
+                        padding: '0.8rem 1.6rem',
                         opacity: selectedSiteIds.length < 2 ? 0.5 : 1,
                         cursor: selectedSiteIds.length < 2 ? 'not-allowed' : 'pointer',
-                        background: selectedSiteIds.length < 2 ? 'rgba(0,0,0,0.5)' : 'var(--color-spatial-accent)',
-                        color: selectedSiteIds.length < 2 ? 'white' : 'var(--color-spatial-text)',
+                        background: selectedSiteIds.length < 2 ? '#E0DDD5' : '#2A2A2A',
+                        color: selectedSiteIds.length < 2 ? '#8E8E8E' : 'white',
                         border: 'none',
                         borderRadius: '100px',
-                        fontWeight: 700,
+                        fontWeight: 800,
                         letterSpacing: '0.1em',
                         textTransform: 'uppercase',
-                        transition: 'all 0.3s'
+                        transition: 'all 0.3s',
+                        boxShadow: selectedSiteIds.length < 2 ? 'none' : '0 10px 25px rgba(0,0,0,0.1)'
                     }}
                 >
                     Initialize Path
@@ -196,7 +201,7 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                 center={center} 
                 zoom={10} 
                 scrollWheelZoom={false} 
-                style={{ height: '100%', width: '100%', background: '#0a0a0a' }}
+                style={{ height: '100%', width: '100%', background: '#F9F7F2' }}
                 zoomControl={false}
             >
                 <MapController 
@@ -209,7 +214,7 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                 {mapMode === 'dark' ? (
                      <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-                        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                     />
                 ) : (
                     <TileLayer
@@ -222,7 +227,7 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                 {optimizedRoute && (
                     <Polyline 
                         positions={optimizedRoute.map(site => [site.latitude, site.longitude])}
-                        color="var(--color-spatial-accent)" 
+                        color="#B89550" 
                         dashArray="8, 12" 
                         weight={3}
                         opacity={0.8}
@@ -258,15 +263,15 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                                             {site.name}
                                         </div>
                                     </div>
-                                    <div style={{ padding: '12px', background: 'rgba(20,20,20,0.95)', backdropFilter: 'blur(10px)', borderRadius: '0 0 8px 8px', color: 'white' }}>
-                                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '8px', textTransform: 'uppercase' }}>{site.type}</div>
+                                    <div style={{ padding: '12px', background: 'white', borderRadius: '0 0 8px 8px', color: '#2A2A2A' }}>
+                                        <div style={{ fontSize: '0.7rem', color: '#6D6D6D', marginBottom: '8px', textTransform: 'uppercase', fontWeight: 700 }}>{site.type}</div>
                                         <button 
                                             onClick={() => toggleSiteSelection(site.id)}
                                             style={{
                                                 width: '100%',
-                                                background: selectedSiteIds.includes(site.id) ? 'rgba(239, 68, 68, 0.2)' : 'var(--color-spatial-accent)',
-                                                color: selectedSiteIds.includes(site.id) ? '#ef4444' : 'var(--color-spatial-text)',
-                                                border: selectedSiteIds.includes(site.id) ? '1px solid #ef4444' : 'none',
+                                                background: selectedSiteIds.includes(site.id) ? 'rgba(220, 38, 38, 0.05)' : '#B89550',
+                                                color: selectedSiteIds.includes(site.id) ? '#DC2626' : 'white',
+                                                border: selectedSiteIds.includes(site.id) ? '1px solid #DC2626' : 'none',
                                                 padding: '8px',
                                                 borderRadius: '4px',
                                                 cursor: 'pointer',
@@ -276,7 +281,7 @@ const MapPreview = ({ sites }: MapPreviewProps) => {
                                                 letterSpacing: '0.05em'
                                             }}
                                         >
-                                            {selectedSiteIds.includes(site.id) ? 'Remove' : 'Select Target'}
+                                            {selectedSiteIds.includes(site.id) ? 'Remove Target' : 'Select Target'}
                                         </button>
                                     </div>
                                 </div>
