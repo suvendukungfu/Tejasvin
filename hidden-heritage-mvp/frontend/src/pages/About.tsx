@@ -1,67 +1,86 @@
 import NavBar from '../components/NavBar';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Globe, Shield, ArrowRight, BookOpen, Fingerprint, Anchor, History, Zap } from 'lucide-react';
+import { Globe, Shield, History, Map, Database, Compass, BookOpen, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 
 // Cinematic Assets
-import ancientStone from '../assets/textures/holographic_grid.png'; // Using holographic grid for texture
-// In a real app, I'd suggest specific textures:
-// const ancientStoneTexture = "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?auto=format&fit=crop&q=80&w=2000";
+import holographicGrid from '../assets/textures/holographic_grid.png';
 
 const About = () => {
     const navigate = useNavigate();
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
-    
-    // Smooth Parallax
-    const yHero = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-    const opacityHero = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
-    // Section 3: Framework Parallax
-    const yCards = useTransform(scrollYProgress, [0.3, 0.6], [50, 0]);
+    // Smooth Parallax for Hero
+    const yHero = useTransform(scrollYProgress, [0, 0.5], ["0%", "50%"]);
+    const opacityHero = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
     return (
-        <div ref={containerRef} style={{ background: 'var(--color-spatial-bg)', minHeight: '100vh', position: 'relative', overflowX: 'hidden' }}>
+        <div ref={containerRef} style={{ background: 'var(--color-spatial-bg)', minHeight: '100vh', position: 'relative', overflowX: 'hidden', color: 'var(--color-spatial-text)' }}>
             <NavBar />
-            
-            {/* Ambient Background Glows */}
-            <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(200, 163, 89, 0.1) 0%, transparent 70%)', filter: 'blur(100px)', zIndex: 0, pointerEvents: 'none' }} />
-            
-            {/* --- SECTION 1: ORIGIN ("BORN FROM DUST") - MANIFESTO OPENER --- */}
-            <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', padding: '120px 0' }}>
-                 <motion.div style={{ position: 'absolute', inset: 0, opacity: opacityHero, zIndex: 0, pointerEvents: 'none' }}>
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--color-spatial-bg) 20%, rgba(255,255,255,0) 100%)', zIndex: 2 }} />
-                    <img 
+
+            {/* Global Ambient Gradient */}
+            <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(circle at 50% 10%, rgba(200, 163, 89, 0.05), transparent 60%)', pointerEvents: 'none', zIndex: 0 }} />
+
+            {/* --- CHAPTER 01: ORIGIN ("BORN FROM DUST") --- */}
+            <section style={{ height: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+                 <motion.div style={{ position: 'absolute', inset: 0, opacity: opacityHero, zIndex: 0, y: yHero }}>
+                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(249, 247, 242, 0) 0%, var(--color-spatial-bg) 90%)', zIndex: 2 }} />
+                     <img 
                         src="https://images.unsplash.com/photo-1599940824399-b87987ce179a?q=80&w=2000&auto=format&fit=crop" 
-                        alt="Dusty Archive" 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.15, filter: 'sepia(0.2) contrast(1.1)', objectPosition: 'right center' }}
+                        alt="Restoration Site" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.1, filter: 'sepia(0.3) contrast(1.2)' }}
                     />
                 </motion.div>
 
                 <div className="container" style={{ position: 'relative', zIndex: 10 }}>
                     <div className="grid-12">
-                        <div style={{ gridColumn: 'span 7' }}>
+                        <div style={{ gridColumn: 'span 8' }}>
                             <motion.div
-                                initial={{ opacity: 0, x: -20, filter: 'blur(10px)' }}
-                                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                                    <div style={{ width: '40px', height: '1px', background: 'var(--color-spatial-accent)' }} />
-                                    <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-spatial-accent)' }}>
-                                        Our Beginning
-                                    </span>
-                                </div>
-                                <h1 className="text-display" style={{ fontSize: 'clamp(3.5rem, 6vw, 5.5rem)', lineHeight: 1, color: 'var(--color-spatial-text)', marginBottom: '3rem' }}>
-                                    Born from <br/>
-                                    <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)', color: 'var(--color-spatial-accent)' }}>Dust.</span>
+                                <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-spatial-accent)', marginBottom: '24px' }}>
+                                    Chapter 01 — Origin
+                                </span>
+                                <h1 className="text-display" style={{ fontSize: 'clamp(3.5rem, 6vw, 5.5rem)', lineHeight: 1, marginBottom: '40px', color: 'var(--color-spatial-text)' }}>
+                                    Born from Dust.
                                 </h1>
-                                <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)', lineHeight: 1.8, maxWidth: '640px', marginBottom: '2rem' }}>
-                                    It started in the silence of a forgotten stepwell in Bundelkhand. No plaques, no ticket counters—only the deep, resonant echoes of a history being erased by time. We realized then: if we don't document this now, it vanishes forever.
+                                <div style={{ padding: '40px', background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(20px)', borderRadius: '2px', borderLeft: '4px solid var(--color-spatial-accent)', maxWidth: '600px' }}>
+                                    <p style={{ fontSize: '1.25rem', lineHeight: 1.8, fontStyle: 'italic', color: 'var(--color-spatial-text)', opacity: 0.9 }}>
+                                        "It started in the quiet of a crumbling stepwell. We realized that if we didn't document this now, the story would vanish with the stone. Hidden Heritage is our vow to remember."
+                                    </p>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- CHAPTER 02: THE PROBLEM ("THE SILENCE OF HISTORY") --- */}
+            <section style={{ padding: '120px 0', position: 'relative' }}>
+                <div className="container">
+                    <div className="grid-12">
+                        <div style={{ gridColumn: '2 / span 5' }}>
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, margin: "-10%" }}
+                                transition={{ duration: 1 }}
+                            >
+                                <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-text-secondary)', marginBottom: '32px', borderTop: '1px solid var(--color-spatial-accent)', paddingTop: '24px', width: 'fit-content' }}>
+                                    Chapter 02 — The Silence of History
+                                </span>
+                                <h2 className="text-display" style={{ fontSize: '2.5rem', marginBottom: '32px' }}>
+                                    Memory is fragile. <br/> Archives are fragmented.
+                                </h2>
+                                <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'var(--color-text-secondary)', marginBottom: '24px' }}>
+                                    Across the subcontinent, centuries of cultural memory are disappearing. Structures crumble, oral histories fade with the elders, and digital archives remain scattered across inaccessible silos.
                                 </p>
-                                <p style={{ fontSize: '1.25rem', color: 'var(--color-spatial-text)', lineHeight: 1.8, maxWidth: '640px', fontWeight: 500 }}>
-                                    Hidden Heritage is not just a database. It is a vow to remember.
+                                <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'var(--color-text-secondary)' }}>
+                                    Without a unified, accessible platform, we risk losing the "why" behind the "what." A monument without its story is just a pile of rocks.
                                 </p>
                             </motion.div>
                         </div>
@@ -69,99 +88,103 @@ const About = () => {
                 </div>
             </section>
 
-            {/* --- SECTION 2: PHILOSOPHY ("THE WHY") --- */}
-            <section style={{ padding: '80px 0 120px', position: 'relative' }}>
-                <div className="container">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-10%" }}
-                        transition={{ duration: 1.2 }}
-                        style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto' }}
-                    >
-                        <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(200, 163, 89, 0.1)', color: 'var(--color-spatial-accent)', marginBottom: '32px' }}>
-                            <Anchor size={28} strokeWidth={1.5} />
-                        </div>
-                        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', lineHeight: 1.2, color: 'var(--color-spatial-text)', marginBottom: '24px' }}>
-                            We protect what the world <span style={{ fontStyle: 'italic', color: 'var(--color-spatial-text)', opacity: 0.5 }}>forgot.</span>
-                        </h2>
-                        <div style={{ width: '1px', height: '80px', background: 'linear-gradient(to bottom, var(--color-spatial-accent), transparent)', margin: '40px auto' }} />
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* --- SECTION 3: FRAMEWORK ("3 PILLARS") - DARK CINEMATIC --- */}
-            <section style={{ background: '#121212', color: '#F9F7F2', padding: '160px 0', position: 'relative', overflow: 'hidden' }}>
-                {/* Texture Overlay */}
-                <div style={{ position: 'absolute', inset: 0, opacity: 0.05, backgroundImage: `url(${ancientStone})`, backgroundSize: '400px', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 30%, rgba(30,30,30,0), #121212 80%)' }} />
-
-                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+            {/* --- CHAPTER 03: THE PHILOSOPHY ("3 PILLARS") --- */}
+            <section style={{ padding: '160px 0', background: 'rgba(255,255,255,0.3)', position: 'relative' }}>
+                 <div className="container">
                     <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-                        <span style={{ color: 'rgba(255,255,255,0.6)', letterSpacing: '0.2rem', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 600 }}>The Framework</span>
-                        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', marginTop: '16px', color: 'white' }}>Built on Three Pillars</h2>
+                        <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-spatial-accent)' }}>Chapter 03 — Philosophy</span>
+                        <h2 className="text-display" style={{ fontSize: '3rem', marginTop: '16px' }}>Our Core Beliefs</h2>
                     </div>
 
-                    <div className="grid-12" style={{ alignItems: 'stretch' }}>
+                    <div className="grid-12">
                         {[
                             {
-                                icon: <Shield size={32} />,
                                 title: "Preserving What Time Forgot",
-                                desc: "High-fidelity photogrammetry ensures no artifact is lost to erosion. We archive the unarchived.",
-                                delay: 0
+                                desc: "We use high-fidelity photogrammetry to ensure no artifact is lost to erosion.",
+                                icon: <Shield size={24} />
                             },
                             {
-                                icon: <History size={32} />,
                                 title: "Stories Carved by People",
-                                desc: "A site is nothing without its legend. We prioritize oral histories and folklore alongside stone.",
-                                delay: 0.2
+                                desc: "We prioritize oral histories and local folklore. The human spirit matters more than the stone.",
+                                icon: <History size={24} />
                             },
                             {
-                                icon: <Globe size={32} />,
                                 title: "A Living Cultural Network",
-                                desc: "Revenue funds local custodians. We don't just visit; we sustain the ecosystem.",
-                                delay: 0.4
+                                desc: "We don't just visit; we sustain. Our model funds local custodians and artisans.",
+                                icon: <Globe size={24} />
                             }
                         ].map((item, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 60 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 1, delay: item.delay, ease: [0.19, 1, 0.22, 1] }}
-                                style={{ gridColumn: 'span 4', display: 'flex' }}
-                            >
-                                <div style={{ 
-                                    background: 'rgba(255, 255, 255, 0.03)', 
-                                    backdropFilter: 'blur(10px)', 
-                                    border: '1px solid rgba(255, 255, 255, 0.1)', 
-                                    padding: '48px 32px', 
-                                    borderRadius: '24px', 
-                                    flex: 1,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    textAlign: 'center',
-                                    transition: 'background 0.3s'
-                                }}>
-                                    <div style={{ color: 'var(--color-spatial-accent)', opacity: 0.8, marginBottom: '32px' }}>
+                            <div key={i} style={{ gridColumn: 'span 4' }}>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 40 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.8, delay: i * 0.2 }} // Staggered
+                                    style={{ 
+                                        padding: '48px 32px', 
+                                        background: 'rgba(255,255,255,0.6)', 
+                                        backdropFilter: 'blur(20px)', 
+                                        borderRadius: '24px', 
+                                        border: '1px solid rgba(255,255,255,0.8)',
+                                        boxShadow: '0 20px 40px -10px rgba(0,0,0,0.05)',
+                                        height: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        textAlign: 'center'
+                                    }}
+                                >
+                                    <div style={{ color: 'var(--color-spatial-accent)', marginBottom: '24px', padding: '16px', background: 'rgba(200, 163, 89, 0.1)', borderRadius: '50%' }}>
                                         {item.icon}
                                     </div>
-                                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', marginBottom: '16px', color: 'white' }}>
-                                        {item.title}
-                                    </h3>
-                                    <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, fontSize: '1rem' }}>
-                                        {item.desc}
-                                    </p>
-                                </div>
+                                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', marginBottom: '16px' }}>{item.title}</h3>
+                                    <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>{item.desc}</p>
+                                </motion.div>
+                            </div>
+                        ))}
+                    </div>
+                 </div>
+            </section>
+
+            {/* --- CHAPTER 04: THE SYSTEM ("VISUAL TIMELINE") --- */}
+            <section style={{ padding: '160px 0', background: '#1a1a1a', color: '#F9F7F2', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: `url(${holographicGrid})`, backgroundSize: '500px' }} />
+                
+                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+                    <div style={{ marginBottom: '80px' }}>
+                        <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.8rem', fontWeight: 600, opacity: 0.6, marginBottom: '16px' }}>
+                            Chapter 04 — The System
+                        </span>
+                        <h2 className="text-display" style={{ fontSize: '3rem', color: 'white' }}>How We Operate</h2>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2px', background: 'rgba(255,255,255,0.1)', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        {[
+                            { step: "01", title: "Portal", icon: <Compass size={20} />, text: "Access to the hidden world." },
+                            { step: "02", title: "Atlas", icon: <Map size={20} />, text: "Mapping the unmapped." },
+                            { step: "03", title: "Journal", icon: <BookOpen size={20} />, text: "Documenting the narrative." },
+                            { step: "04", title: "Context", icon: <Database size={20} />, text: "Deep cultural understanding." }
+                        ].map((s, i) => (
+                            <motion.div 
+                                key={i}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.2 + (i * 0.1), duration: 0.6 }}
+                                style={{ padding: '48px 32px', background: 'rgba(30,30,30,0.6)', backdropFilter: 'blur(10px)', position: 'relative' }}
+                            >
+                                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-spatial-accent)', marginBottom: '24px', opacity: 0.8 }}>{s.step}</div>
+                                <div style={{ marginBottom: '16px', color: 'white' }}>{s.icon}</div>
+                                <h4 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '8px', fontFamily: 'var(--font-display)' }}>{s.title}</h4>
+                                <p style={{ fontSize: '0.9rem', opacity: 0.6, lineHeight: 1.5 }}>{s.text}</p>
                             </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* --- SECTION 4: INVITATION ("CEREMONIAL CLOSING") --- */}
-            <section style={{ padding: '160px 0 200px', textAlign: 'center', position: 'relative' }}>
+             {/* --- CHAPTER 05: INVITATION ("CEREMONIAL CLOSING") --- */}
+             <section style={{ padding: '160px 0 200px', textAlign: 'center' }}>
                 <div className="container">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -170,16 +193,20 @@ const About = () => {
                         transition={{ duration: 1 }}
                         style={{ maxWidth: '700px', margin: '0 auto' }}
                     >
-                        <p style={{ fontSize: '1.1rem', color: 'var(--color-text-secondary)', fontStyle: 'italic', marginBottom: '40px' }}>
-                            "Every forgotten place holds a voice. Every journey begins with curiosity."
-                        </p>
+                        <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-spatial-accent)', marginBottom: '40px' }}>
+                            Chapter 05 — Invitation
+                        </span>
                         
-                        <div style={{ width: '100%', height: '1px', background: 'rgba(0,0,0,0.1)', marginBottom: '80px' }} />
+                        <div style={{ width: '100%', height: '1px', background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.1), transparent)', marginBottom: '60px' }} />
 
-                        <h2 className="text-display" style={{ marginBottom: '4rem', fontSize: 'clamp(3rem, 5vw, 4.5rem)', color: 'var(--color-spatial-text)' }}>
-                            The archives <br/> are open.
+                        <h2 className="text-display" style={{ marginBottom: '2rem', fontSize: 'clamp(3rem, 5vw, 4.5rem)' }}>
+                            The archives are open.
                         </h2>
                         
+                        <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)', marginBottom: '4rem', fontStyle: 'italic' }}>
+                            "Step into the living archive."
+                        </p>
+
                         <motion.button 
                             onClick={() => navigate('/register')} 
                             whileHover={{ scale: 1.05 }}
@@ -201,9 +228,8 @@ const About = () => {
                         </motion.button>
                     </motion.div>
                 </div>
-
-                {/* Footer Spacer is handled by layout, but added padding ensures breathable space */}
             </section>
+
         </div>
     );
 };
