@@ -112,28 +112,41 @@ const About = () => {
             </section>
 
             {/* --- CHAPTER 03: THE PHILOSOPHY ("3 PILLARS") --- */}
-            <section style={{ padding: '160px 0', background: 'rgba(255,255,255,0.3)', position: 'relative' }}>
-                 <div className="container">
+            <section style={{ padding: '160px 0', position: 'relative', overflow: 'hidden' }}>
+                 {/* Cinematic Background for Philosophy */}
+                 <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                    <img 
+                        src="https://images.unsplash.com/photo-1605806616949-1e87b487bc2a?q=80&w=2000&auto=format&fit=crop" 
+                        alt="Ancient Texture" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.03, filter: 'contrast(1.2)' }}
+                    />
+                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle, transparent 0%, var(--color-spatial-bg) 80%)' }} />
+                 </div>
+
+                 <div className="container" style={{ position: 'relative', zIndex: 10 }}>
                     <div style={{ textAlign: 'center', marginBottom: '80px' }}>
                         <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-spatial-accent)' }}>Chapter 03 — Philosophy</span>
                         <h2 className="text-display" style={{ fontSize: '3rem', marginTop: '16px' }}>Our Core Beliefs</h2>
+                        <p style={{ maxWidth: '600px', margin: '24px auto 0', fontSize: '1.1rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
+                            We don't just document sites; we preserve the soul of the place. Our method blends technology with tradition.
+                        </p>
                     </div>
 
                     <div className="grid-12">
                         {[
                             {
                                 title: "Preserving What Time Forgot",
-                                desc: "We use high-fidelity photogrammetry to ensure no artifact is lost to erosion.",
+                                desc: "We use high-fidelity photogrammetry and L.I.D.A.R. to capture every crack and carving, ensuring no artifact is lost to erosion.",
                                 icon: <Shield size={24} />
                             },
                             {
                                 title: "Stories Carved by People",
-                                desc: "We prioritize oral histories and local folklore. The human spirit matters more than the stone.",
+                                desc: "A temple is more than stone. We priority oral histories, local legends, and the human spirit that breathed life into the architecture.",
                                 icon: <History size={24} />
                             },
                             {
                                 title: "A Living Cultural Network",
-                                desc: "We don't just visit; we sustain. Our model funds local custodians and artisans.",
+                                desc: "Conservation must be sustainable. Our revenue model directly funds local custodians, artisans, and the communities protecting these sites.",
                                 icon: <Globe size={24} />
                             }
                         ].map((item, i) => (
@@ -183,10 +196,10 @@ const About = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2px', background: 'rgba(255,255,255,0.1)', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
                         {[
-                            { step: "01", title: "Portal", icon: <Compass size={20} />, text: "Access to the hidden world." },
-                            { step: "02", title: "Atlas", icon: <Map size={20} />, text: "Mapping the unmapped." },
-                            { step: "03", title: "Journal", icon: <BookOpen size={20} />, text: "Documenting the narrative." },
-                            { step: "04", title: "Context", icon: <Database size={20} />, text: "Deep cultural understanding." }
+                            { step: "01", title: "Portal", icon: <Compass size={20} />, text: "Access to the hidden world. A curated entry point for explorers." },
+                            { step: "02", title: "Atlas", icon: <Map size={20} />, text: "Mapping the unmapped. Geospatial data meets historical narrative." },
+                            { step: "03", title: "Journal", icon: <BookOpen size={20} />, text: "Documenting the narrative. Field notes from the preservationists." },
+                            { step: "04", title: "Context", icon: <Database size={20} />, text: "Deep cultural understanding. Connecting the dots of our heritage." }
                         ].map((s, i) => (
                             <motion.div 
                                 key={i}
@@ -207,8 +220,10 @@ const About = () => {
             </section>
 
              {/* --- CHAPTER 05: INVITATION ("CEREMONIAL CLOSING") --- */}
-             <section style={{ padding: '160px 0 200px', textAlign: 'center' }}>
-                <div className="container">
+             <section style={{ padding: '160px 0 200px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '400px', background: 'linear-gradient(to top, rgba(200, 163, 89, 0.1), transparent)', pointerEvents: 'none' }} />
+                
+                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
@@ -227,7 +242,7 @@ const About = () => {
                         </h2>
                         
                         <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)', marginBottom: '4rem', fontStyle: 'italic' }}>
-                            "Step into the living archive."
+                            "Step into the living archive. Your journey into the forgotten begins now."
                         </p>
 
                         <motion.button 
