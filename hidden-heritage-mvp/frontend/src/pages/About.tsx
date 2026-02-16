@@ -1,6 +1,6 @@
 import NavBar from '../components/NavBar';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Globe, Shield, History, Map, Database, Compass, BookOpen, ArrowRight } from 'lucide-react';
+import { Globe, Shield, History, Map, Database, Compass, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 
@@ -62,7 +62,7 @@ const About = () => {
             {/* --- CHAPTER 02: THE PROBLEM ("THE SILENCE OF HISTORY") --- */}
             <section style={{ padding: '120px 0', position: 'relative' }}>
                 <div className="container">
-                    <div className="grid-12">
+                    <div className="grid-12" style={{ alignItems: 'center' }}>
                         <div style={{ gridColumn: '2 / span 5' }}>
                             <motion.div
                                 initial={{ opacity: 0, x: -20 }}
@@ -74,14 +74,37 @@ const About = () => {
                                     Chapter 02 — The Silence of History
                                 </span>
                                 <h2 className="text-display" style={{ fontSize: '2.5rem', marginBottom: '32px' }}>
-                                    Memory is fragile. <br/> Archives are fragmented.
+                                    Memory is fragile. <br/> Rules are forgotten.
                                 </h2>
                                 <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'var(--color-text-secondary)', marginBottom: '24px' }}>
                                     Across the subcontinent, centuries of cultural memory are disappearing. Structures crumble, oral histories fade with the elders, and digital archives remain scattered across inaccessible silos.
                                 </p>
+                                <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'var(--color-text-secondary)', marginBottom: '24px' }}>
+                                    History is not just about what is built, but what is felt. When a site falls into ruin, we lose more than architecture—we lose the songs, the rituals, and the human presence that once breathed life into the stone.
+                                </p>
                                 <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'var(--color-text-secondary)' }}>
                                     Without a unified, accessible platform, we risk losing the "why" behind the "what." A monument without its story is just a pile of rocks.
                                 </p>
+                            </motion.div>
+                        </div>
+                         <div style={{ gridColumn: '8 / span 5' }}>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 1.2 }}
+                                style={{ position: 'relative' }}
+                            >
+                                <div style={{ position: 'absolute', inset: '20px', border: '1px solid var(--color-spatial-accent)', opacity: 0.3, zIndex: 1 }} />
+                                <img 
+                                    src="https://images.unsplash.com/photo-1605649487215-476786814582?q=80&w=1200&auto=format&fit=crop" 
+                                    alt="Fading History" 
+                                    style={{ width: '100%', borderRadius: '4px', filter: 'grayscale(0.2) contrast(1.1)', boxShadow: '0 20px 80px -20px rgba(0,0,0,0.15)' }} 
+                                />
+                                <div style={{ position: 'absolute', bottom: '-20px', right: '-20px', background: 'var(--color-spatial-bg)', padding: '24px', boxShadow: 'var(--material-shadow-float)' }}>
+                                    <div style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', color: 'var(--color-spatial-accent)', textTransform: 'uppercase' }}>Status</div>
+                                    <div style={{ fontSize: '1.5rem', fontFamily: 'var(--font-display)', color: 'var(--color-spatial-text)' }}>Critical Risk</div>
+                                </div>
                             </motion.div>
                         </div>
                     </div>
