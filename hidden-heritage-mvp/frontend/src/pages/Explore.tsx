@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Loader from '../components/Loader';
 import { useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { MapPin, ArrowRight, Compass, Map as MapIcon, Grid, Search, X } from 'lucide-react';
@@ -96,7 +96,7 @@ const Explore = () => {
             <section style={{ height: '85vh', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'flex-end', paddingBottom: '120px' }}>
                 
                 {/* Immersive Canvas */}
-                <motion.div style={{ position: 'absolute', inset: 0, y: yHero, zIndex: 0 }}>
+                <motion.div style={{ position: 'absolute', inset: 0, y: yHero, opacity: opacityHero, zIndex: 0 }}>
                     <img src={gwaliorFort} alt="Hero" style={{ width: '100%', height: '110%', objectFit: 'cover' }} />
                     {/* Frosted Glass Gradient from Bottom */}
                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--color-spatial-bg) 5%, transparent 60%)' }} />
@@ -171,6 +171,22 @@ const Explore = () => {
                                     outline: 'none'
                                 }}
                             />
+                            {searchQuery && (
+                                <button
+                                    onClick={() => setSearchQuery('')}
+                                    style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        padding: '4px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <X size={16} color="var(--color-spatial-text)" opacity={0.6} />
+                                </button>
+                            )}
                         </div>
 
                         {/* Divider */}
@@ -189,10 +205,13 @@ const Explore = () => {
                                     cursor: 'pointer',
                                     fontSize: '0.9rem',
                                     fontWeight: 600,
-                                    transition: 'all 0.3s ease'
+                                    transition: 'all 0.3s ease',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px'
                                 }}
                             >
-                                Grid
+                                <Grid size={16} /> Grid
                             </button>
                             <button 
                                 onClick={() => setViewMode('map')}
@@ -205,10 +224,13 @@ const Explore = () => {
                                     cursor: 'pointer',
                                     fontSize: '0.9rem',
                                     fontWeight: 600,
-                                    transition: 'all 0.3s ease'
+                                    transition: 'all 0.3s ease',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px'
                                 }}
                             >
-                                Map
+                                <MapIcon size={16} /> Map
                             </button>
                         </div>
                     </motion.div>
