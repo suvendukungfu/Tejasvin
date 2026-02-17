@@ -1,0 +1,5 @@
+# Local Netlify folder
+.netlify
+
+# Ignored Directories
+Hidden-Heritage-Unvisited-Places1.0/
