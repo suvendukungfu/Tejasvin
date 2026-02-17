@@ -12,8 +12,8 @@ const About = () => {
     const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
 
     // Smooth Parallax for Hero
-    const yHero = useTransform(scrollYProgress, [0, 0.5], ["0%", "50%"]);
-    const opacityHero = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+    // const yHero = useTransform(scrollYProgress, [0, 0.5], ["0%", "50%"]);
+    // const opacityHero = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
     return (
         <div ref={containerRef} style={{ background: '#F9F7F2', minHeight: '100vh', position: 'relative', overflowX: 'hidden', color: '#2A2A2A' }}>
@@ -314,50 +314,63 @@ const About = () => {
                                 {[
                                     {
                                         title: "High-Fidelity Archiving",
-                                        desc: "We use photogrammetry and L.I.D.A.R. to capture every crack and carving.",
-                                        icon: <Shield size={20} />,
-                                        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop" // Tech/Grid
+                                        desc: "We use photogrammetry and L.I.D.A.R. to capture every crack and carving, ensuring no artifact is lost to erosion.",
+                                        icon: <Shield size={18} />,
+                                        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop" 
                                     },
                                     {
                                         title: "Oral History Integration",
-                                        desc: "A temple is more than stone. We priority local legends and the human spirit.",
-                                        icon: <History size={20} />,
-                                        image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop" // Writing/Paper
+                                        desc: "A temple is more than stone. We priority local legends and the human spirit that breathes life into the monument.",
+                                        icon: <History size={18} />,
+                                        image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop" 
                                     },
                                     {
                                         title: "Sustainable Economics",
-                                        desc: "Our revenue model directly funds local custodians and protecting communities.",
-                                        icon: <Globe size={20} />,
-                                        image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?q=80&w=800&auto=format&fit=crop" // Hands/Texture
+                                        desc: "Our revenue model directly funds local custodians, creating a circular economy that rewards preservation.",
+                                        icon: <Globe size={18} />,
+                                        image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?q=80&w=800&auto=format&fit=crop" 
                                     }
                                 ].map((item, i) => (
                                     <motion.div
                                         key={i}
-                                        initial={{ opacity: 0, y: 20 }}
+                                        className="glass-panel"
+                                        initial={{ opacity: 0, y: 30 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
-                                        transition={{ duration: 0.6, delay: i * 0.1 }}
+                                        transition={{ duration: 0.8, delay: i * 0.1, ease: [0.2, 0, 0, 1] }}
+                                        whileHover={{ y: -8 }}
                                         style={{ 
-                                            background: '#F9F7F2',
-                                            position: 'relative',
+                                            padding: 0,
                                             overflow: 'hidden',
-                                            borderRadius: '8px',
-                                            boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                                            height: '100%',
                                             display: 'flex',
-                                            flexDirection: 'column'
+                                            flexDirection: 'column',
+                                            height: '100%'
                                         }}
-                                        whileHover={{ y: -5 }}
                                     >
-                                        {/* Top Image */}
-                                        <div style={{ height: '200px', width: '100%', overflow: 'hidden' }}>
-                                            <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(0.2) desaturate(0.2)' }} />
+                                        {/* Top Image Area */}
+                                        <div style={{ height: '220px', width: '100%', position: 'relative' }}>
+                                             <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(0.2)' }} />
+                                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.4), transparent)' }} />
                                         </div>
 
-                                        <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                            <div style={{ color: '#B89550', marginBottom: '1rem' }}>{item.icon}</div>
-                                            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', color: '#2A2A2A', fontWeight: 600 }}>{item.title}</h3>
-                                            <p style={{ color: '#6D6D6D', lineHeight: 1.6, fontSize: '0.9rem' }}>{item.desc}</p>
+                                        {/* Content Area */}
+                                        <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.4)' }}>
+                                            <div className="glass-pill" style={{ 
+                                                width: 'fit-content', 
+                                                marginBottom: '1.5rem', 
+                                                display: 'flex', 
+                                                alignItems: 'center', 
+                                                gap: '8px',
+                                                background: 'white',
+                                                border: 'none',
+                                                boxShadow: '0 2px 10px rgba(0,0,0,0.05)'
+                                            }}>
+                                                <span style={{ color: '#B08D55' }}>{item.icon}</span>
+                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#2A2A2A' }}>FRAMEWORK 0{i+1}</span>
+                                            </div>
+                                            
+                                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#1C1917', fontFamily: 'serif', lineHeight: 1.1 }}>{item.title}</h3>
+                                            <p style={{ color: '#4A4A4A', lineHeight: 1.6, fontSize: '0.95rem' }}>{item.desc}</p>
                                         </div>
                                     </motion.div>
                                 ))}
