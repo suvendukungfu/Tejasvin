@@ -72,6 +72,7 @@ const About = () => {
                                 style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px 0 0 4px', filter: 'sepia(0.2) contrast(1.1) brightness(0.9)' }} 
                             />
                         </div>
+                    </div>
                 </div>
             </section>
 
