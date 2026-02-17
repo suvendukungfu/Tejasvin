@@ -23,9 +23,9 @@ const NavBar = () => {
                     position: 'fixed',
                     top: '24px',
                     left: '50%',
-                    transform: 'translateX(-50%)', // Centered pill
+                    transform: 'translateX(-50%)',
                     zIndex: 1000,
-                    x: '-50%' // Framer motion transform adjustment
+                    x: '-50%'
                 }}
             >
                 <div style={{
@@ -35,7 +35,7 @@ const NavBar = () => {
                     background: 'var(--material-glass)',
                     backdropFilter: 'var(--material-blur)',
                     WebkitBackdropFilter: 'var(--material-blur)',
-                    padding: '8px 8px 8px 16px', // Balanced padding
+                    padding: '6px',
                     borderRadius: '100px',
                     border: 'var(--material-glass-border)',
                     boxShadow: 'var(--material-shadow-float)',
@@ -44,7 +44,7 @@ const NavBar = () => {
                     {/* Brand Signet */}
                     <div 
                         onClick={() => navigate('/')} 
-                        style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginRight: '8px' }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', paddingLeft: '12px', paddingRight: '12px' }}
                     >
                         <Compass size={20} color="var(--color-spatial-accent)" strokeWidth={2} />
                         <span style={{ 
@@ -58,38 +58,64 @@ const NavBar = () => {
                         </span>
                     </div>
 
-                    {/* Navigation Pills */}
-                    <div className="desktop-menu" style={{ display: 'flex', gap: '4px' }}>
+                    {/* Sliding Navigation Pills */}
+                    <div className="desktop-menu" style={{ display: 'flex', gap: '2px', position: 'relative' }}>
                         {[
                             { name: 'Portal', path: '/' },
                             { name: 'Atlas', path: '/explore' },
                             { name: 'Log', path: '/book' },
                             { name: 'Context', path: '/about' }
-                        ].map(link => (
-                            <motion.button
-                                key={link.path}
-                                onClick={() => navigate(link.path)}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                style={{
-                                    background: isActive(link.path) ? 'var(--color-spatial-text)' : 'transparent',
-                                    color: isActive(link.path) ? 'white' : 'var(--color-text-primary)',
-                                    border: 'none',
-                                    padding: '8px 16px',
-                                    borderRadius: '100px',
-                                    fontSize: '0.85rem',
-                                    fontWeight: 500,
-                                    cursor: 'pointer',
-                                    transition: 'background 0.3s var(--ease-cinema)'
-                                }}
-                            >
-                                {link.name}
-                            </motion.button>
-                        ))}
+                        ].map(link => {
+                            const isSelected = isActive(link.path);
+                            
+                            return (
+                                <motion.div
+                                    key={link.path}
+                                    onClick={() => navigate(link.path)}
+                                    whileHover={isSelected ? { scale: 1.05 } : { scale: 1.05, backgroundColor: 'rgba(28, 25, 23, 0.04)' }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        position: 'relative',
+                                        padding: '8px 20px',
+                                        cursor: 'pointer',
+                                        zIndex: 1,
+                                        borderRadius: '100px',
+                                        background: 'transparent'
+                                    }}
+                                >
+                                    {/* Active Indicator (The Sliding Pill) */}
+                                    {isSelected && (
+                                        <motion.div
+                                            layoutId="active-pill"
+                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                            style={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                borderRadius: '100px',
+                                                background: 'var(--color-spatial-text)',
+                                                zIndex: -1
+                                            }}
+                                        />
+                                    )}
+                                    
+                                    {/* Label */}
+                                    <span style={{
+                                        position: 'relative',
+                                        fontSize: '0.85rem',
+                                        fontWeight: isSelected ? 600 : 500,
+                                        color: isSelected ? 'var(--color-spatial-ivory)' : 'var(--color-text-primary)',
+                                        transition: 'color 0.2s ease-out',
+                                        zIndex: 2
+                                    }}>
+                                        {link.name}
+                                    </span>
+                                </motion.div>
+                            );
+                        })}
                     </div>
 
                     {/* Auth Status */}
-                    <div style={{ marginLeft: '8px' }}>
+                    <div style={{ marginLeft: '4px', paddingRight: '4px' }}>
                         {auth.user ? (
                             <div style={{ width: '36px', height: '36px', background: 'var(--color-bg-body)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
                                 <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>{auth.user.name.charAt(0)}</span>
@@ -106,8 +132,11 @@ const NavBar = () => {
                                     display: 'flex', 
                                     alignItems: 'center', 
                                     justifyContent: 'center',
-                                    cursor: 'pointer'
+                                    cursor: 'pointer',
+                                    transition: 'transform 0.2s'
                                 }}
+                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                             >
                                 <ArrowRight size={16} color="white" />
                             </button>
