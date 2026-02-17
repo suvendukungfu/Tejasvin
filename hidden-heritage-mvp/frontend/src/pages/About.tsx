@@ -247,39 +247,47 @@ const About = () => {
                         ].map((site, i) => (
                              <motion.div
                                 key={i}
+                                className="glass-panel"
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.6, delay: i * 0.1 }}
+                                transition={{ duration: 0.8, delay: i * 0.1, ease: [0.2, 0, 0, 1] }}
+                                whileHover={{ scale: 1.02 }}
                                 style={{ 
-                                    minWidth: '350px', 
-                                    height: '500px', 
+                                    minWidth: '360px', 
+                                    height: '540px', 
                                     position: 'relative', 
-                                    scrollSnapAlign: 'start',
-                                    borderRadius: '4px',
-                                    overflow: 'hidden',
-                                    cursor: 'grab',
-                                    flexShrink: 0
+                                    overflow: 'hidden', 
+                                    padding: 0,
+                                    cursor: 'pointer' 
                                 }}
-                                whileHover={{ scale: 0.98 }}
                             >
-                                <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.2)', zIndex: 1, transition: 'background 0.3s' }} className="hover-overlay" />
-                                <img 
-                                    src={site.image} 
-                                    alt={site.title} 
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                                />
+                                <div style={{ position: 'absolute', inset: 0 }}>
+                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 40%)', zIndex: 1 }} />
+                                    <img 
+                                        src={site.image} 
+                                        alt={site.title} 
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 1.2s cubic-bezier(0.2, 0, 0, 1)' }} 
+                                        className="hover-image"
+                                    />
+                                </div>
                                 
-                                {/* Data Overlay */}
-                                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem', zIndex: 2, background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '0.5rem' }}>
-                                         <h3 style={{ color: 'white', fontSize: '1.25rem', fontFamily: 'serif', margin: 0 }}>{site.title}</h3>
-                                         <span style={{ color: '#B89550', fontSize: '0.65rem', fontWeight: 700, border: '1px solid #B89550', padding: '2px 6px' }}>{site.id}</span>
+                                {/* Data Overlay (VisionOS Style) */}
+                                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2rem', zIndex: 2 }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                                         <h3 style={{ color: 'white', fontSize: '2rem', fontFamily: 'serif', margin: 0, lineHeight: 1 }}>{site.title}</h3>
+                                         <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', fontWeight: 600, border: '1px solid rgba(255,255,255,0.2)', padding: '4px 8px', borderRadius: '100px', backdropFilter: 'blur(4px)' }}>{site.id}</span>
                                     </div>
-                                    <div style={{ height: '1px', width: '100%', background: 'rgba(255,255,255,0.2)', margin: '0.5rem 0' }} />
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'rgba(255,255,255,0.8)' }}>
-                                        <span>{site.type}</span>
-                                        <span>{site.condition}</span>
+                                    
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <div style={{ width: '6px', height: '6px', background: '#B08D55', borderRadius: '50%' }} />
+                                            <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.9)', fontWeight: 500 }}>{site.type}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <div style={{ width: '6px', height: '6px', background: 'rgba(255,255,255,0.3)', borderRadius: '50%' }} />
+                                            <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>{site.condition}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
