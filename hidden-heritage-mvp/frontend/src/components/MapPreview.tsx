@@ -147,7 +147,7 @@ const MapPreview = ({ sites, selectedSiteIds, onToggleSite }: MapPreviewProps) =
     }) as L.DivIcon;
 
     return (
-        <div style={{ position: 'relative', height: '100%', width: '100%', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(184, 149, 80, 0.2)' }}>
+        <div style={{ position: 'relative', height: '100%', width: '100%', borderRadius: '0', overflow: 'hidden' }}>
             
             {/* Control Panel */}
             <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '8px' }}>
@@ -201,7 +201,7 @@ const MapPreview = ({ sites, selectedSiteIds, onToggleSite }: MapPreviewProps) =
                 center={center} 
                 zoom={10} 
                 scrollWheelZoom={false} 
-                style={{ height: '100%', width: '100%', background: '#F9F7F2' }}
+                style={{ height: '100%', width: '100%', background: 'transparent' }}
                 zoomControl={false}
             >
                 <MapController 

@@ -104,12 +104,11 @@ const AdminDashboard = () => {
                             <div style={{ width: '8px', height: '8px', background: 'var(--color-success)', borderRadius: '50%', boxShadow: '0 0 10px var(--color-success)' }}></div>
                             <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', color: 'white' }}>LIVE FIELD OPERATIONS</span>
                         </div>
-                        <MapPreview sites={[
-                            { id: 101, name: "Agent Alpha", latitude: 26.2183, longitude: 78.1828, type: "Survey Team", image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Gwalior_Fort_view.jpg/640px-Gwalior_Fort_view.jpg" },
-                            { id: 102, name: "Agent Bravo", latitude: 26.61, longitude: 78.33, type: "Restoration Crew", image_url: "https://upload.wikimedia.org/wikipedia/commons/8/87/Bateshwar_Hindu_temples_Morena_Madhya_Pradesh_9.jpg" },
-                            { id: 103, name: "Drone Unit 4", latitude: 26.43, longitude: 78.22, type: "Aerial Recon", image_url: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg" },
-                             { id: 104, name: "Logistics Convoy", latitude: 26.20, longitude: 78.15, type: "Transport", image_url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Teli_Ka_Mandir.jpg" }
-                        ]} />
+                        <MapPreview 
+                            sites={stats?.popularSites?.map((s: any) => ({ ...s, latitude: 26.6, longitude: 78.3 })) || []} 
+                            selectedSiteIds={[]}
+                            onToggleSite={() => {}}
+                        />
                     </div>
                 </div>
 
