@@ -47,6 +47,28 @@ const About = () => {
                                 </div>
                             </motion.div>
                         </div>
+
+                        {/* 1.2 Cinematic Layer (Right) */}
+                        <div style={{ gridColumn: '7 / span 6', height: '80vh', position: 'relative' }}>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                transition={{ duration: 1.4, delay: 0.2, ease: [0.2, 0, 0, 1] }}
+                                style={{ height: '100%', width: '100%', borderRadius: '24px', overflow: 'hidden', position: 'relative', boxShadow: 'var(--material-shadow-deep)' }}
+                            >
+                                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.2), transparent)', zIndex: 1 }} />
+                                <motion.img 
+                                    src="https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1200&auto=format&fit=crop" 
+                                    alt="Ancient Texture" 
+                                    style={{ width: '100%', height: '110%', objectFit: 'cover', transform: 'translateY(-5%)' }} 
+                                    animate={{ y: ["-5%", "0%"] }} 
+                                    transition={{ duration: 10, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+                                />
+                                <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', zIndex: 2 }}>
+                                    <span style={{ fontSize: '0.75rem', color: 'white', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>FIG. 01 — THE TEXTURE OF TIME</span>
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
                 </div>
                 
