@@ -1,7 +1,7 @@
 import NavBar from '../components/NavBar';
 import { useState } from 'react';
 import { Star, Send, MessageSquare, Radio, ShieldCheck } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { submitFeedback } from '../services/api';
 
 const Feedback = () => {
@@ -25,8 +25,8 @@ const Feedback = () => {
         }
     };
 
-    const { scrollY } = useScroll();
-    const yHero = useTransform(scrollY, [0, 500], [0, 150]);
+
+
 
     return (
         <div className="min-h-screen relative overflow-hidden" style={{ background: '#1C1917' }}>

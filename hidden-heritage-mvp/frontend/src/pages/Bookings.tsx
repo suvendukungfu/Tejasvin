@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import NavBar from '../components/NavBar';
-import { Calendar, Eye, MapPin, Search, Compass, Archive, Map } from 'lucide-react';
+import { Calendar, Eye, MapPin, Search, Compass } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { getTripsByUser } from '../services/api';
 

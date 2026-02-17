@@ -8,14 +8,13 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 manualChunks: {
-                    'react-vendor': ['react', 'react-dom'],
-                    'router': ['react-router-dom'],
-                    'ui': ['framer-motion', 'lucide-react'],
-                    'maps': ['leaflet'],
-                    'xr': ['three', '@react-three/fiber', '@react-three/drei', '@react-three/xr']
+                    'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+                    'vendor-ui': ['framer-motion', 'lucide-react', '@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+                    'vendor-3d': ['three', '@react-three/fiber', '@react-three/drei', '@react-three/xr'],
+                    'vendor-leaflet': ['leaflet', 'react-leaflet']
                 }
             }
         },
-        chunkSizeWarningLimit: 1000
+        chunkSizeWarningLimit: 1600
     }
 })
