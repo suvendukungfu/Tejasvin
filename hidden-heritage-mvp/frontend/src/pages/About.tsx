@@ -25,42 +25,23 @@ const About = () => {
 
             {/* --- CHAPTER 01: ORIGIN ("BORN FROM DUST") --- */}
             <section style={{ height: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
-                 <motion.div style={{ position: 'absolute', inset: 0, opacity: opacityHero, zIndex: 0, y: yHero }}>
-                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(249, 247, 242, 0.2) 0%, #F9F7F2 90%)', zIndex: 2 }} />
-                     <img 
-                        src="https://images.unsplash.com/photo-1599940824399-b87987ce179a?q=80&w=2000&auto=format&fit=crop" 
-                        alt="Restoration Site" 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8, filter: 'sepia(0.2) contrast(1.1) desaturate(0.2)' }}
-                    />
-                </motion.div>
-
-                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
-                    <div className="grid-12">
-                        <div style={{ gridColumn: 'span 8' }}>
+            {/* --- CHAPTER 01: ORIGIN (Spatial Split) --- */}
+            <section style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div className="container" style={{ position: 'relative', zIndex: 10, width: '100%' }}>
+                    <div className="grid-12" style={{ alignItems: 'center' }}>
+                        {/* 1.1 Text Layer (Left) */}
+                        <div style={{ gridColumn: 'span 5' }}>
                             <motion.div
-                                initial={{ opacity: 0, y: 30 }}
+                                initial={{ opacity: 0, y: 40 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
+                                transition={{ duration: 1.2, ease: [0.2, 0, 0, 1] }}
                             >
-                                <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 700, color: '#B89550', marginBottom: '2rem' }}>
-                                    <span style={{ width: '40px', height: '1px', background: '#B89550' }} />
+                                <span className="glass-pill" style={{ marginBottom: '2rem', display: 'inline-block' }}>
                                     Chapter 01 — Origin
                                 </span>
-                                <h1 className="text-display" style={{ fontSize: 'clamp(3.5rem, 6vw, 6.5rem)', lineHeight: 0.95, marginBottom: '2.5rem', color: '#2A2A2A', fontFamily: 'serif', letterSpacing: '-0.03em' }}>
-                                    Born from <br/> <span style={{ color: '#B89550', fontStyle: 'italic' }}>Dust & Data.</span>
+                                <h1 className="text-display" style={{ marginBottom: '2.5rem', fontFamily: 'serif' }}>
+                                    Born from <br/> <span className="text-gold" style={{ fontStyle: 'italic' }}>Dust & Data.</span>
                                 </h1>
-                        <div style={{ gridColumn: 'span 6', marginTop: '4rem', position: 'relative', zIndex: 10 }}>
-                             <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(20px)', borderRadius: '4px', borderLeft: '4px solid #B89550', maxWidth: '640px', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
-                                <p style={{ fontSize: '1.25rem', lineHeight: 1.7, color: '#4A4A4A' }}>
-                                    "It started in the quiet of a crumbling stepwell. We realized that if we didn't document this now, the story would vanish with the stone. <strong style={{ color: '#2A2A2A', fontWeight: 600 }}>Hidden Heritage is our vow to remember.</strong>"
-                                </p>
-                            </div>
-                        </div>
-                            </motion.div>
-                        </div>
-
-                        {/* Cinematic Hero Image */}
-                        <div style={{ gridColumn: '7 / span 6', gridRow: '1 / span 2', position: 'relative', height: '100%', minHeight: '600px', marginTop: '-100px', pointerEvents: 'none' }}>
                              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #F9F7F2 0%, transparent 20%)', zIndex: 2 }} />
                              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #F9F7F2 0%, transparent 10%, transparent 80%, #F9F7F2 100%)', zIndex: 2 }} />
                              <motion.img 
