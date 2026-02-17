@@ -49,14 +49,27 @@ const About = () => {
                                 <h1 className="text-display" style={{ fontSize: 'clamp(3.5rem, 6vw, 6.5rem)', lineHeight: 0.95, marginBottom: '2.5rem', color: '#2A2A2A', fontFamily: 'serif', letterSpacing: '-0.03em' }}>
                                     Born from <br/> <span style={{ color: '#B89550', fontStyle: 'italic' }}>Dust & Data.</span>
                                 </h1>
-                                <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(20px)', borderRadius: '4px', borderLeft: '4px solid #B89550', maxWidth: '640px', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
-                                    <p style={{ fontSize: '1.25rem', lineHeight: 1.7, color: '#4A4A4A' }}>
-                                        "It started in the quiet of a crumbling stepwell. We realized that if we didn't document this now, the story would vanish with the stone. <strong style={{ color: '#2A2A2A', fontWeight: 600 }}>Hidden Heritage is our vow to remember.</strong>"
-                                    </p>
-                                </div>
-                            </motion.div>
+                        <div style={{ gridColumn: 'span 6', marginTop: '4rem', position: 'relative', zIndex: 10 }}>
+                             <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(20px)', borderRadius: '4px', borderLeft: '4px solid #B89550', maxWidth: '640px', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
+                                <p style={{ fontSize: '1.25rem', lineHeight: 1.7, color: '#4A4A4A' }}>
+                                    "It started in the quiet of a crumbling stepwell. We realized that if we didn't document this now, the story would vanish with the stone. <strong style={{ color: '#2A2A2A', fontWeight: 600 }}>Hidden Heritage is our vow to remember.</strong>"
+                                </p>
+                            </div>
                         </div>
-                    </div>
+
+                        {/* Cinematic Hero Image */}
+                        <div style={{ gridColumn: '7 / span 6', gridRow: '1 / span 2', position: 'relative', height: '100%', minHeight: '600px', marginTop: '-100px', pointerEvents: 'none' }}>
+                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #F9F7F2 0%, transparent 20%)', zIndex: 2 }} />
+                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #F9F7F2 0%, transparent 10%, transparent 80%, #F9F7F2 100%)', zIndex: 2 }} />
+                             <motion.img 
+                                initial={{ opacity: 0, scale: 1.1 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 1.5 }}
+                                src="https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1000&auto=format&fit=crop" 
+                                alt="Ancient Texture" 
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px 0 0 4px', filter: 'sepia(0.2) contrast(1.1) brightness(0.9)' }} 
+                            />
+                        </div>
                 </div>
             </section>
 
