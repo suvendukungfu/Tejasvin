@@ -1,5 +1,4 @@
 import NavBar from '../components/NavBar';
-import NavBar from '../components/NavBar';
 import { motion } from 'framer-motion';
 import { Globe, Shield, History, Map, Database, Compass, BookOpen, ChevronRight, AlertTriangle, Cpu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
