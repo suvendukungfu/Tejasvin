@@ -56,6 +56,8 @@ const About = () => {
                                 </p>
                             </div>
                         </div>
+                            </motion.div>
+                        </div>
 
                         {/* Cinematic Hero Image */}
                         <div style={{ gridColumn: '7 / span 6', gridRow: '1 / span 2', position: 'relative', height: '100%', minHeight: '600px', marginTop: '-100px', pointerEvents: 'none' }}>
