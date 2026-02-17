@@ -51,7 +51,7 @@ const About = () => {
                             >
                                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.2), transparent)', zIndex: 1 }} />
                                 <motion.img 
-                                    src="https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1200&auto=format&fit=crop" 
+                                    src="/src/assets/heritage/bateshwar.png" 
                                     alt="Ancient Texture" 
                                     style={{ width: '100%', height: '110%', objectFit: 'cover', transform: 'translateY(-5%)' }} 
                                     animate={{ y: ["-5%", "0%"] }} 
@@ -103,32 +103,45 @@ const About = () => {
                                 transition={{ duration: 1.2 }}
                                 style={{ position: 'relative' }}
                             >
-                                {/* Glitch/Artifact Effect Overlay */}
-                                <div style={{ position: 'absolute', inset: '10px', border: '1px solid rgba(184, 149, 80, 0.3)', zIndex: 2, pointerEvents: 'none' }}>
-                                    <div style={{ position: 'absolute', top: '10%', left: '-10px', background: '#B89550', color: 'white', fontSize: '0.6rem', padding: '2px 6px', fontWeight: 700 }}>IMG_ERR_404</div>
-                                    <div style={{ position: 'absolute', bottom: '20px', right: '-20px', display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'flex-end' }}>
-                                        {[...Array(5)].map((_, i) => (
-                                            <div key={i} style={{ width: `${Math.random() * 40 + 10}px`, height: '2px', background: '#B89550', opacity: 0.5 }} />
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '2px' }}>
+                                 <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '24px', boxShadow: 'var(--material-shadow-deep)' }}>
                                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(45deg, rgba(255,0,0,0.1), transparent)', mixBlendMode: 'overlay', zIndex: 1 }} />
                                     <img 
-                                        src="https://images.unsplash.com/photo-1605649487215-476786814582?q=80&w=1200&auto=format&fit=crop" 
+                                        src="/src/assets/heritage/gwalior_fort.png" 
                                         alt="Fading History" 
-                                        style={{ width: '100%', filter: 'grayscale(0.8) contrast(1.2) brightness(0.9)', boxShadow: '0 30px 60px -10px rgba(0,0,0,0.15)' }} 
+                                        style={{ width: '100%', filter: 'grayscale(0.2) contrast(1.1)', display: 'block' }} 
                                     />
                                     {/* Scanlines */}
                                     <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.05) 3px)', pointerEvents: 'none' }} />
                                 </div>
 
-                                <div style={{ position: 'absolute', top: -30, right: 30, background: '#F9F7F2', padding: '1.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '2px', zIndex: 5 }}>
-                                    <div style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em', color: '#B89550', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Erosion Rate</div>
-                                    <div style={{ fontSize: '2rem', fontFamily: 'serif', color: '#2A2A2A', lineHeight: 1 }}>84%</div>
-                                    <div style={{ fontSize: '0.7rem', color: '#6D6D6D', marginTop: '0.25rem' }}>Uncatalogued Sites</div>
-                                </div>
+                                {/* Cinematic KPI Card */}
+                                <motion.div 
+                                    initial={{ opacity: 0, x: 20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.4, duration: 0.8 }}
+                                    className="glass-panel"
+                                    style={{ 
+                                        position: 'absolute', 
+                                        top: '10%', 
+                                        right: '-40px', 
+                                        padding: '2rem', 
+                                        background: 'rgba(255, 255, 248, 0.8)',
+                                        backdropFilter: 'blur(20px)',
+                                        border: '1px solid rgba(184, 149, 80, 0.3)', 
+                                        zIndex: 5,
+                                        maxWidth: '220px'
+                                    }}
+                                >
+                                    <div style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em', color: '#B89550', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#DC2626', boxShadow: '0 0 8px #DC2626' }}></div>
+                                        Erosion Rate
+                                    </div>
+                                    <div style={{ fontSize: '3rem', fontFamily: 'serif', color: '#2A2A2A', lineHeight: 1, letterSpacing: '-0.02em' }}>84%</div>
+                                    <div style={{ fontSize: '0.8rem', color: '#6D6D6D', marginTop: '0.5rem', lineHeight: 1.4 }}>Of secondary sites remain uncatalogued or damaged.</div>
+                                    
+                                    {/* Decorative Line */}
+                                    <div style={{ width: '100%', height: '2px', background: 'linear-gradient(90deg, #B89550, transparent)', marginTop: '1.5rem', opacity: 0.5 }}></div>
+                                </motion.div>
                             </motion.div>
                         </div>
                     </div>
@@ -136,106 +149,67 @@ const About = () => {
             </section>
 
             {/* --- CHAPTER 02.5: FIELD DATA ("THE ARCHIVE") --- */}
-            <section style={{ padding: '0 0 140px', position: 'relative' }}>
+            <section style={{ padding: '0 0 160px', position: 'relative' }}>
                 <div className="container">
-                    <div style={{ marginBottom: '60px', paddingLeft: '2rem', borderLeft: '1px solid #B89550' }}>
-                         <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 800, color: '#B89550', marginBottom: '1rem' }}>
+                    <div style={{ marginBottom: '60px', paddingLeft: '2rem', borderLeft: '1px solid #B08D55' }}>
+                         <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 800, color: '#B08D55', marginBottom: '1rem' }}>
                             Chapter 02.5 — Field Data
                         </span>
-                        <h2 className="text-display" style={{ fontSize: '2.5rem', fontFamily: 'serif', color: '#2A2A2A' }}>Sites in Focus.</h2>
+                        <h2 className="text-display" style={{ fontSize: '3.5rem', fontFamily: 'serif', color: '#2A2A2A', lineHeight: 1.1 }}>
+                            Sites in Focus.
+                        </h2>
                     </div>
 
                     {/* Scrollable Gallery Container */}
                     <div 
                         style={{ 
                             display: 'flex', 
-                            gap: '24px', 
+                            gap: '32px', 
                             overflowX: 'auto', 
-                            paddingBottom: '2rem',
-                            scrollSnapType: 'x mandatory',
+                            paddingBottom: '3rem',
                             paddingRight: '2rem',
-                            // Hide scrollbar for cleaner look but allow scrolling
+                            scrollSnapType: 'x mandatory',
                             scrollbarWidth: 'none', 
-                            msOverflowStyle: 'none',  /* IE and Edge */
+                            msOverflowStyle: 'none',
                         }}
                         className="hide-scrollbar"
                     >
                         <style>{`
-                            .hide-scrollbar::-webkit-scrollbar {
-                                display: none;
-                            }
+                            .hide-scrollbar::-webkit-scrollbar { display: none; }
                         `}</style>
 
                         {[
                             {
-                                id: "KH-01",
-                                title: "Rani ki Vav",
-                                type: "Subterranean Stepwell",
-                                condition: "Silt Clearing",
-                                image: "https://images.unsplash.com/photo-1590050252973-772a6bc3f356?q=80&w=800&auto=format&fit=crop"
+                                id: "MP-01",
+                                title: "Bateshwar",
+                                subtitle: "The Restoration of 200 Temples",
+                                type: "Gurjara-Pratihara",
+                                status: "Active Excavation",
+                                image: "/src/assets/heritage/bateshwar.png"
                             },
                             {
-                                id: "MH-02",
-                                title: "Ajanta Caves",
-                                type: "Buddhist Rock-cut",
-                                condition: "Humidity Control",
-                                image: "https://images.unsplash.com/photo-1563503204-7ea9e6931538?q=80&w=800&auto=format&fit=crop"
-                            },
-                             {
-                                id: "RJ-23",
-                                title: "Amer Fort",
-                                type: "Rajput-Mughal Fusion",
-                                condition: "Footfall Management",
-                                image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=800&auto=format&fit=crop"
+                                id: "MP-02",
+                                title: "Mitaoli",
+                                subtitle: "Geometry of the Yogini Cult",
+                                type: "Circular Tantric",
+                                status: "Structural Analysis",
+                                image: "/src/assets/heritage/mitaoli.png"
                             },
                             {
-                                id: "MP-14",
-                                title: "Khajuraho",
-                                type: "Sandstone Relief",
-                                condition: "Chemical Cleaning",
-                                image: "https://images.unsplash.com/photo-1628068770764-c09a834274c4?q=80&w=800&auto=format&fit=crop"
+                                id: "MP-03",
+                                title: "Gwalior Fort",
+                                subtitle: "The Pearl of Fortresses",
+                                type: "Hill Fort Complex",
+                                status: "Conservation Mapping",
+                                image: "/src/assets/heritage/gwalior_fort.png"
                             },
                             {
-                                id: "TN-11",
-                                title: "Meenakshi Temple",
-                                type: "Dravidian Gopuram",
-                                condition: "Polychrome Restoration",
-                                image: "https://images.unsplash.com/photo-1582510003544-79c43b98c69c?q=80&w=800&auto=format&fit=crop"
-                            },
-                            {
-                                id: "RJ-55",
-                                title: "Jaisalmer Fort",
-                                type: "Living Fortification",
-                                condition: "Sewage Drainage Fix",
-                                image: "https://images.unsplash.com/photo-1572886694856-78b174548464?q=80&w=800&auto=format&fit=crop"
-                            },
-                            {
-                                id: "RJ-88",
-                                title: "Kumbhalgarh",
-                                type: "Fortification Walls",
-                                condition: "Structural Stabilization",
-                                image: "https://images.unsplash.com/photo-1591564344421-e37456ccb975?q=80&w=800&auto=format&fit=crop"
-                            },
-                            {
-                                id: "OR-09",
-                                title: "Konark Sun Temple",
-                                type: "Kalinga Architecture",
-                                condition: "Erosion Monitoring",
-                                image: "https://images.unsplash.com/photo-1598007255979-5773199f38f4?q=80&w=800&auto=format&fit=crop"
-                            },
-                            {
-                                id: "KA-22",
-                                title: "Hampi Ruins",
-                                type: "Vijayanagara Style",
-                                condition: "Laser Scanning",
-                                image: "https://images.unsplash.com/photo-1620766182966-c6eb3d35b917?q=80&w=800&auto=format&fit=crop"
-                            },
-                            {
-                                id: "MH-05",
-                                title: "Ellora Caves",
-                                type: "Monolithic Excavation",
-                                condition: "Water Seepage Check",
-                                image: "https://images.unsplash.com/photo-1566826622766-382a89304e22?q=80&w=800&auto=format&fit=crop"
+                                id: "MP-04",
+                                title: "Chambal Valley",
+                                subtitle: "Sanctuary of the Ravines",
+                                type: "Natural Heritage",
+                                status: "Ecological Survey",
+                                image: "/src/assets/heritage/chambal_valley.png"
                             }
                         ].map((site, i) => (
                              <motion.div
@@ -243,53 +217,69 @@ const About = () => {
                                 className="glass-panel"
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.8, delay: i * 0.1, ease: [0.2, 0, 0, 1] }}
-                                whileHover={{ scale: 1.02 }}
+                                viewport={{ once: true, margin: "-10%" }}
+                                transition={{ duration: 1, delay: i * 0.15, ease: [0.2, 0, 0, 1] }}
+                                whileHover="hover"
                                 style={{ 
-                                    minWidth: '360px', 
-                                    height: '540px', 
+                                    minWidth: '420px', 
+                                    height: '640px', 
                                     position: 'relative', 
                                     overflow: 'hidden', 
                                     padding: 0,
-                                    cursor: 'pointer' 
+                                    cursor: 'pointer',
+                                    borderRadius: '32px',
+                                    border: '1px solid rgba(0,0,0,0.05)',
+                                    boxShadow: '0 20px 40px -10px rgba(0,0,0,0.1)'
                                 }}
                             >
-                                <div style={{ position: 'absolute', inset: 0 }}>
-                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 40%)', zIndex: 1 }} />
+                                <motion.div 
+                                    style={{ position: 'absolute', inset: 0, zIndex: 0 }}
+                                    variants={{ hover: { scale: 1.05 } }}
+                                    transition={{ duration: 0.8, ease: [0.2, 0, 0, 1] }}
+                                >
+                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(28,25,23,0.95) 0%, rgba(28,25,23,0.6) 40%, transparent 100%)', zIndex: 1 }} />
                                     <img 
                                         src={site.image} 
                                         alt={site.title} 
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 1.2s cubic-bezier(0.2, 0, 0, 1)' }} 
-                                        className="hover-image"
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                                     />
-                                </div>
+                                </motion.div>
                                 
-                                {/* Data Overlay (VisionOS Style) */}
-                                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2rem', zIndex: 2 }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                                         <h3 style={{ color: 'white', fontSize: '2rem', fontFamily: 'serif', margin: 0, lineHeight: 1 }}>{site.title}</h3>
-                                         <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', fontWeight: 600, border: '1px solid rgba(255,255,255,0.2)', padding: '4px 8px', borderRadius: '100px', backdropFilter: 'blur(4px)' }}>{site.id}</span>
-                                    </div>
-                                    
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <div style={{ width: '6px', height: '6px', background: '#B08D55', borderRadius: '50%' }} />
-                                            <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.9)', fontWeight: 500 }}>{site.type}</span>
+                                {/* Cinematic Data Overlay */}
+                                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2.5rem', zIndex: 2 }}>
+                                    <motion.div 
+                                        variants={{ hover: { y: -8 } }}
+                                        transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+                                    >
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+                                            <div>
+                                                <span style={{ display: 'block', fontSize: '0.75rem', color: '#B08D55', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700, marginBottom: '0.5rem' }}>{site.subtitle}</span>
+                                                <h3 style={{ color: '#EAE5DB', fontSize: '2.75rem', fontFamily: 'serif', margin: 0, lineHeight: 1 }}>{site.title}</h3>
+                                            </div>
+                                            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', fontWeight: 700, border: '1px solid rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '100px', backdropFilter: 'blur(8px)' }}>{site.id}</span>
                                         </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <div style={{ width: '6px', height: '6px', background: 'rgba(255,255,255,0.3)', borderRadius: '50%' }} />
-                                            <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>{site.condition}</span>
+                                        
+                                        <div style={{ height: '1px', width: '100%', background: 'rgba(255,255,255,0.15)', marginBottom: '1.5rem' }} />
+
+                                        <div style={{ display: 'flex', gap: '24px' }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Archetype</span>
+                                                <span style={{ fontSize: '0.9rem', color: '#EAE5DB', fontWeight: 500 }}>{site.type}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</span>
+                                                <span style={{ fontSize: '0.9rem', color: '#EAE5DB', fontWeight: 500 }}>{site.status}</span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 </div>
                             </motion.div>
                         ))}
                     </div>
                     {/* Scroll Indicator */}
-                    <div style={{ display: 'flex', gap: '8px', paddingLeft: '2rem', marginTop: '0.5rem', opacity: 0.5, alignItems: 'center' }}>
-                        <div style={{ height: '1px', width: '40px', background: '#B89550' }} />
-                        <span style={{ fontSize: '0.65rem', color: '#2A2A2A', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Drag to Explore Archive</span>
+                    <div style={{ display: 'flex', gap: '8px', paddingLeft: '2rem', marginTop: '1rem', opacity: 0.6, alignItems: 'center' }}>
+                        <div style={{ height: '1px', width: '60px', background: '#B08D55' }} />
+                        <span style={{ fontSize: '0.7rem', color: '#57534E', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700 }}>Drag to Explore Archive</span>
                     </div>
                 </div>
             </section>
@@ -299,7 +289,7 @@ const About = () => {
                  <div className="container" style={{ position: 'relative', zIndex: 10 }}>
                     <div className="grid-12">
                         <div style={{ gridColumn: 'span 4' }}>
-                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 800, color: '#B89550' }}>Chapter 03 — Philosophy</span>
+                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 800, color: '#B08D55' }}>Chapter 03 — Philosophy</span>
                             <h2 className="text-display" style={{ fontSize: '2.5rem', marginTop: '1rem', fontFamily: 'serif' }}>The Triad of Preservation.</h2>
                         </div>
                         <div style={{ gridColumn: '6 / span 7' }}>
@@ -372,6 +362,228 @@ const About = () => {
                     </div>
                  </div>
             </section>
+
+             {/* --- CHAPTER 03.5: FUTURE SCOPE ("SOUTH INDIA EXPANSION") --- */}
+             <section style={{ padding: '160px 0', background: '#11100F', position: 'relative', overflow: 'hidden' }}>
+                {/* Subtle ambient glow */}
+                <div style={{ position: 'absolute', top: '-200px', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(176,141,85,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+                    {/* Editorial Intro Block */}
+                    <div style={{ marginBottom: '80px', maxWidth: '900px' }}>
+                        <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.25rem', fontSize: '0.7rem', fontWeight: 800, color: '#B08D55', marginBottom: '1.5rem' }}>
+                            Chapter 03.5 — Future Scope
+                        </span>
+                        <h2 className="text-display" style={{ fontSize: '3.5rem', fontFamily: 'serif', color: '#F9F7F2', lineHeight: 1.1, marginBottom: '2rem' }}>
+                            South India Expansion. <br /> <span style={{ opacity: 0.4 }}>The Next Frontier.</span>
+                        </h2>
+                        <p style={{ color: 'rgba(249,247,242,0.5)', fontSize: '1.1rem', lineHeight: 1.8, maxWidth: '700px' }}>
+                            Hidden Heritage is expanding into the underexplored cultural zones of South India — from submerged port cities to hanging pillar temples. 
+                            Our next expeditions focus on mystery, archaeology, adventure, and undocumented history that no guidebook covers.
+                        </p>
+                    </div>
+
+                    {/* Horizontal Scroll Gallery */}
+                    <div 
+                        style={{ 
+                            display: 'flex', 
+                            gap: '28px', 
+                            overflowX: 'auto', 
+                            paddingBottom: '3rem',
+                            scrollSnapType: 'x mandatory',
+                            paddingRight: '2rem',
+                            scrollbarWidth: 'none',
+                            msOverflowStyle: 'none'
+                        }}
+                        className="hide-scrollbar"
+                    >
+                         <style>{`
+                            .hide-scrollbar::-webkit-scrollbar { display: none; }
+                        `}</style>
+                        
+                        {[
+                            { 
+                                name: "Hampi (Anegundi)", 
+                                state: "KA", 
+                                region: "Karnataka", 
+                                tag: "Lost Civilization", 
+                                narrative: "A forgotten sister city across the river, where megalithic tombs whisper of a pre-Vijayanagara world yet to be mapped.",
+                                activities: ["Ruins Trekking", "Rock Climbing", "Coracle Crossing"],
+                                img: "https://images.unsplash.com/photo-1590050752117-23a9d7f26a8d?auto=format&fit=crop&q=80&w=800" 
+                            },
+                            { 
+                                name: "Gandikota", 
+                                state: "AP", 
+                                region: "Andhra Pradesh", 
+                                tag: "Archaeological Mystery", 
+                                narrative: "India's Grand Canyon hides a 13th-century fort on its rim. The Pennar River carved secrets into red gorge walls over millennia.",
+                                activities: ["Canyon Rappelling", "Night Camping", "Kayaking"],
+                                img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=800" 
+                            },
+                            { 
+                                name: "Kurudumale", 
+                                state: "KA", 
+                                region: "Karnataka", 
+                                tag: "Sacred Architecture", 
+                                narrative: "A 14-foot monolithic Ganesha carved from a single black stone — said to still be growing. The temple pillars tell stories in stone.",
+                                activities: ["Temple Photography", "Stone Carving Study", "Heritage Walk"],
+                                img: "https://images.unsplash.com/photo-1564507592412-57d2f82a3f24?auto=format&fit=crop&q=80&w=800" 
+                            },
+                            { 
+                                name: "Aranmula", 
+                                state: "KL", 
+                                region: "Kerala", 
+                                tag: "Living Heritage", 
+                                narrative: "The only place on Earth where metal mirrors are handcrafted from a secret alloy. The craft is dying with its last artisan families.",
+                                activities: ["Artisan Workshop", "Snake Boat Race", "River Pilgrimage"],
+                                img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800" 
+                            },
+                            { 
+                                name: "Velankanni Ghost Ship", 
+                                state: "TN", 
+                                region: "Tamil Nadu", 
+                                tag: "Submerged Heritage", 
+                                narrative: "A phantom vessel from the 2004 tsunami still lies half-buried in the sand. The coastline holds older secrets beneath the waves.",
+                                activities: ["Coastal Archaeology", "Night Photography", "Marine Survey"],
+                                img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=800" 
+                            },
+                            { 
+                                name: "Lepakshi Hanging Pillar", 
+                                state: "AP", 
+                                region: "Andhra Pradesh", 
+                                tag: "Architectural Mystery", 
+                                narrative: "One pillar doesn't touch the ground. Engineers still can't explain why. The ceiling holds India's largest monolithic Naga hood.",
+                                activities: ["Architecture Study", "Mural Documentation", "Heritage Mapping"],
+                                img: "https://images.unsplash.com/photo-1585116272947-b5f94bdf7aac?auto=format&fit=crop&q=80&w=800" 
+                            },
+                            { 
+                                name: "Varanga Jain Village", 
+                                state: "KA", 
+                                region: "Karnataka", 
+                                tag: "Sacred Architecture", 
+                                narrative: "A 12th-century temple floats in the center of a lotus lake, accessible only by boat. The water lilies guard star-shaped geometry.",
+                                activities: ["Boat Temple Visit", "Jain Heritage Trail", "Lake Photography"],
+                                img: "https://images.unsplash.com/photo-1609137220516-7788478d5301?auto=format&fit=crop&q=80&w=800" 
+                            },
+                            { 
+                                name: "Arikamedu Roman Port", 
+                                state: "PY", 
+                                region: "Pondicherry", 
+                                tag: "Lost Civilization", 
+                                narrative: "Roman coins, Mediterranean pottery, and a 2,000-year-old bead factory. This was India's ancient gateway to the Roman Empire.",
+                                activities: ["Archaeological Dig", "Bead Making Workshop", "Coastal Walk"],
+                                img: "https://images.unsplash.com/photo-1590732158859-99933f789e5a?auto=format&fit=crop&q=80&w=800" 
+                            },
+                            { 
+                                name: "Poompuhar Submerged City", 
+                                state: "TN", 
+                                region: "Tamil Nadu", 
+                                tag: "Submerged Heritage", 
+                                narrative: "An entire Chola port city lies beneath the Bay of Bengal. Sonar reveals harbors, lighthouses, and dockyards at 50-meter depths.",
+                                activities: ["Marine Archaeology", "Underwater Survey", "Museum Visit"],
+                                img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=800" 
+                            }
+                        ].map((site, i) => (
+                             <motion.div
+                                key={i}
+                                className="glass-panel"
+                                initial={{ opacity: 0, x: 60 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, margin: "-10%" }}
+                                transition={{ duration: 0.9, delay: i * 0.08, ease: [0.2, 0, 0, 1] }}
+                                whileHover="hover"
+                                style={{ 
+                                    minWidth: '380px', 
+                                    height: '560px', 
+                                    position: 'relative', 
+                                    overflow: 'hidden', 
+                                    padding: 0,
+                                    cursor: 'pointer',
+                                    scrollSnapAlign: 'start',
+                                    borderRadius: '24px',
+                                    border: '1px solid rgba(255,255,255,0.08)',
+                                    background: '#1C1917',
+                                    boxShadow: '0 20px 60px -15px rgba(0,0,0,0.5)'
+                                }}
+                            >
+                                {/* Future Expedition Badge */}
+                                <div style={{ position: 'absolute', top: '16px', right: '16px', zIndex: 5, padding: '5px 10px', background: 'rgba(59, 130, 246, 0.85)', backdropFilter: 'blur(12px)', borderRadius: '6px', fontSize: '0.6rem', fontWeight: 800, color: 'white', letterSpacing: '0.08em', textTransform: 'uppercase', boxShadow: '0 4px 16px rgba(59,130,246,0.35)' }}>
+                                    Future Expedition
+                                </div>
+
+                                {/* Region State Badge */}
+                                <div style={{ position: 'absolute', top: '16px', left: '16px', zIndex: 5, padding: '5px 10px', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', borderRadius: '6px', fontSize: '0.65rem', fontWeight: 800, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                    {site.state}
+                                </div>
+
+                                {/* Image with parallax hover */}
+                                <motion.div 
+                                    style={{ position: 'absolute', inset: '-10px', zIndex: 0 }}
+                                    variants={{ hover: { scale: 1.06 } }}
+                                    transition={{ duration: 1, ease: [0.2, 0, 0, 1] }}
+                                >
+                                    {/* Cinematic gradient overlay */}
+                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #11100F 0%, rgba(17,16,15,0.7) 40%, rgba(17,16,15,0.2) 70%, transparent 100%)', zIndex: 1 }} />
+                                    {/* Subtle warm vignette */}
+                                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(17,16,15,0.4) 100%)', zIndex: 1 }} />
+                                    <img 
+                                        src={site.img} 
+                                        alt={site.name} 
+                                        loading="lazy"
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85, filter: 'saturate(0.9) contrast(1.05)' }} 
+                                    />
+                                </motion.div>
+                                
+                                {/* Content Overlay */}
+                                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2rem', zIndex: 2 }}>
+                                    <motion.div
+                                        variants={{ hover: { y: -6 } }}
+                                        transition={{ duration: 0.5, ease: [0.2, 0, 0, 1] }}
+                                    >
+                                        {/* Region + Category */}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                                            <span style={{ fontSize: '0.65rem', color: '#B08D55', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 800 }}>{site.region}</span>
+                                            <div style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'rgba(255,255,255,0.3)' }} />
+                                            <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>{site.tag}</span>
+                                        </div>
+
+                                        {/* Site Name */}
+                                        <h3 style={{ color: '#F9F7F2', fontSize: '1.85rem', fontFamily: 'serif', margin: '0 0 10px 0', lineHeight: 1.1 }}>{site.name}</h3>
+                                        
+                                        {/* Mysterious Narrative */}
+                                        <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.82rem', lineHeight: 1.6, margin: '0 0 16px 0', maxWidth: '320px' }}>{site.narrative}</p>
+
+                                        {/* Adventure Activity Tags */}
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                            {site.activities.map((activity, j) => (
+                                                <span key={j} style={{ 
+                                                    fontSize: '0.65rem', 
+                                                    color: 'rgba(255,255,255,0.7)', 
+                                                    fontWeight: 600,
+                                                    padding: '4px 10px', 
+                                                    background: 'rgba(255,255,255,0.08)', 
+                                                    borderRadius: '100px', 
+                                                    backdropFilter: 'blur(4px)', 
+                                                    border: '1px solid rgba(255,255,255,0.08)',
+                                                    letterSpacing: '0.02em'
+                                                }}>
+                                                    {activity}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <div style={{ display: 'flex', gap: '8px', paddingLeft: '2rem', marginTop: '0.5rem', opacity: 0.4, alignItems: 'center' }}>
+                        <div style={{ height: '1px', width: '60px', background: '#B08D55' }} />
+                        <span style={{ fontSize: '0.65rem', color: '#F9F7F2', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700 }}>Drag to Explore Future Expeditions</span>
+                    </div>
+                </div>
+             </section>
 
             {/* --- CHAPTER 04: THE SYSTEM ("GLASS CARDS") --- */}
             <section style={{ padding: '160px 0', background: '#1A1A1A', color: '#F9F7F2', position: 'relative', overflow: 'hidden' }}>
