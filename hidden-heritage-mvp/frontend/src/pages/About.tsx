@@ -1,22 +1,16 @@
 import NavBar from '../components/NavBar';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import NavBar from '../components/NavBar';
+import { motion } from 'framer-motion';
 import { Globe, Shield, History, Map, Database, Compass, BookOpen, ChevronRight, AlertTriangle, Cpu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
 
 
 
 const About = () => {
     const navigate = useNavigate();
-    const containerRef = useRef(null);
-    const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
-
-    // Smooth Parallax for Hero
-    // const yHero = useTransform(scrollYProgress, [0, 0.5], ["0%", "50%"]);
-    // const opacityHero = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
     return (
-        <div ref={containerRef} style={{ background: '#F9F7F2', minHeight: '100vh', position: 'relative', overflowX: 'hidden', color: '#2A2A2A' }}>
+        <div style={{ background: '#F9F7F2', minHeight: '100vh', position: 'relative', overflowX: 'hidden', color: '#2A2A2A' }}>
             <NavBar />
 
             {/* Global Film Grain & Ambient Gradient */}
