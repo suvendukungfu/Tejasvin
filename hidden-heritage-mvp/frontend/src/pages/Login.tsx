@@ -46,54 +46,48 @@ const Login = () => {
             
             {/* Cinematic Background */}
             <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(0,0,0,0) 0%, var(--color-bg-body) 100%)', zIndex: 1 }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(0,0,0,0) 0%, #1C1917 100%)', zIndex: 1 }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(28, 25, 23, 0.5)', zIndex: 1 }} /> 
                 <img 
-                    src="https://images.unsplash.com/photo-1548013146-72479768b8b3?auto=format&fit=crop&q=80&w=2000" 
+                    src="https://images.unsplash.com/photo-1518182170546-07fb6ceaa714?auto=format&fit=crop&q=80&w=2000" 
                     alt="Temple Gate" 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4, filter: 'brightness(0.8) contrast(1.2)' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(0.2) contrast(1.1)' }}
                 />
             </div>
 
-            {/* Ambient Particles (Simplified as Radial Gradients) */}
-            <div style={{ position: 'absolute', top: '20%', left: '10%', width: '300px', height: '300px', background: 'var(--color-accent)', filter: 'blur(100px)', opacity: 0.1, zIndex: 0 }} />
-            <div style={{ position: 'absolute', bottom: '20%', right: '10%', width: '400px', height: '400px', background: 'var(--color-primary)', filter: 'blur(120px)', opacity: 0.05, zIndex: 0 }} />
-
             <div className="container" style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'center' }}>
                 <motion.div 
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+                    className="glass-panel"
                     style={{ 
                         width: '100%', 
                         maxWidth: '480px', 
-                        background: 'rgba(255,255,255,0.02)',
-                        backdropFilter: 'blur(30px)',
-                        padding: '4rem 3.5rem',
-                        borderRadius: '40px',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        boxShadow: '0 40px 100px rgba(0,0,0,0.3)'
+                        padding: '4rem 3rem',
+                        background: 'rgba(28, 25, 23, 0.75)', /* Darker glass for contrast */
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 40px 100px -20px rgba(0,0,0,0.5)'
                     }}
                 >
-                    <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-                        <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                            style={{ 
-                                display: 'inline-flex', 
-                                padding: '16px', 
-                                background: 'rgba(200, 163, 89, 0.1)', 
-                                borderRadius: '32px', 
-                                color: 'var(--color-gold)',
-                                marginBottom: '1.5rem'
-                            }}
-                        >
-                            <ShieldCheck size={32} />
-                        </motion.div>
-                        <h1 className="text-display" style={{ fontSize: '2.5rem', color: 'white', marginBottom: '0.75rem', lineHeight: 1.1 }}>
-                            The Gatekeeper's <br/>
-                            <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)', fontWeight: 400, color: 'var(--color-accent)' }}>Portal.</span>
+                    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                        <div style={{ 
+                            display: 'inline-flex', 
+                            padding: '12px', 
+                            background: 'rgba(176, 141, 85, 0.15)', 
+                            borderRadius: '50%', 
+                            color: '#B08D55',
+                            marginBottom: '1.5rem',
+                            border: '1px solid rgba(176, 141, 85, 0.3)'
+                        }}>
+                            <ShieldCheck size={28} />
+                        </div>
+                        <h1 className="text-display" style={{ fontSize: '2.5rem', color: 'white', marginBottom: '0.5rem', lineHeight: 1.1 }}>
+                            Welcome Back
                         </h1>
+                        <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '1rem' }}>
+                            The archives await your return.
+                        </p>
                     </div>
 
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -104,15 +98,15 @@ const Login = () => {
                                     animate={{ opacity: 1, height: 'auto', y: 0 }}
                                     exit={{ opacity: 0, height: 0, y: -10 }}
                                     style={{ 
-                                        background: 'rgba(239, 68, 68, 0.1)', 
-                                        color: '#fca5a5', 
+                                        background: 'rgba(239, 68, 68, 0.15)', 
+                                        color: '#FCA5A5', 
                                         padding: '1rem', 
                                         borderRadius: '12px', 
-                                        fontSize: '0.85rem',
+                                        fontSize: '0.9rem',
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: '10px',
-                                        border: '1px solid rgba(239, 68, 68, 0.2)'
+                                        border: '1px solid rgba(239, 68, 68, 0.3)'
                                     }}
                                 >
                                     <AlertCircle size={16} />
@@ -121,58 +115,71 @@ const Login = () => {
                             )}
                         </AnimatePresence>
 
-                        <div className="floating-input-group">
-                            <div style={{ position: 'relative' }}>
-                                <Mail size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
-                                <input
-                                    type="email" 
-                                    placeholder="Traveler's Identity (Email)"
-                                    value={email} 
-                                    onChange={e => setEmail(e.target.value)}
-                                    required
-                                    style={{ 
-                                        width: '100%', 
-                                        padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
-                                        background: 'rgba(255,255,255,0.03)', 
-                                        border: '1px solid rgba(255,255,255,0.08)', 
-                                        borderRadius: '16px', 
-                                        color: 'white',
-                                        outline: 'none',
-                                        fontSize: '1rem'
-                                    }}
-                                />
-                            </div>
+                        <div style={{ position: 'relative' }}>
+                            <Mail size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.4)', zIndex: 10 }} />
+                            <input
+                                type="email" 
+                                placeholder="Traveler's Identity (Email)"
+                                value={email} 
+                                onChange={e => setEmail(e.target.value)}
+                                required
+                                style={{ 
+                                    width: '100%', 
+                                    padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
+                                    background: 'rgba(255,255,255,0.05)', 
+                                    border: '1px solid rgba(255,255,255,0.1)', 
+                                    borderRadius: '16px', 
+                                    color: 'white',
+                                    outline: 'none',
+                                    fontSize: '1rem',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = '#B08D55';
+                                    e.target.style.background = 'rgba(255,255,255,0.08)';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = 'rgba(255,255,255,0.1)';
+                                    e.target.style.background = 'rgba(255,255,255,0.05)';
+                                }}
+                            />
                         </div>
 
-                        <div className="floating-input-group">
-                            <div style={{ position: 'relative' }}>
-                                <Lock size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
-                                <input
-                                    type="password" 
-                                    placeholder="Secret Versicle (Password)"
-                                    value={password} 
-                                    onChange={e => setPassword(e.target.value)}
-                                    required
-                                    style={{ 
-                                        width: '100%', 
-                                        padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
-                                        background: 'rgba(255,255,255,0.03)', 
-                                        border: '1px solid rgba(255,255,255,0.08)', 
-                                        borderRadius: '16px', 
-                                        color: 'white',
-                                        outline: 'none',
-                                        fontSize: '1rem'
-                                    }}
-                                />
-                            </div>
+                        <div style={{ position: 'relative' }}>
+                            <Lock size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.4)', zIndex: 10 }} />
+                            <input
+                                type="password" 
+                                placeholder="Secret Versicle (Password)"
+                                value={password} 
+                                onChange={e => setPassword(e.target.value)}
+                                required
+                                style={{ 
+                                    width: '100%', 
+                                    padding: '1.25rem 1.25rem 1.25rem 3.5rem', 
+                                    background: 'rgba(255,255,255,0.05)', 
+                                    border: '1px solid rgba(255,255,255,0.1)', 
+                                    borderRadius: '16px', 
+                                    color: 'white',
+                                    outline: 'none',
+                                    fontSize: '1rem',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = '#B08D55';
+                                    e.target.style.background = 'rgba(255,255,255,0.08)';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = 'rgba(255,255,255,0.1)';
+                                    e.target.style.background = 'rgba(255,255,255,0.05)';
+                                }}
+                            />
                         </div>
 
                         <motion.button 
                             type="submit" 
                             disabled={loading}
-                            whileHover={{ scale: 1.01, backgroundColor: 'var(--color-accent-hover)' }}
+                            whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="btn btn-primary"
                             style={{ 
                                 width: '100%', 
                                 padding: '1.25rem', 
@@ -182,44 +189,42 @@ const Login = () => {
                                 alignItems: 'center', 
                                 gap: '0.75rem',
                                 fontSize: '1rem',
-                                fontWeight: 700
+                                fontWeight: 700,
+                                background: '#B08D55',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '100px',
+                                cursor: 'pointer',
+                                boxShadow: '0 10px 30px rgba(176, 141, 85, 0.3)'
                             }}
                         >
                             {loading ? 'Communing...' : <>Unlock Passage <ArrowRight size={18} /></>}
                         </motion.button>
                     </form>
 
-                    <div style={{ marginTop: '3rem', textAlign: 'center' }}>
-                        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', marginBottom: '2rem' }}>
+                    <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+                        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
                             Untethered from the High Guild? <br/>
-                            <Link to="/register" style={{ color: 'var(--color-accent)', fontWeight: 700, textDecoration: 'none', marginLeft: '0.5rem' }}>Pledge Your Allegiance</Link>
+                            <Link to="/register" style={{ color: '#B08D55', fontWeight: 600, textDecoration: 'none', marginLeft: '0.5rem' }}>Pledge Your Allegiance</Link>
                         </p>
 
                         {/* Demo Credentials Archive */}
                         <div style={{ 
-                            padding: '1.25rem', 
-                            background: 'rgba(255,255,255,0.02)', 
-                            borderRadius: '16px', 
+                            padding: '1rem 1.5rem', 
+                            background: 'rgba(255,255,255,0.03)', 
+                            borderRadius: '12px', 
                             border: '1px solid rgba(255,255,255,0.05)',
                             textAlign: 'left'
                         }}>
-                             <span style={{ fontSize: '0.65rem', fontWeight: 800, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.75rem' }}>Archives of the Initiated</span>
+                             <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.5rem' }}>Archives of the Initiated</span>
                              <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: '0.8rem' }}>
-                                <span style={{ color: 'rgba(255,255,255,0.6)' }}>user@example.com</span>
-                                <span style={{ color: 'var(--color-accent)' }}>secret</span>
+                                <span style={{ color: 'rgba(255,255,255,0.7)' }}>user@example.com</span>
+                                <span style={{ color: '#B08D55' }}>secret</span>
                              </div>
                         </div>
                     </div>
                 </motion.div>
             </div>
-            
-            <style>{`
-                input:focus {
-                    border-color: var(--color-accent) !important;
-                    background: rgba(255,255,255,0.05) !important;
-                    box-shadow: 0 0 20px rgba(181, 146, 76, 0.1);
-                }
-            `}</style>
         </div>
     );
 };
