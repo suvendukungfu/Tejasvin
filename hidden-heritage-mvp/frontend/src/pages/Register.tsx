@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import axios from 'axios';
-import { Mail, Lock, User, AlertCircle, ArrowRight, Sparkles, Shield } from 'lucide-react';
+import { Mail, Lock, User, AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Register = () => {
