@@ -413,7 +413,7 @@ const About = () => {
                                 },
                                 { 
                                     step: "04", title: "Context", icon: <Database size={28} />, text: "Deep cultural understanding. Connecting dots of our heritage.", color: "#F472B6",
-                                    image: "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=600&auto=format&fit=crop" 
+                                    image: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=800&auto=format&fit=crop" 
                                 }
                             ].map((s, i) => (
                                 <motion.div 
@@ -477,55 +477,64 @@ const About = () => {
                 </div>
             </section>
 
-             {/* --- CHAPTER 05: INVITATION ("PREMIUM FOOTER") --- */}
-             <section style={{ padding: '180px 0 100px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '600px', background: 'radial-gradient(circle at 50% 100%, rgba(184, 149, 80, 0.15), transparent 70%)', pointerEvents: 'none' }} />
+             {/* --- CHAPTER 05: INVITATION ("THE PORTAL") --- */}
+             <section style={{ height: '80vh', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ position: 'absolute', inset: 0 }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 1 }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #1C1917 0%, transparent 50%, #1C1917 100%)', zIndex: 2 }} />
+                    <img 
+                        src="https://images.unsplash.com/photo-1599940824399-b87987ce179a?q=80&w=2000&auto=format&fit=crop" 
+                        alt="Portal to History" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                </div>
                 
-                <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+                <div className="container" style={{ position: 'relative', zIndex: 10, width: '100%' }}>
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
+                        initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 1 }}
-                        style={{ maxWidth: '800px', margin: '0 auto' }}
+                        transition={{ duration: 1.2, ease: [0.2, 0, 0, 1] }}
+                        className="glass-panel"
+                        style={{ 
+                            maxWidth: '700px', 
+                            margin: '0 auto', 
+                            padding: '4rem', 
+                            textAlign: 'center',
+                            background: 'rgba(28, 25, 23, 0.65)', // Dark glass
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            backdropFilter: 'blur(20px)'
+                        }}
                     >
-                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '1rem', marginBottom: '3rem', opacity: 0.6 }}>
-                            <div style={{ height: '1px', width: '40px', background: '#2A2A2A' }} />
-                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 700, color: '#2A2A2A' }}>Chapter 05 — Invitation</span>
-                            <div style={{ height: '1px', width: '40px', background: '#2A2A2A' }} />
+                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', opacity: 0.8 }}>
+                            <div style={{ height: '1px', width: '30px', background: '#B08D55' }} />
+                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 600, color: '#B08D55' }}>Chapter 05 — Invitation</span>
+                            <div style={{ height: '1px', width: '30px', background: '#B08D55' }} />
                         </div>
 
-                        <h2 className="text-display" style={{ marginBottom: '2.5rem', fontSize: 'clamp(3rem, 5vw, 5rem)', fontFamily: 'serif', color: '#2A2A2A', lineHeight: 1.1 }}>
+                        <h2 className="text-display" style={{ marginBottom: '2rem', fontSize: '3.5rem', fontFamily: 'serif', color: 'white', lineHeight: 1.1 }}>
                             The archives are open. <br/>
-                            <span style={{ color: '#B89550', fontStyle: 'italic' }}>Are you ready?</span>
+                            <span style={{ color: '#B08D55', fontStyle: 'italic' }}>Are you ready?</span>
                         </h2>
                         
-                        <p style={{ fontSize: '1.25rem', color: '#6D6D6D', marginBottom: '4rem', fontStyle: 'italic', maxWidth: '600px', margin: '0 auto 4rem' }}>
-                            "Step into the living archive. Your journey into the forgotten begins now. Contribute to the preservation of our shared history."
+                        <p style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.8)', marginBottom: '3rem', maxWidth: '500px', margin: '0 auto 3rem', fontWeight: 300 }}>
+                            "Step into the living archive. Contribute to the preservation of our shared history before it fades."
                         </p>
 
                         <motion.button 
                             onClick={() => navigate('/register')} 
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.98 }}
+                            className="btn-cinema"
                             style={{ 
-                                padding: '1.5rem 4rem', 
-                                fontSize: '1rem', 
-                                fontWeight: 700, 
-                                background: '#2A2A2A', 
-                                color: 'white', 
-                                border: 'none', 
-                                borderRadius: '100px', 
-                                cursor: 'pointer',
-                                letterSpacing: '0.1em',
-                                textTransform: 'uppercase',
-                                boxShadow: '0 20px 40px -10px rgba(0,0,0,0.3)',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '1rem'
+                                background: '#B08D55', 
+                                color: 'white',
+                                padding: '20px 48px',
+                                boxShadow: '0 0 40px rgba(176, 141, 85, 0.4)'
                             }}
                         >
-                            Join the Expedition <ChevronRight size={16} />
+                            <span style={{ position: 'relative', zIndex: 1 }}>Join the Expedition</span>
+                            <ChevronRight size={18} />
                         </motion.button>
                     </motion.div>
                 </div>
