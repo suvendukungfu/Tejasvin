@@ -409,7 +409,7 @@ const About = () => {
                                 tag: "Lost Civilization", 
                                 narrative: "A forgotten sister city across the river, where megalithic tombs whisper of a pre-Vijayanagara world yet to be mapped.",
                                 activities: ["Ruins Trekking", "Rock Climbing", "Coracle Crossing"],
-                                img: "https://images.unsplash.com/photo-1590050752117-23a9d7f26a8d?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/hampi.png" 
                             },
                             { 
                                 name: "Gandikota", 
@@ -418,7 +418,7 @@ const About = () => {
                                 tag: "Archaeological Mystery", 
                                 narrative: "India's Grand Canyon hides a 13th-century fort on its rim. The Pennar River carved secrets into red gorge walls over millennia.",
                                 activities: ["Canyon Rappelling", "Night Camping", "Kayaking"],
-                                img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/gandikota.png" 
                             },
                             { 
                                 name: "Kurudumale", 
@@ -427,7 +427,7 @@ const About = () => {
                                 tag: "Sacred Architecture", 
                                 narrative: "A 14-foot monolithic Ganesha carved from a single black stone — said to still be growing. The temple pillars tell stories in stone.",
                                 activities: ["Temple Photography", "Stone Carving Study", "Heritage Walk"],
-                                img: "https://images.unsplash.com/photo-1564507592412-57d2f82a3f24?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/kurudumale.png" 
                             },
                             { 
                                 name: "Aranmula", 
@@ -436,7 +436,7 @@ const About = () => {
                                 tag: "Living Heritage", 
                                 narrative: "The only place on Earth where metal mirrors are handcrafted from a secret alloy. The craft is dying with its last artisan families.",
                                 activities: ["Artisan Workshop", "Snake Boat Race", "River Pilgrimage"],
-                                img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/aranmula.png" 
                             },
                             { 
                                 name: "Velankanni Ghost Ship", 
@@ -445,7 +445,7 @@ const About = () => {
                                 tag: "Submerged Heritage", 
                                 narrative: "A phantom vessel from the 2004 tsunami still lies half-buried in the sand. The coastline holds older secrets beneath the waves.",
                                 activities: ["Coastal Archaeology", "Night Photography", "Marine Survey"],
-                                img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/velankanni.png" 
                             },
                             { 
                                 name: "Lepakshi Hanging Pillar", 
@@ -454,7 +454,7 @@ const About = () => {
                                 tag: "Architectural Mystery", 
                                 narrative: "One pillar doesn't touch the ground. Engineers still can't explain why. The ceiling holds India's largest monolithic Naga hood.",
                                 activities: ["Architecture Study", "Mural Documentation", "Heritage Mapping"],
-                                img: "https://images.unsplash.com/photo-1585116272947-b5f94bdf7aac?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/lepakshi.png" 
                             },
                             { 
                                 name: "Varanga Jain Village", 
@@ -463,7 +463,7 @@ const About = () => {
                                 tag: "Sacred Architecture", 
                                 narrative: "A 12th-century temple floats in the center of a lotus lake, accessible only by boat. The water lilies guard star-shaped geometry.",
                                 activities: ["Boat Temple Visit", "Jain Heritage Trail", "Lake Photography"],
-                                img: "https://images.unsplash.com/photo-1609137220516-7788478d5301?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/varanga.png" 
                             },
                             { 
                                 name: "Arikamedu Roman Port", 
@@ -472,7 +472,7 @@ const About = () => {
                                 tag: "Lost Civilization", 
                                 narrative: "Roman coins, Mediterranean pottery, and a 2,000-year-old bead factory. This was India's ancient gateway to the Roman Empire.",
                                 activities: ["Archaeological Dig", "Bead Making Workshop", "Coastal Walk"],
-                                img: "https://images.unsplash.com/photo-1590732158859-99933f789e5a?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/arikamedu.png" 
                             },
                             { 
                                 name: "Poompuhar Submerged City", 
@@ -481,7 +481,7 @@ const About = () => {
                                 tag: "Submerged Heritage", 
                                 narrative: "An entire Chola port city lies beneath the Bay of Bengal. Sonar reveals harbors, lighthouses, and dockyards at 50-meter depths.",
                                 activities: ["Marine Archaeology", "Underwater Survey", "Museum Visit"],
-                                img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=800" 
+                                img: "/heritage/poompuhar.png" 
                             }
                         ].map((site, i) => (
                              <motion.div
