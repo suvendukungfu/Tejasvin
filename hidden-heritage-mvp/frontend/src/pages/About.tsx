@@ -23,8 +23,6 @@ const About = () => {
             <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 50, opacity: 0.05, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
             <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(circle at 50% 10%, rgba(184, 149, 80, 0.08), transparent 60%)', pointerEvents: 'none', zIndex: 0 }} />
 
-            {/* --- CHAPTER 01: ORIGIN ("BORN FROM DUST") --- */}
-            <section style={{ height: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
             {/* --- CHAPTER 01: ORIGIN (Spatial Split) --- */}
             <section style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
                 <div className="container" style={{ position: 'relative', zIndex: 10, width: '100%' }}>
@@ -42,19 +40,18 @@ const About = () => {
                                 <h1 className="text-display" style={{ marginBottom: '2.5rem', fontFamily: 'serif' }}>
                                     Born from <br/> <span className="text-gold" style={{ fontStyle: 'italic' }}>Dust & Data.</span>
                                 </h1>
-                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #F9F7F2 0%, transparent 20%)', zIndex: 2 }} />
-                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #F9F7F2 0%, transparent 10%, transparent 80%, #F9F7F2 100%)', zIndex: 2 }} />
-                             <motion.img 
-                                initial={{ opacity: 0, scale: 1.1 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 1.5 }}
-                                src="https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1000&auto=format&fit=crop" 
-                                alt="Ancient Texture" 
-                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px 0 0 4px', filter: 'sepia(0.2) contrast(1.1) brightness(0.9)' }} 
-                            />
+                                <div className="glass-panel" style={{ padding: '2.5rem', position: 'relative' }}>
+                                    <p style={{ fontSize: '1.25rem', lineHeight: 1.6, color: 'var(--color-spatial-text)' }}>
+                                        "It started in the quiet of a crumbling stepwell. We realized that if we didn't document this now, the story would vanish with the stone. <strong style={{ fontWeight: 600 }}>Hidden Heritage is our vow to remember.</strong>"
+                                    </p>
+                                </div>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
+                
+                {/* Background Ambient Blur */}
+                <div style={{ position: 'absolute', top: '20%', left: '-10%', width: '50vw', height: '50vw', background: '#B08D55', opacity: 0.05, filter: 'blur(120px)', borderRadius: '50%', pointerEvents: 'none' }} />
             </section>
 
             {/* --- CHAPTER 02: THE PROBLEM ("DATA ROT") --- */}
