@@ -399,70 +399,87 @@ const About = () => {
                         </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px' }}>
-                        {[
-                            { 
-                                step: "01", title: "Portal", icon: <Compass size={24} />, text: "Access to the hidden world. A curated entry point for explorers.", color: "#B89550",
-                                image: "https://images.unsplash.com/photo-1502472584811-0a2f2ca8f9cf?q=80&w=1000&auto=format&fit=crop" // Doorway/Light 
-                            },
-                            { 
-                                step: "02", title: "Atlas", icon: <Map size={24} />, text: "Mapping the unmapped. Geospatial data meets historical narrative.", color: "#4ADE80",
-                                image: "https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop" // Map/Topography
-                            },
-                            { 
-                                step: "03", title: "Journal", icon: <BookOpen size={24} />, text: "Documenting the narrative. Field notes from the preservationists.", color: "#60A5FA",
-                                image: "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?q=80&w=1000&auto=format&fit=crop" // Journal/Handwriting
-                            },
-                            { 
-                                step: "04", title: "Context", icon: <Database size={24} />, text: "Deep cultural understanding. Connecting the dots of our heritage.", color: "#F472B6",
-                                image: "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1000&auto=format&fit=crop" // Connections/History
-                            }
-                        ].map((s, i) => (
-                            <motion.div 
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.1 * i, duration: 0.6 }}
-                                whileHover={{ y: -10, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}
-                                style={{ 
-                                    padding: '2rem', 
-                                    background: 'rgba(255,255,255,0.03)', 
-                                    backdropFilter: 'blur(10px)', 
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    borderRadius: '16px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: '320px',
-                                    justifyContent: 'space-between',
-                                    position: 'relative',
-                                    overflow: 'hidden'
-                                }}
-                            >
-                                {/* Cinematic Background Image */}
-                                <div style={{ 
-                                    position: 'absolute', 
-                                    inset: 0, 
-                                    opacity: 0.15, 
-                                    backgroundImage: `url(${s.image})`, 
-                                    backgroundSize: 'cover', 
-                                    backgroundPosition: 'center', 
-                                    filter: 'grayscale(100%) contrast(1.2)',
-                                    transition: 'transform 0.5s ease-out'
-                                }} />
-                                
-                                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: s.color, opacity: 0.5, zIndex: 2 }} />
-                                
-                                <div style={{ position: 'relative', zIndex: 2 }}>
-                                    <div style={{ fontSize: '3rem', fontWeight: 800, color: 'rgba(255,255,255,0.1)', marginBottom: '1rem', fontFamily: 'serif' }}>{s.step}</div>
-                                    <h4 style={{ fontSize: '1.5rem', fontWeight: 500, marginBottom: '0.5rem', color: 'white' }}>{s.title}</h4>
-                                    <p style={{ fontSize: '0.9rem', opacity: 0.6, lineHeight: 1.6 }}>{s.text}</p>
-                                </div>
-                                <div style={{ alignSelf: 'flex-end', background: 'rgba(255,255,255,0.1)', padding: '0.75rem', borderRadius: '50%', position: 'relative', zIndex: 2 }}>
-                                    {s.icon}
-                                </div>
-                            </motion.div>
-                        ))}
+                    {/* Timeline Container */}
+                    <div style={{ position: 'relative', padding: '40px 0' }}>
+                        {/* Connecting Line (Absolute) */}
+                        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, #B08D55, transparent)', opacity: 0.3, zIndex: 0 }} />
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', position: 'relative', zIndex: 1 }}>
+                            {[
+                                { 
+                                    step: "01", title: "Portal", icon: <Compass size={28} />, text: "Access to the hidden world. A curated entry point for explorers.", color: "#B89550",
+                                    image: "https://images.unsplash.com/photo-1502472584811-0a2f2ca8f9cf?q=80&w=600&auto=format&fit=crop" 
+                                },
+                                { 
+                                    step: "02", title: "Atlas", icon: <Map size={28} />, text: "Mapping the unmapped. Geospatial data meets historical narrative.", color: "#4ADE80",
+                                    image: "https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop" 
+                                },
+                                { 
+                                    step: "03", title: "Journal", icon: <BookOpen size={28} />, text: "Documenting the narrative. Field notes from the preservationists.", color: "#60A5FA",
+                                    image: "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?q=80&w=600&auto=format&fit=crop" 
+                                },
+                                { 
+                                    step: "04", title: "Context", icon: <Database size={28} />, text: "Deep cultural understanding. Connecting dots of our heritage.", color: "#F472B6",
+                                    image: "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=600&auto=format&fit=crop" 
+                                }
+                            ].map((s, i) => (
+                                <motion.div 
+                                    key={i}
+                                    className="glass-panel"
+                                    initial={{ opacity: 0, y: 40 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.1 * i, duration: 0.8, ease: [0.2, 0, 0, 1] }}
+                                    whileHover={{ y: -12, scale: 1.02 }}
+                                    style={{ 
+                                        padding: 0,
+                                        height: '380px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        background: 'rgba(255,255,255,0.03)',
+                                        border: '1px solid rgba(255,255,255,0.1)'
+                                    }}
+                                >
+                                    {/* Image Bg */}
+                                    <div style={{ position: 'absolute', inset: 0, opacity: 0.2 }}>
+                                        <img src={s.image} alt={s.title} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(1)' }} />
+                                    </div>
+
+                                    {/* Step Number Badge */}
+                                    <div style={{ position: 'absolute', top: '24px', right: '24px', fontSize: '4rem', fontWeight: 800, color: 'rgba(255,255,255,0.05)', lineHeight: 0.8, fontFamily: 'serif' }}>
+                                        {s.step}
+                                    </div>
+                                    
+                                    <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', zIndex: 2 }}>
+                                        <div style={{ 
+                                            width: '56px', height: '56px', 
+                                            borderRadius: '50%', 
+                                            background: 'rgba(255,255,255,0.1)', 
+                                            backdropFilter: 'blur(10px)',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            marginBottom: '1.5rem',
+                                            border: `1px solid ${s.color}`,
+                                            color: s.color,
+                                            boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+                                        }}>
+                                            {s.icon}
+                                        </div>
+                                        
+                                        <h4 style={{ fontSize: '1.75rem', fontWeight: 500, marginBottom: '0.75rem', color: 'white' }}>{s.title}</h4>
+                                        <p style={{ fontSize: '0.95rem', opacity: 0.7, lineHeight: 1.6, color: '#D4D4D4' }}>{s.text}</p>
+                                    </div>
+                                    
+                                    {/* Connecting Dot on Bottom Edge */}
+                                    {i !== 3 && (
+                                         <div style={{ position: 'absolute', top: '50%', right: '-16px', transform: 'translateY(-50%)', zIndex: 10 }}>
+                                            <div style={{ width: '8px', height: '8px', background: '#B08D55', borderRadius: '50%', boxShadow: '0 0 10px #B08D55' }} />
+                                        </div>
+                                    )}
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
