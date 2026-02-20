@@ -108,7 +108,7 @@ const ArrivalScene = ({ progress }: { progress: any }) => {
                             textTransform: 'uppercase', 
                             color: 'var(--color-spatial-text)' 
                         }}>
-                            Spatial Heritage OS v2.0
+                            Discover India's Hidden Gems
                         </span>
                     </motion.div>
                     
@@ -131,7 +131,7 @@ const ArrivalScene = ({ progress }: { progress: any }) => {
                         color: 'var(--color-text-secondary)',
                         lineHeight: 1.6
                     }}>
-                        A digital dimension for the forgotten architectures of India. Enter the neural archive.
+                        A community preserving the forgotten architectures of India. Step into stories that time almost forgot.
                     </p>
                 </motion.div>
             </div>
@@ -142,7 +142,7 @@ const ArrivalScene = ({ progress }: { progress: any }) => {
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 style={{ position: 'absolute', bottom: '48px', opacity: 0.5, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
             >
-                <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Initialize</span>
+                <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Scroll Down</span>
                 <div style={{ width: '1px', height: '40px', background: 'var(--color-spatial-text)' }} />
             </motion.div>
         </motion.section>
@@ -167,16 +167,16 @@ const AwakeningScene = ({ progress }: { progress: any }) => {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
                             <span style={{ fontSize: '3rem', fontFamily: 'var(--font-display)', color: 'var(--color-spatial-accent)', lineHeight: 0.5 }}>01</span>
                             <div style={{ height: '1px', flex: 1, background: 'var(--color-spatial-text)', opacity: 0.2 }}></div>
-                            <span style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Awakening</span>
+                            <span style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Our Mission</span>
                         </div>
                         
                         <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', fontFamily: 'var(--font-display)', lineHeight: 1.1, marginBottom: '32px' }}>
-                            History is not <br/>
-                            <span style={{ fontStyle: 'italic', opacity: 0.5 }}>static data.</span>
+                            History is <br/>
+                            <span style={{ fontStyle: 'italic', opacity: 0.5 }}>alive.</span>
                         </h2>
                         
                         <p style={{ fontSize: '1.125rem', lineHeight: 1.7, marginBottom: '40px', color: 'var(--color-text-secondary)' }}>
-                            We have reconstructed the Chambal Valley not as a list of sites, but as a living signal. Through advanced photogrammetry and narrative intelligence, the distinct timeline of the <strong style={{ color: 'var(--color-spatial-text)' }}>Gurjara-Pratihara</strong> era is brought into focus.
+                            We are mapping the Chambal Valley not just to catalog sites, but to preserve their spirit. Through community effort and storytelling, the distinct timeline of the <strong style={{ color: 'var(--color-spatial-text)' }}>Gurjara-Pratihara</strong> era is brought back to life.
                         </p>
 
                         <div style={{ display: 'flex', gap: '32px' }}>
@@ -239,8 +239,8 @@ const ExplorationScene = ({ progress }: { progress: any }) => {
     const portals = [
         { 
             id: 'atlas',
-            title: "The Atlas", 
-            subtitle: "Deep Index", 
+            title: "Interactive Map", 
+            subtitle: "Find your way", 
             desc: "Explore the complete database of heritage sites via holographic map.", 
             path: "/explore",
             image: navigatorMap,
@@ -248,8 +248,8 @@ const ExplorationScene = ({ progress }: { progress: any }) => {
         },
         { 
             id: 'artifact',
-            title: "The Artifact", 
-            subtitle: "AR Portal", 
+            title: "Virtual Relics", 
+            subtitle: "See them up close", 
             desc: "Examine 3D scanned relics in a spatial environment.", 
             path: "/antigravity",
             image: mitaoliThumb,
@@ -257,8 +257,8 @@ const ExplorationScene = ({ progress }: { progress: any }) => {
         },
         { 
             id: 'journal',
-            title: "The Journal", 
-            subtitle: "Expeditions", 
+            title: "Plan Your Trip", 
+            subtitle: "Begin your adventure", 
             desc: "Plan your physical journey into the valley.", 
             path: "/book",
             image: chambalValley,
@@ -274,8 +274,8 @@ const ExplorationScene = ({ progress }: { progress: any }) => {
             
             <div className="container" style={{ position: 'relative', zIndex: 10, width: '100%' }}>
                 <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-                    <span style={{ color: 'var(--color-spatial-accent)', letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.875rem', fontWeight: 600 }}>02 // Access Points</span>
-                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '4rem', marginTop: '16px', color: '#F9F7F2' }}>Select Pathway</h2>
+                    <span style={{ color: 'var(--color-spatial-accent)', letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.875rem', fontWeight: 600 }}>02 // Explore</span>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '4rem', marginTop: '16px', color: '#F9F7F2' }}>Choose Your Journey</h2>
                 </div>
 
                 <div className="grid-12" style={{ gap: '24px' }}>
@@ -378,7 +378,7 @@ const ImmersiveTile = ({ portal, navigate }: { portal: any, navigate: any }) => 
                             borderTop: '1px solid rgba(255,255,255,0.1)'
                         }}
                     >
-                        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'white' }}>Enter Module</span>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'white' }}>Start Exploring</span>
                         <motion.div 
                             whileHover={{ x: 5 }}
                             style={{ 
@@ -492,7 +492,7 @@ const MeaningScene = ({ progress }: { progress: any }) => {
                             letterSpacing: '0.01em'
                         }}
                     >
-                        By engaging with Hidden Heritage, you generate intent. Every booking and field report contributes to the conservation index of the Chambal Valley.
+                        By exploring with Hidden Heritage, you help keep history alive. Every booking and field report contributes directly to the conservation of the Chambal Valley.
                     </p>
 
                     {/* Premium CTA - Intelligent Interactivity */}
@@ -537,7 +537,7 @@ const MeaningScene = ({ progress }: { progress: any }) => {
                                 fontWeight: 500
                             }}
                         >
-                            Curated entry into the neural archive.
+                            Join us in preserving the past.
                         </span>
                     </div>
                     

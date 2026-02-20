@@ -1,6 +1,6 @@
 import NavBar from '../components/NavBar';
 import { motion } from 'framer-motion';
-import { Globe, Shield, History, Map, Database, Compass, BookOpen, ChevronRight, AlertTriangle, Cpu } from 'lucide-react';
+import { Globe, Shield, History, Map, Database, Compass, BookOpen, ChevronRight, AlertTriangle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -28,10 +28,10 @@ const About = () => {
                                 transition={{ duration: 1.2, ease: [0.2, 0, 0, 1] }}
                             >
                                 <span className="glass-pill" style={{ marginBottom: '2rem', display: 'inline-block' }}>
-                                    Chapter 01 — Origin
+                                    Our Story
                                 </span>
                                 <h1 className="text-display" style={{ marginBottom: '2.5rem', fontFamily: 'serif' }}>
-                                    Born from <br/> <span className="text-gold" style={{ fontStyle: 'italic' }}>Dust & Data.</span>
+                                    Born from <br/> <span className="text-gold" style={{ fontStyle: 'italic' }}>Dust & Memories.</span>
                                 </h1>
                                 <div className="glass-panel" style={{ padding: '2.5rem', position: 'relative' }}>
                                     <p style={{ fontSize: '1.25rem', lineHeight: 1.6, color: 'var(--color-spatial-text)' }}>
@@ -81,7 +81,7 @@ const About = () => {
                                 transition={{ duration: 1 }}
                             >
                                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 12px', background: '#F0EDE4', borderRadius: '100px', fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em', color: '#6D6D6D', textTransform: 'uppercase', marginBottom: '2rem' }}>
-                                    <AlertTriangle size={14} color="#DC2626" /> Status: Critical
+                                    <AlertTriangle size={14} color="#DC2626" /> The Challenge
                                 </div>
                                 <h2 className="text-display" style={{ fontSize: '3rem', marginBottom: '2rem', fontFamily: 'serif', lineHeight: 1.1 }}>
                                     Memory is fragile. <br/> Rules are forgotten.
@@ -153,7 +153,7 @@ const About = () => {
                 <div className="container">
                     <div style={{ marginBottom: '60px', paddingLeft: '2rem', borderLeft: '1px solid #B08D55' }}>
                          <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 800, color: '#B08D55', marginBottom: '1rem' }}>
-                            Chapter 02.5 — Field Data
+                            Focus Areas
                         </span>
                         <h2 className="text-display" style={{ fontSize: '3.5rem', fontFamily: 'serif', color: '#2A2A2A', lineHeight: 1.1 }}>
                             Sites in Focus.
@@ -289,7 +289,7 @@ const About = () => {
                  <div className="container" style={{ position: 'relative', zIndex: 10 }}>
                     <div className="grid-12">
                         <div style={{ gridColumn: 'span 4' }}>
-                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 800, color: '#B08D55' }}>Chapter 03 — Philosophy</span>
+                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 800, color: '#B08D55' }}>Our Philosophy</span>
                             <h2 className="text-display" style={{ fontSize: '2.5rem', marginTop: '1rem', fontFamily: 'serif' }}>The Triad of Preservation.</h2>
                         </div>
                         <div style={{ gridColumn: '6 / span 7' }}>
@@ -372,7 +372,7 @@ const About = () => {
                     {/* Editorial Intro Block */}
                     <div style={{ marginBottom: '80px', maxWidth: '900px' }}>
                         <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.25rem', fontSize: '0.7rem', fontWeight: 800, color: '#B08D55', marginBottom: '1.5rem' }}>
-                            Chapter 03.5 — Future Scope
+                            Future Scope
                         </span>
                         <h2 className="text-display" style={{ fontSize: '3.5rem', fontFamily: 'serif', color: '#F9F7F2', lineHeight: 1.1, marginBottom: '2rem' }}>
                             South India Expansion. <br /> <span style={{ opacity: 0.4 }}>The Next Frontier.</span>
@@ -595,12 +595,12 @@ const About = () => {
                     <div style={{ marginBottom: '80px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                         <div>
                             <span style={{ display: 'block', textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.8rem', fontWeight: 600, opacity: 0.6, marginBottom: '16px' }}>
-                                Chapter 04 — The System
+                                How We Work
                             </span>
-                            <h2 className="text-display" style={{ fontSize: '3rem', color: 'white', fontFamily: 'serif' }}>Operational Workflow</h2>
+                            <h2 className="text-display" style={{ fontSize: '3rem', color: 'white', fontFamily: 'serif' }}>Our Approach</h2>
                         </div>
                         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', opacity: 0.5, fontSize: '0.8rem' }}>
-                            <Cpu size={14} /> SYSTEM_ONLINE
+                            <Globe size={14} /> COMMUNITY_ACTIVE
                         </div>
                     </div>
 
@@ -720,7 +720,7 @@ const About = () => {
                     >
                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', opacity: 0.8 }}>
                             <div style={{ height: '1px', width: '30px', background: '#B08D55' }} />
-                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 600, color: '#B08D55' }}>Chapter 05 — Invitation</span>
+                            <span style={{ textTransform: 'uppercase', letterSpacing: '0.2rem', fontSize: '0.75rem', fontWeight: 600, color: '#B08D55' }}>Join the Movement</span>
                             <div style={{ height: '1px', width: '30px', background: '#B08D55' }} />
                         </div>
 
