@@ -13,6 +13,56 @@ interface PaymentModalProps {
 const PaymentModal = ({ isOpen, onClose, amount, onSuccess }: PaymentModalProps) => {
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
+    
+    // Form State
+    const [name, setName] = useState('');
+    const [cardNumber, setCardNumber] = useState('');
+    const [expiry, setExpiry] = useState('');
+    const [cvc, setCvc] = useState('');
+    const [errorShake, setErrorShake] = useState(false);
+
+    // Formatters
+    const formatCardNumber = (val: string) => {
+        const v = val.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        const matches = v.match(/\d{4,16}/g);
+        const match = matches && matches[0] || '';
+        const parts = [];
+        for (let i=0, len=match.length; i<len; i+=4) {
+            parts.push(match.substring(i, i+4));
+        }
+        if (parts.length) {
+            return parts.join(' ');
+        } else {
+            return val;
+        }
+    };
+
+    const formatExpiry = (val: string) => {
+        const v = val.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        if (v.length >= 3) {
+            return `${v.substring(0, 2)}/${v.substring(2, 4)}`;
+        }
+        return v;
+    };
+
+    // Validation
+    const isFormValid = () => {
+        return (
+            name.trim().length > 0 &&
+            cardNumber.replace(/\s+/g, '').length === 16 &&
+            expiry.length === 5 &&
+            cvc.length === 3
+        );
+    };
+
+    const handlePayClick = () => {
+        if (!isFormValid()) {
+            setErrorShake(true);
+            setTimeout(() => setErrorShake(false), 500); // Shorter shake
+            return;
+        }
+        handlePay();
+    };
 
     const handlePay = async () => {
         setProcessing(true);
@@ -31,7 +81,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onSuccess }: PaymentModalProps)
                     setTimeout(() => {
                         onSuccess();
                         setSuccess(false); 
-                    }, 1000);
+                    }, 1500); // Increased success viewing time before close
                 }, 1500);
             }
         } catch (err) {
@@ -82,68 +132,106 @@ const PaymentModal = ({ isOpen, onClose, amount, onSuccess }: PaymentModalProps)
                                         <h3 style={{ fontSize: '3rem', margin: 0, color: 'var(--color-primary)', fontFamily: 'var(--font-display)', fontWeight: 600 }}>₹{amount.toLocaleString()}</h3>
                                     </div>
 
-                                    <form style={{ display: 'grid', gap: '1.25rem' }} onSubmit={(e) => e.preventDefault()}>
+                                    <motion.form 
+                                        animate={errorShake ? { x: [-10, 10, -10, 10, 0] } : {}}
+                                        transition={{ duration: 0.4 }}
+                                        style={{ display: 'grid', gap: '1.25rem' }} 
+                                        onSubmit={(e) => e.preventDefault()}
+                                    >
+                                        <div style={{ position: 'relative' }}>
+                                            <input 
+                                                disabled={processing}
+                                                placeholder="Name on Card" 
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                                className="glass-input"
+                                                style={{ 
+                                                    width: '100%',
+                                                    padding: '1rem 1.25rem',
+                                                    borderRadius: '16px',
+                                                    border: '1px solid rgba(26, 26, 26, 0.2)',
+                                                    background: 'rgba(255, 255, 255, 0.4)',
+                                                    fontSize: '1rem',
+                                                    color: 'var(--color-text-primary)',
+                                                    outline: 'none',
+                                                    fontFamily: 'var(--font-sans)',
+                                                    transition: 'all 0.3s ease'
+                                                }} 
+                                            />
+                                        </div>
                                         <div style={{ position: 'relative' }}>
                                             <CreditCard size={18} style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-tertiary)' }} />
                                             <input 
-                                                disabled 
+                                                disabled={processing}
                                                 placeholder="Card Number" 
-                                                value="•••• •••• •••• 4242"
+                                                maxLength={19}
+                                                value={cardNumber}
+                                                onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
                                                 className="glass-input"
                                                 style={{ 
                                                     width: '100%',
                                                     padding: '1rem 1rem 1rem 3.5rem',
                                                     borderRadius: '16px',
-                                                    border: '1px solid rgba(26, 26, 26, 0.08)',
-                                                    background: 'rgba(255, 255, 255, 0.2)',
+                                                    border: '1px solid rgba(26, 26, 26, 0.2)',
+                                                    background: 'rgba(255, 255, 255, 0.4)',
                                                     fontSize: '1rem',
                                                     color: 'var(--color-text-primary)',
                                                     outline: 'none',
-                                                    fontFamily: 'monospace'
+                                                    fontFamily: 'monospace',
+                                                    letterSpacing: '0.1em',
+                                                    transition: 'all 0.3s ease'
                                                 }} 
                                             />
                                         </div>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                             <input 
-                                                disabled 
+                                                disabled={processing}
                                                 placeholder="MM/YY" 
-                                                value="12/28"
+                                                maxLength={5}
+                                                value={expiry}
+                                                onChange={(e) => setExpiry(formatExpiry(e.target.value))}
                                                 style={{ 
                                                     width: '100%',
                                                     padding: '1rem',
                                                     borderRadius: '16px',
-                                                    border: '1px solid rgba(26, 26, 26, 0.08)',
-                                                    background: 'rgba(255, 255, 255, 0.2)',
+                                                    border: '1px solid rgba(26, 26, 26, 0.2)',
+                                                    background: 'rgba(255, 255, 255, 0.4)',
                                                     fontSize: '1rem',
                                                     color: 'var(--color-text-primary)',
                                                     outline: 'none',
-                                                    textAlign: 'center'
+                                                    textAlign: 'center',
+                                                    transition: 'all 0.3s ease'
                                                 }} 
+                                                className="glass-input"
                                             />
                                             <input 
-                                                disabled 
+                                                disabled={processing}
                                                 placeholder="CVC" 
-                                                value="•••"
+                                                maxLength={3}
+                                                value={cvc}
+                                                onChange={(e) => setCvc(e.target.value.replace(/[^0-9]/g, ''))}
                                                 style={{ 
                                                     width: '100%',
                                                     padding: '1rem',
                                                     borderRadius: '16px',
-                                                    border: '1px solid rgba(26, 26, 26, 0.08)',
-                                                    background: 'rgba(255, 255, 255, 0.2)',
+                                                    border: '1px solid rgba(26, 26, 26, 0.2)',
+                                                    background: 'rgba(255, 255, 255, 0.4)',
                                                     fontSize: '1rem',
                                                     color: 'var(--color-text-primary)',
                                                     outline: 'none',
-                                                    textAlign: 'center'
+                                                    textAlign: 'center',
+                                                    transition: 'all 0.3s ease'
                                                 }} 
+                                                className="glass-input"
                                             />
                                         </div>
-                                    </form>
+                                    </motion.form>
 
                                     <div style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                         <motion.button
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
-                                            onClick={handlePay}
+                                            onClick={handlePayClick}
                                             disabled={processing}
                                             style={{ 
                                                 width: '100%', 
