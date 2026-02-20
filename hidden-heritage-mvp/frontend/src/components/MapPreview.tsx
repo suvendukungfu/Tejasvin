@@ -60,7 +60,7 @@ const MapController = ({ center, zoom, selectedSites }: { center: [number, numbe
             // Fly to center
             map.flyTo(center, zoom, { duration: 1.5, easeLinearity: 0.25 });
         }
-    }, [center, zoom, selectedSites, map]);
+    }, [center[0], center[1], zoom, selectedSites.length, map]);
 
     return null;
 };

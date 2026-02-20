@@ -3,8 +3,11 @@ import { motion } from 'framer-motion';
 import { Globe, Shield, History, Map, Database, Compass, BookOpen, ChevronRight, AlertTriangle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-
-
+// Import local heritage assets
+import bateshwarImg from '../assets/heritage/bateshwar.png';
+import gwaliorFortImg from '../assets/heritage/gwalior_fort.png';
+import mitaoliImg from '../assets/heritage/mitaoli.png';
+import chambalValleyImg from '../assets/heritage/chambal_valley.png';
 const About = () => {
     const navigate = useNavigate();
 
@@ -51,7 +54,7 @@ const About = () => {
                             >
                                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.2), transparent)', zIndex: 1 }} />
                                 <motion.img 
-                                    src="/src/assets/heritage/bateshwar.png" 
+                                    src={bateshwarImg} 
                                     alt="Ancient Texture" 
                                     style={{ width: '100%', height: '110%', objectFit: 'cover', transform: 'translateY(-5%)' }} 
                                     animate={{ y: ["-5%", "0%"] }} 
@@ -106,7 +109,7 @@ const About = () => {
                                  <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '24px', boxShadow: 'var(--material-shadow-deep)' }}>
                                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(45deg, rgba(255,0,0,0.1), transparent)', mixBlendMode: 'overlay', zIndex: 1 }} />
                                     <img 
-                                        src="/src/assets/heritage/gwalior_fort.png" 
+                                        src={gwaliorFortImg} 
                                         alt="Fading History" 
                                         style={{ width: '100%', filter: 'grayscale(0.2) contrast(1.1)', display: 'block' }} 
                                     />
@@ -185,7 +188,7 @@ const About = () => {
                                 subtitle: "The Restoration of 200 Temples",
                                 type: "Gurjara-Pratihara",
                                 status: "Active Excavation",
-                                image: "/src/assets/heritage/bateshwar.png"
+                                image: bateshwarImg
                             },
                             {
                                 id: "MP-02",
@@ -193,7 +196,7 @@ const About = () => {
                                 subtitle: "Geometry of the Yogini Cult",
                                 type: "Circular Tantric",
                                 status: "Structural Analysis",
-                                image: "/src/assets/heritage/mitaoli.png"
+                                image: mitaoliImg
                             },
                             {
                                 id: "MP-03",
@@ -201,7 +204,7 @@ const About = () => {
                                 subtitle: "The Pearl of Fortresses",
                                 type: "Hill Fort Complex",
                                 status: "Conservation Mapping",
-                                image: "/src/assets/heritage/gwalior_fort.png"
+                                image: gwaliorFortImg
                             },
                             {
                                 id: "MP-04",
@@ -209,7 +212,7 @@ const About = () => {
                                 subtitle: "Sanctuary of the Ravines",
                                 type: "Natural Heritage",
                                 status: "Ecological Survey",
-                                image: "/src/assets/heritage/chambal_valley.png"
+                                image: chambalValleyImg
                             }
                         ].map((site, i) => (
                              <motion.div
