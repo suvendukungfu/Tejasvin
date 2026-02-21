@@ -1,7 +1,8 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Compass, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Compass, ArrowRight, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -13,8 +14,17 @@ const NavBar = () => {
 
     const isActive = (path: string) => location.pathname === path;
 
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const navLinks = [
+        { name: 'Portal', path: '/' },
+        { name: 'Atlas', path: '/explore' },
+        { name: 'Log', path: '/book' },
+        { name: 'Context', path: '/about' }
+    ];
+
     return (
-        <>
+        <div style={{ position: 'relative' }}>
             <motion.nav
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -25,7 +35,9 @@ const NavBar = () => {
                     left: '50%',
                     transform: 'translateX(-50%)',
                     zIndex: 1000,
-                    x: '-50%'
+                    x: '-50%',
+                    width: 'max-content',
+                    maxWidth: '90vw'
                 }}
             >
                 <div style={{
@@ -54,18 +66,13 @@ const NavBar = () => {
                             letterSpacing: '-0.01em',
                             color: 'var(--color-spatial-text)' 
                         }}>
-                            Hidden Heritage
+                            H.Heritage
                         </span>
                     </div>
 
-                    {/* Sliding Navigation Pills */}
+                    {/* Sliding Navigation Pills (Desktop Only) */}
                     <div className="desktop-menu" style={{ display: 'flex', gap: '2px', position: 'relative' }}>
-                        {[
-                            { name: 'Portal', path: '/' },
-                            { name: 'Atlas', path: '/explore' },
-                            { name: 'Log', path: '/book' },
-                            { name: 'Context', path: '/about' }
-                        ].map(link => {
+                        {navLinks.map(link => {
                             const isSelected = isActive(link.path);
                             
                             return (
@@ -83,7 +90,7 @@ const NavBar = () => {
                                         background: 'transparent'
                                     }}
                                 >
-                                    {/* Active Indicator (The Sliding Pill) */}
+                                    {/* Active Indicator */}
                                     {isSelected && (
                                         <motion.div
                                             layoutId="active-pill"
@@ -98,7 +105,6 @@ const NavBar = () => {
                                         />
                                     )}
                                     
-                                    {/* Label */}
                                     <span style={{
                                         position: 'relative',
                                         fontSize: '0.85rem',
@@ -114,7 +120,25 @@ const NavBar = () => {
                         })}
                     </div>
 
-                    {/* Auth Status */}
+                    {/* Mobile Menu Toggle (Mobile Only) */}
+                    <div className="mobile-menu-toggle" style={{ display: 'none' }}>
+                        <button 
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            style={{ 
+                                background: 'transparent', 
+                                border: 'none', 
+                                padding: '8px', 
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
+                    </div>
+
+                    {/* Auth Status/Profile Icon */}
                     <div style={{ marginLeft: '4px', paddingRight: '4px' }}>
                         {auth.user ? (
                             <div style={{ width: '36px', height: '36px', background: 'var(--color-bg-body)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
@@ -135,8 +159,6 @@ const NavBar = () => {
                                     cursor: 'pointer',
                                     transition: 'transform 0.2s'
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                             >
                                 <ArrowRight size={16} color="white" />
                             </button>
@@ -146,13 +168,65 @@ const NavBar = () => {
                 </div>
             </motion.nav>
 
+            {/* Mobile Fullscreen Menu */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        style={{
+                            position: 'fixed',
+                            top: '84px',
+                            left: '20px',
+                            right: '20px',
+                            background: 'var(--material-glass-heavy)',
+                            backdropFilter: 'var(--material-blur-heavy)',
+                            WebkitBackdropFilter: 'var(--material-blur-heavy)',
+                            borderRadius: '24px',
+                            padding: '24px',
+                            zIndex: 999,
+                            border: 'var(--material-glass-border)',
+                            boxShadow: 'var(--material-shadow-deep)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '12px'
+                        }}
+                    >
+                        {navLinks.map(link => (
+                            <motion.div
+                                key={link.path}
+                                onClick={() => {
+                                    navigate(link.path);
+                                    setIsMobileMenuOpen(false);
+                                }}
+                                whileTap={{ scale: 0.98, backgroundColor: 'rgba(0,0,0,0.05)' }}
+                                style={{
+                                    padding: '16px 20px',
+                                    borderRadius: '16px',
+                                    background: isActive(link.path) ? 'var(--color-spatial-text)' : 'transparent',
+                                    color: isActive(link.path) ? 'white' : 'var(--color-spatial-text)',
+                                    fontSize: '1.25rem',
+                                    fontFamily: 'var(--font-display)',
+                                    fontWeight: 500,
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {link.name}
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Mobile Menu Trigger (Bottom Right for Ergonomics) */}
              <style>{`
                 @media (max-width: 900px) {
                     .desktop-menu { display: none !important; }
+                    .mobile-menu-toggle { display: block !important; }
                 }
             `}</style>
-        </>
+        </div>
     );
 };
 

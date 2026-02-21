@@ -139,7 +139,7 @@ const SiteDetail = () => {
 
                 <div className="grid-12">
                     {/* Left Data Column (Technical) */}
-                    <div style={{ gridColumn: 'span 3', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <div className="detail-side-column" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                         
                         {/* Data Crystal: Context */}
                         <motion.div 
@@ -200,7 +200,7 @@ const SiteDetail = () => {
                     </div>
 
                     {/* Center: Main Viewport (Crystalline) */}
-                    <div style={{ gridColumn: 'span 6', position: 'relative' }}>
+                    <div className="detail-main-column" style={{ position: 'relative' }}>
                         <motion.div
                             initial={{ scale: 0.95, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
@@ -268,7 +268,7 @@ const SiteDetail = () => {
                     </div>
 
                     {/* Right: Actions (Control Panel) */}
-                    <div style={{ gridColumn: 'span 3', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <div className="detail-side-column" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                          <motion.div 
                             initial={{ x: 20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
@@ -324,8 +324,21 @@ const SiteDetail = () => {
                 </div>
             </div>
             
-            <div style={{ height: '120px' }} />
-            {/* <Footer /> removed - rendered globally in Layout */}
+            <style>{`
+                .detail-side-column { grid-column: span 3; }
+                .detail-main-column { grid-column: span 6; }
+                
+                @media (max-width: 1024px) {
+                    .detail-side-column { grid-column: span 4; }
+                    .detail-main-column { grid-column: span 8; }
+                }
+                
+                @media (max-width: 900px) {
+                    .detail-side-column { grid-column: span 12; order: 2; }
+                    .detail-main-column { grid-column: span 12; order: 1; }
+                    .text-display { font-size: 3rem !important; }
+                }
+            `}</style>
         </div>
     );
 };

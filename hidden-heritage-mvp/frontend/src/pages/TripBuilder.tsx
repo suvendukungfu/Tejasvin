@@ -200,7 +200,7 @@ const TripBuilder = () => {
             <div className="grid-12" style={{ height: '100vh', paddingTop: '80px', gap: 0 }}>
                 
                 {/* 1. LEFT: Interactive Map Panel (Light Theme) */}
-                <div style={{ gridColumn: 'span 4', height: 'calc(100vh - 80px)', background: THEME.surfaceSecondary, borderRight: `1px solid ${THEME.border}`, position: 'relative', overflow: 'hidden' }}>
+                <div className="builder-map-panel" style={{ background: THEME.surfaceSecondary, borderRight: `1px solid ${THEME.border}`, position: 'relative', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', zIndex: 10 }}>
                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: THEME.glass, padding: '0.6rem 1rem', borderRadius: '100px', backdropFilter: 'blur(10px)', border: `1px solid ${THEME.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
                              <MapIcon size={14} color={THEME.accent} />
@@ -216,13 +216,13 @@ const TripBuilder = () => {
                 </div>
 
                 {/* 2. CENTER: Mission Setup (Target Sequence) */}
-                <div style={{ gridColumn: 'span 5', height: 'calc(100vh - 80px)', overflowY: 'auto', padding: '2.5rem 4rem', background: THEME.bg }}>
+                <div className="builder-main-panel" style={{ overflowY: 'auto', padding: '2.5rem 4rem', background: THEME.bg }}>
                     <div style={{ marginBottom: '3.5rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: THEME.accent, marginBottom: '0.75rem' }}>
                             <Lock size={12} />
                             <span style={{ fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>Consolidated Archive</span>
                         </div>
-                        <h1 style={{ fontSize: '2.8rem', fontFamily: 'serif', color: THEME.textPrimary, margin: 0, fontWeight: 500, letterSpacing: '-0.02em' }}>Mission Setup</h1>
+                        <h1 className="builder-title" style={{ fontSize: '2.8rem', fontFamily: 'serif', color: THEME.textPrimary, margin: 0, fontWeight: 500, letterSpacing: '-0.02em' }}>Mission Setup</h1>
                         <p style={{ color: THEME.textSecondary, marginTop: '1.25rem', fontSize: '1.05rem', lineHeight: 1.6, maxWidth: '90%' }}>Each expedition begins with intentional curation. Configure your sequence to unlock specialist logistics and archival support.</p>
                     </div>
 
@@ -275,7 +275,7 @@ const TripBuilder = () => {
                 </div>
 
                 {/* 3. RIGHT: Logistics & Funding Panel (Refined Neutral) */}
-                <div style={{ gridColumn: 'span 3', height: 'calc(100vh - 80px)', background: THEME.surface, borderLeft: `1px solid ${THEME.border}`, padding: '3rem', display: 'flex', flexDirection: 'column' }}>
+                <div className="builder-side-panel" style={{ background: THEME.surface, borderLeft: `1px solid ${THEME.border}`, padding: '3rem', display: 'flex', flexDirection: 'column' }}>
                     <div style={{ flex: 1 }}>
                         <h3 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: THEME.textSecondary, marginBottom: '3rem', fontWeight: 800 }}>Expedition Logistics</h3>
 
@@ -419,6 +419,22 @@ const TripBuilder = () => {
             
             <style>{`
                 .grid-12 { display: grid; grid-template-columns: repeat(12, 1fr); }
+                .builder-map-panel { grid-column: span 4; height: calc(100vh - 80px); }
+                .builder-main-panel { grid-column: span 5; height: calc(100vh - 80px); }
+                .builder-side-panel { grid-column: span 3; height: calc(100vh - 80px); }
+
+                @media (max-width: 1200px) {
+                    .builder-map-panel { grid-column: span 12; height: 400px; }
+                    .builder-main-panel { grid-column: span 7; height: auto; }
+                    .builder-side-panel { grid-column: span 5; height: auto; }
+                }
+
+                @media (max-width: 900px) {
+                    .builder-main-panel { grid-column: span 12; padding: 2rem !important; }
+                    .builder-side-panel { grid-column: span 12; border-left: none; border-top: 1px solid ${THEME.border}; }
+                    .builder-title { font-size: 2.2rem !important; }
+                }
+
                 ::-webkit-scrollbar { width: 6px; }
                 ::-webkit-scrollbar-track { background: transparent; }
                 ::-webkit-scrollbar-thumb { background: #E0DDD5; border-radius: 10px; }

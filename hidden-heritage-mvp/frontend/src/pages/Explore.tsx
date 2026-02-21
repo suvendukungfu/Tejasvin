@@ -321,6 +321,13 @@ const Explore = () => {
             </section>
             
             {/* <Footer /> removed - rendered globally in Layout */}
+            <style>{`
+                .explore-tile { grid-column: span 6; }
+                @media (max-width: 900px) {
+                    .explore-tile { grid-column: span 12; }
+                    .hero-content { padding: 32px !important; }
+                }
+            `}</style>
         </motion.div>
     );
 };
@@ -329,7 +336,12 @@ const Explore = () => {
 const CinematicTile = ({ region, index, navigate }: { region: Region, index: number, navigate: any }) => {
     return (
         <motion.div 
-            style={{ gridColumn: 'span 6', cursor: 'pointer', position: 'relative', marginBottom: '40px' }}
+            className="explore-tile"
+            style={{ 
+                cursor: 'pointer', 
+                position: 'relative', 
+                marginBottom: '40px' 
+            }}
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}

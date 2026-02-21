@@ -163,7 +163,7 @@ const AwakeningScene = ({ progress }: { progress: any }) => {
                 <div className="grid-12" style={{ alignItems: 'center' }}>
                     
                     {/* Left: Typography */}
-                    <motion.div style={{ gridColumn: 'span 5', x: xLeft }}>
+                    <motion.div className="awakening-text" style={{ x: xLeft }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
                             <span style={{ fontSize: '3rem', fontFamily: 'var(--font-display)', color: 'var(--color-spatial-accent)', lineHeight: 0.5 }}>01</span>
                             <div style={{ height: '1px', flex: 1, background: 'var(--color-spatial-text)', opacity: 0.2 }}></div>
@@ -192,7 +192,7 @@ const AwakeningScene = ({ progress }: { progress: any }) => {
                     </motion.div>
 
                     {/* Right: Spatial Object */}
-                    <motion.div style={{ gridColumn: '7 / span 6', height: '600px', position: 'relative', x: xRight }}>
+                    <motion.div className="awakening-image" style={{ height: '600px', position: 'relative', x: xRight }}>
                          <div style={{ position: 'absolute', inset: 0, borderRadius: '32px', overflow: 'hidden' }}>
                             <img src={bateshwarTemples} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Bateshwar" />
                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(45deg, rgba(200, 163, 89, 0.2), transparent)' }} />
@@ -210,7 +210,8 @@ const AwakeningScene = ({ progress }: { progress: any }) => {
                                 borderRadius: '24px',
                                 border: '1px solid rgba(255,255,255,0.5)',
                                 boxShadow: '0 20px 40px -10px rgba(0,0,0,0.1)',
-                                maxWidth: '280px'
+                                maxWidth: '280px',
+                                zIndex: 20
                             }}
                             whileHover={{ y: -5 }}
                          >
@@ -280,7 +281,7 @@ const ExplorationScene = ({ progress }: { progress: any }) => {
 
                 <div className="grid-12" style={{ gap: '24px' }}>
                     {portals.map((p, i) => (
-                        <div key={i} style={{ gridColumn: 'span 4' }}>
+                        <div key={i} className="exploration-tile-container">
                             <ImmersiveTile portal={p} navigate={navigate} />
                         </div>
                     ))}
@@ -423,137 +424,151 @@ const MeaningScene = ({ progress }: { progress: any }) => {
     const yContent = useTransform(progress, [0.85, 0.95], [20, 0]);
     
     return (
-        <motion.section 
-            style={{ 
-                height: '100%', 
-                position: 'absolute', 
-                inset: 0, 
-                opacity, 
-                pointerEvents, 
-                background: 'linear-gradient(to bottom, #F7F5F0, #EFECE6)', 
-                backgroundImage: `url(${meaningBg})`,
-                backgroundSize: 'cover',
-                backgroundBlendMode: 'overlay',
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                overflow: 'hidden' 
-            }}
-        >
-             {/* Atmospheric Depth - Extremely Subtle */}
-             <div style={{ position: 'absolute', inset: 0, opacity: 0.06, background: 'url(https://www.transparenttextures.com/patterns/cubes.png)' }} />
-             <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 40%, rgba(255,255,255,0.8) 0%, transparent 60%)', opacity: 0.8 }} />
-             
-            <div className="container" style={{ position: 'relative', zIndex: 10, maxWidth: '720px', textAlign: 'center' }}>
-                <motion.div style={{ y: yContent }}>
-                    
-                    {/* Symbolic Anchor - Precise Alignment */}
-                    <motion.div 
-                        style={{ display: 'inline-flex', marginBottom: '40px', position: 'relative', alignItems: 'center', justifyContent: 'center' }}
-                    >
-                         <div style={{ position: 'absolute', width: '48px', height: '48px', background: 'var(--color-spatial-accent)', opacity: 0.2, filter: 'blur(24px)', borderRadius: '50%' }} />
-                         <Zap size={32} color="var(--color-spatial-accent)" strokeWidth={1.5} fill="rgba(200, 163, 89, 0.15)" />
-                    </motion.div>
-                    
-                    {/* Editorial Headline - Strong Rhythm */}
-                    <h2 style={{ 
-                        fontSize: 'clamp(3rem, 5vw, 4.5rem)', 
-                        fontFamily: 'var(--font-display)', 
-                        lineHeight: 1.1, 
-                        marginBottom: '32px', 
-                        color: '#1a1a1a', 
-                        letterSpacing: '-0.02em',
-                        position: 'relative'
-                    }}>
-                        Preservation is<br/>
-                        <span 
-                            style={{ 
-                                color: 'var(--color-spatial-accent)', 
-                                fontStyle: 'italic',
-                                fontWeight: 500,
-                                textShadow: '0 0 40px rgba(200, 163, 89, 0.4)' 
-                            }}
-                        >
-                            participation.
-                        </span>
-                    </h2>
-                    
-                    {/* Narrative Paragraph - High Readability */}
-                    <p 
-                        style={{ 
-                            fontSize: '1.15rem', 
-                            color: '#4A4A4A', // Specific dark neutral range
-                            marginBottom: '64px', 
-                            lineHeight: 1.8,
-                            fontWeight: 400,
-                            maxWidth: '600px',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            letterSpacing: '0.01em'
-                        }}
-                    >
-                        By exploring with Hidden Heritage, you help keep history alive. Every booking and field report contributes directly to the conservation of the Chambal Valley.
-                    </p>
-
-                    {/* Premium CTA - Intelligent Interactivity */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
-                        <motion.button 
-                            onClick={() => navigate('/book')} 
-                            whileHover={{ y: -3, boxShadow: '0 20px 40px -10px rgba(200, 163, 89, 0.2)' }}
-                            whileTap={{ scale: 0.98 }}
-                            style={{ 
-                                padding: '18px 40px', 
-                                fontSize: '1rem',
-                                fontWeight: 500,
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '16px',
-                                background: 'rgba(255, 255, 255, 0.9)',
-                                backdropFilter: 'blur(12px)',
-                                WebkitBackdropFilter: 'blur(12px)',
-                                color: '#2a2a2a',
-                                border: '1px solid rgba(255, 255, 255, 0.8)',
-                                borderRadius: '100px',
-                                boxShadow: '0 8px 20px -6px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(255,255,255,0.5)',
-                                cursor: 'pointer',
-                                transition: 'all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)'
-                            }}
-                        >
-                            <span style={{ letterSpacing: '0.04em', textTransform: 'uppercase', fontSize: '0.85rem', fontWeight: 600 }}>Begin Expedition</span>
-                            <motion.div 
-                                style={{ display: 'flex' }}
-                                whileHover={{ x: 4 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                            >
-                                <ArrowRight size={16} color="var(--color-spatial-accent)" />
-                            </motion.div>
-                        </motion.button>
-                        
-                        <span 
-                            style={{ 
-                                fontSize: '0.8rem', 
-                                color: '#666', 
-                                letterSpacing: '0.05em',
-                                fontWeight: 500
-                            }}
-                        >
-                            Join us in preserving the past.
-                        </span>
-                    </div>
-                    
-                </motion.div>
-            </div>
-            
-            {/* Footer with Separation */}
-            <motion.div 
-                style={{ position: 'absolute', bottom: 0, width: '100%' }}
-                initial={{ opacity: 0.3 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
+        <>
+            <motion.section 
+                style={{ 
+                    height: '100%', 
+                    position: 'absolute', 
+                    inset: 0, 
+                    opacity, 
+                    pointerEvents, 
+                    background: 'linear-gradient(to bottom, #F7F5F0, #EFECE6)', 
+                    backgroundImage: `url(${meaningBg})`,
+                    backgroundSize: 'cover',
+                    backgroundBlendMode: 'overlay',
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    overflow: 'hidden' 
+                }}
             >
-                {/* <Footer /> removed - rendered globally in Layout */}
-            </motion.div>
-        </motion.section>
+                 {/* Atmospheric Depth - Extremely Subtle */}
+                 <div style={{ position: 'absolute', inset: 0, opacity: 0.06, background: 'url(https://www.transparenttextures.com/patterns/cubes.png)' }} />
+                 <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 40%, rgba(255,255,255,0.8) 0%, transparent 60%)', opacity: 0.8 }} />
+                 
+                <div className="container" style={{ position: 'relative', zIndex: 10, maxWidth: '720px', textAlign: 'center' }}>
+                    <motion.div style={{ y: yContent }}>
+                        
+                        {/* Symbolic Anchor - Precise Alignment */}
+                        <motion.div 
+                            style={{ display: 'inline-flex', marginBottom: '40px', position: 'relative', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                             <div style={{ position: 'absolute', width: '48px', height: '48px', background: 'var(--color-spatial-accent)', opacity: 0.2, filter: 'blur(24px)', borderRadius: '50%' }} />
+                             <Zap size={32} color="var(--color-spatial-accent)" strokeWidth={1.5} fill="rgba(200, 163, 89, 0.15)" />
+                        </motion.div>
+                        
+                        {/* Editorial Headline - Strong Rhythm */}
+                        <h2 style={{ 
+                            fontSize: 'clamp(3rem, 5vw, 4.5rem)', 
+                            fontFamily: 'var(--font-display)', 
+                            lineHeight: 1.1, 
+                            marginBottom: '32px', 
+                            color: '#1a1a1a', 
+                            letterSpacing: '-0.02em',
+                            position: 'relative'
+                        }}>
+                            Preservation is<br/>
+                            <span 
+                                style={{ 
+                                    color: 'var(--color-spatial-accent)', 
+                                    fontStyle: 'italic',
+                                    fontWeight: 500,
+                                    textShadow: '0 0 40px rgba(200, 163, 89, 0.4)' 
+                                }}
+                            >
+                                participation.
+                            </span>
+                        </h2>
+                        
+                        {/* Narrative Paragraph - High Readability */}
+                        <p 
+                            style={{ 
+                                fontSize: '1.15rem', 
+                                color: '#4A4A4A', // Specific dark neutral range
+                                marginBottom: '64px', 
+                                lineHeight: 1.8,
+                                fontWeight: 400,
+                                maxWidth: '600px',
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                letterSpacing: '0.01em'
+                            }}
+                        >
+                            By exploring with Hidden Heritage, you help keep history alive. Every booking and field report contributes directly to the conservation of the Chambal Valley.
+                        </p>
+
+                        {/* Premium CTA - Intelligent Interactivity */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', paddingBottom: '40px' }}>
+                            <motion.button 
+                                onClick={() => navigate('/book')} 
+                                whileHover={{ y: -3, boxShadow: '0 20px 40px -10px rgba(200, 163, 89, 0.2)' }}
+                                whileTap={{ scale: 0.98 }}
+                                style={{ 
+                                    padding: '18px 40px', 
+                                    fontSize: '1rem',
+                                    fontWeight: 500,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '16px',
+                                    background: 'rgba(255, 255, 255, 0.9)',
+                                    backdropFilter: 'blur(12px)',
+                                    WebkitBackdropFilter: 'blur(12px)',
+                                    color: '#2a2a2a',
+                                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                                    borderRadius: '100px',
+                                    boxShadow: '0 8px 20px -6px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(255,255,255,0.5)',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)'
+                                }}
+                            >
+                                <span style={{ letterSpacing: '0.04em', textTransform: 'uppercase', fontSize: '0.85rem', fontWeight: 600 }}>Begin Expedition</span>
+                                <motion.div 
+                                    style={{ display: 'flex' }}
+                                    whileHover={{ x: 4 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                                >
+                                    <ArrowRight size={16} color="var(--color-spatial-accent)" />
+                                </motion.div>
+                            </motion.button>
+                            
+                            <span 
+                                style={{ 
+                                    fontSize: '0.8rem', 
+                                    color: '#666', 
+                                    letterSpacing: '0.05em',
+                                    fontWeight: 500
+                                }}
+                            >
+                                Join us in preserving the past.
+                            </span>
+                        </div>
+                        
+                    </motion.div>
+                </div>
+                
+                {/* Footer with Separation */}
+                <motion.div 
+                    style={{ position: 'absolute', bottom: 0, width: '100%' }}
+                    initial={{ opacity: 0.3 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    {/* <Footer /> removed - rendered globally in Layout */}
+                </motion.div>
+            </motion.section>
+            <style>{`
+                .awakening-text { grid-column: span 5; }
+                .awakening-image { grid-column: 7 / span 6; }
+                .exploration-tile-container { grid-column: span 4; }
+
+                @media (max-width: 900px) {
+                    .awakening-text { grid-column: span 12; order: 2; margin-top: 40px; }
+                    .awakening-image { grid-column: span 12; order: 1; height: 350px !important; }
+                    .exploration-tile-container { grid-column: span 12; }
+                    h2 { font-size: 2.5rem !important; }
+                }
+            `}</style>
+        </>
     );
 };
 
