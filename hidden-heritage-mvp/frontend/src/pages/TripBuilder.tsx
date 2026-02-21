@@ -154,7 +154,7 @@ const TripBuilder = () => {
             <PaymentModal
                 isOpen={checkoutStep !== null && checkoutStep !== 'success'}
                 onClose={() => setCheckoutStep(null)}
-                amount={estimate?.totalCost || 0}
+                amount={estimate ? Math.round(estimate.totalCost * 1.18) : 0}
                 onSuccess={async () => {
                     try {
                         await saveTrip({
@@ -329,20 +329,51 @@ const TripBuilder = () => {
                                 </div>
 
                                 <div style={{ background: THEME.surfaceSecondary, border: `1px solid ${THEME.border}`, padding: '1.5rem', borderRadius: '16px', marginBottom: '2rem' }}>
-                                    <div style={{ fontSize: '0.7rem', color: THEME.textSecondary, textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 800, letterSpacing: '0.05em' }}>Authorization Total</div>
+                                    <div style={{ fontSize: '0.7rem', color: THEME.textSecondary, textTransform: 'uppercase', marginBottom: '1rem', fontWeight: 800, letterSpacing: '0.05em' }}>Financial Brief</div>
+                                    
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem', borderBottom: `1px solid ${THEME.border}`, paddingBottom: '1.25rem' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                                            <span style={{ color: THEME.textSecondary }}>Base Expedition Fees</span>
+                                            <span style={{ color: THEME.textPrimary, fontWeight: 500 }}>₹{(estimate.breakdown.entryFees + estimate.breakdown.transport + estimate.breakdown.food + estimate.breakdown.accommodation).toLocaleString()}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                                            <span style={{ color: THEME.textSecondary }}>Specialist Support</span>
+                                            <span style={{ color: THEME.textPrimary, fontWeight: 500 }}>₹{estimate.breakdown.guideCost.toLocaleString()}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                                            <span style={{ color: THEME.textSecondary }}>Heritage Tax (18% GST)</span>
+                                            <span style={{ color: THEME.textPrimary, fontWeight: 500 }}>₹{(estimate.totalCost * 0.18).toLocaleString()}</span>
+                                        </div>
+                                    </div>
+
                                     <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-                                        <span style={{ fontSize: '2rem', fontWeight: 500, color: estimate.isWithinBudget ? THEME.textPrimary : '#DC2626', fontFamily: 'serif' }}>₹{estimate.totalCost.toLocaleString()}</span>
-                                        <span style={{ fontSize: '0.75rem', color: THEME.accent, fontWeight: 700 }}>VERIFIED</span>
+                                        <span style={{ fontSize: '2rem', fontWeight: 500, color: (estimate.totalCost * 1.18) <= input.budget ? THEME.textPrimary : '#DC2626', fontFamily: 'serif' }}>₹{(estimate.totalCost * 1.18).toLocaleString()}</span>
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                            <span style={{ fontSize: '0.6rem', color: THEME.textSecondary, fontWeight: 700, textTransform: 'uppercase' }}>Total Authorized</span>
+                                            <span style={{ fontSize: '0.75rem', color: THEME.accent, fontWeight: 700 }}>VERIFIED</span>
+                                        </div>
                                     </div>
                                     
-                                    {!estimate.isWithinBudget && (
-                                        <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#DC2626', fontSize: '0.75rem', fontWeight: 700 }}>
-                                            <Shield size={14} /> EXCEEDS PROJECTED LIMIT
-                                        </div>
-                                    )}
+                                    <AnimatePresence>
+                                        {(estimate.totalCost * 1.18) > input.budget && (
+                                            <motion.div 
+                                                initial={{ height: 0, opacity: 0 }} 
+                                                animate={{ height: 'auto', opacity: 1 }} 
+                                                exit={{ height: 0, opacity: 0 }}
+                                                style={{ marginTop: '1.25rem', background: 'rgba(220, 38, 38, 0.05)', border: '1px solid rgba(220, 38, 38, 0.2)', padding: '0.75rem', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+                                            >
+                                                <Shield size={16} color="#DC2626" />
+                                                <div style={{ fontSize: '0.75rem', color: '#DC2626', fontWeight: 600, lineHeight: 1.4 }}>
+                                                    OVER BUDGET: This sequence requires ₹{((estimate.totalCost * 1.18) - input.budget).toLocaleString()} additional funding.
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
 
-                                <button 
+                                <motion.button 
+                                    whileHover={{ scale: 1.02, backgroundColor: '#000' }}
+                                    whileTap={{ scale: 0.98 }}
                                     onClick={() => {
                                         if (!isAuthenticated) navigate('/login');
                                         else setCheckoutStep('review');
@@ -356,7 +387,7 @@ const TripBuilder = () => {
                                         padding: '1.25rem', 
                                         borderRadius: '12px', 
                                         fontWeight: 700, 
-                                        fontSize: '0.9rem', 
+                                        fontSize: '0.85rem', 
                                         textTransform: 'uppercase', 
                                         letterSpacing: '0.15em', 
                                         cursor: 'pointer', 
@@ -368,12 +399,18 @@ const TripBuilder = () => {
                                         boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
                                     }}
                                 >
-                                    {loading ? 'CALCULATING...' : 'AUTHORIZE PROJECT'} <ChevronRight size={18} />
-                                </button>
+                                    {loading ? 'CALCULATING...' : (
+                                        <>
+                                            PROCEED TO SECURE PAYMENT <ChevronRight size={18} />
+                                        </>
+                                    )}
+                                </motion.button>
                             </motion.div>
                         ) : (
-                            <div style={{ textAlign: 'center', padding: '1.5rem', background: '#F9F8F6', borderRadius: '12px', border: `1px dashed ${THEME.border}` }}>
-                                <span style={{ fontSize: '0.85rem', color: THEME.textSecondary }}>Add targets to unlock logistics module.</span>
+                            <div style={{ textAlign: 'center', padding: '3rem 2rem', background: '#FDFDFB', borderRadius: '16px', border: `1px dashed ${THEME.border}`, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                                <Lock size={24} color={THEME.textSecondary} style={{ opacity: 0.2 }} />
+                                <span style={{ fontSize: '0.75rem', color: THEME.textSecondary, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Logistics Locked</span>
+                                <p style={{ fontSize: '0.75rem', color: THEME.textSecondary, opacity: 0.6, lineHeight: 1.5, margin: 0 }}>Select mission targets on the map to initialize regional logistics and cost estimation.</p>
                             </div>
                         )}
                     </div>
