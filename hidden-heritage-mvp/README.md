@@ -1,9 +1,9 @@
 # 🏛️ Hidden Heritage | Neural Heritage Interface
 
-[![Status](https://img.shields.io/badge/Status-v3.0--Gold-B08D55?style=flat-square)](https://hidden-heritage-mvp.vercel.app)
+[![Status](https://img.shields.io/badge/Status-v3.0--Gold-B08D55?style=flat-square)](https://6994258f8c8a136efb183ba3--dapper-piroshki-102a12.netlify.app/)
 [![Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node%20%7C%20MySQL%20%7C%20Mongo-1C1917?style=flat-square)](https://github.com/suvendukungfu/Tejasvin)
 
-**Live Demo: [https://hidden-heritage-mvp.vercel.app](https://hidden-heritage-mvp.vercel.app)**
+**Live Demo: [https://6994258f8c8a136efb183ba3--dapper-piroshki-102a12.netlify.app/](https://6994258f8c8a136efb183ba3--dapper-piroshki-102a12.netlify.app/)**
 
 Hidden Heritage is a **Neural Heritage Interface**—a cognitive, spatial computing platform designed to treat history not as a static archive, but as a living signal. It leverages modern web tech to create an attention-guided narrative experience for discovering the forgotten architecture of the Indian subcontinent.
 
