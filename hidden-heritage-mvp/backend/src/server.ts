@@ -47,7 +47,13 @@ app.get('/', (req, res) => {
 // Start server
 const startServer = async () => {
     try {
-        await connectMysql();
+        console.log('Attempting to connect to databases...');
+        try {
+            await connectMysql();
+        } catch (mysqlError) {
+            console.warn('MySQL Connection failed. Some admin features may be unavailable, but the server will still start.');
+        }
+        
         await connectMongo();
 
         app.listen(PORT, () => {
