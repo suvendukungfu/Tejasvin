@@ -1,7 +1,9 @@
 # 🏛️ Hidden Heritage | Neural Heritage Interface
 
-[![Status](https://img.shields.io/badge/Status-v3.0--Gold-B08D55?style=flat-square)](https://github.com)
-[![Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node%20%7C%20MySQL%20%7C%20Mongo-1C1917?style=flat-square)](https://github.com)
+[![Status](https://img.shields.io/badge/Status-v3.0--Gold-B08D55?style=flat-square)](https://hidden-heritage-mvp.vercel.app)
+[![Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node%20%7C%20MySQL%20%7C%20Mongo-1C1917?style=flat-square)](https://github.com/suvendukungfu/Tejasvin)
+
+**Live Demo: [https://hidden-heritage-mvp.vercel.app](https://hidden-heritage-mvp.vercel.app)**
 
 Hidden Heritage is a **Neural Heritage Interface**—a cognitive, spatial computing platform designed to treat history not as a static archive, but as a living signal. It leverages modern web tech to create an attention-guided narrative experience for discovering the forgotten architecture of the Indian subcontinent.
 
@@ -57,7 +59,7 @@ Hidden Heritage is a **Neural Heritage Interface**—a cognitive, spatial comput
 
 1. **Clone & Install**:
    ```bash
-   git clone https://github.com/your-username/hidden-heritage.git
+   git clone https://github.com/suvendukungfu/Tejasvin.git
    cd hidden-heritage-mvp
    npm install # in both /frontend and /backend
    ```
