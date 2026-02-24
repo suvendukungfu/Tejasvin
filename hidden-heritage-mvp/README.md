@@ -53,7 +53,7 @@ Hidden Heritage is a **Neural Heritage Interface**—a cognitive, spatial comput
 
 - **Docker**: Containerized MySQL 8.0 and MongoDB 6.0 environments.
 - **Frontend**: Optimized for Netlify/Vercel.
-- \*_Backend_: Node.js runtime (Render/Heroku compatible).
+- **Backend**: Node.js runtime (Render/Heroku compatible).
 
 ### Quick Start
 
