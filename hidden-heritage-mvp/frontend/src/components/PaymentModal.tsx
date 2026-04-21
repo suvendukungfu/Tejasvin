@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { createPaymentIntent } from '../services/api';
+import { createPaymentIntent, confirmPayment } from '../services/api';
 import { X, CreditCard, Lock, CheckCircle, Shield, Wifi, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -415,10 +415,18 @@ const SuccessView = ({ amount, lastFour }: { amount: number; lastFour: string })
     );
 };
 
+interface PaymentModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    amount: number;
+    tripId: number;
+    onSuccess: () => void;
+}
+
 // ==============================
 //  MAIN COMPONENT
 // ==============================
-const PaymentModal = ({ isOpen, onClose, amount, onSuccess }: PaymentModalProps) => {
+const PaymentModal = ({ isOpen, onClose, amount, tripId, onSuccess }: PaymentModalProps) => {
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -472,10 +480,16 @@ const PaymentModal = ({ isOpen, onClose, amount, onSuccess }: PaymentModalProps)
         try {
             const res = await createPaymentIntent({
                 amount,
-                tripId: 0,
+                tripId: tripId || 0,
             });
 
-            if (res.data) {
+            if (res.data || res.success) {
+                // Step 2: Confirm Payment (updates trip status to confirmed)
+                await confirmPayment({
+                    tripId: tripId || 0,
+                    paymentId: 'MOCK_STRIPE_CH_123'
+                });
+
                 setTimeout(() => {
                     setProcessing(false);
                     setSuccess(true);

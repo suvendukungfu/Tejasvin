@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5001/api',
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5003/api',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -39,7 +39,7 @@ const MOCK_SITES = [
         longitude: 78.1729,
         entry_fee: 0,
         avg_visit_time_mins: 90,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/7/77/Bateshwar_Temple_Complex_-_3.jpg',
+        image_url: '/assets/bateshwar.jpg',
         safety_score: 8,
         safety_details: { accessibility: "Moderate", terrain: "Uneven steps", network: "Good" },
         ar_content_available: true
@@ -55,7 +55,7 @@ const MOCK_SITES = [
         longitude: 78.3000,
         entry_fee: 500,
         avg_visit_time_mins: 120,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Chambal-river-gorge.jpg',
+        image_url: '/assets/ravines.jpg',
         safety_score: 6,
         safety_details: { accessibility: "Low", terrain: "Rugged", network: "Poor" },
         ar_content_available: false
@@ -70,7 +70,7 @@ const MOCK_SITES = [
         longitude: 78.2045,
         entry_fee: 25,
         avg_visit_time_mins: 60,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/General_View_of_Chausath_Yogini_Temple_Mitawali.jpg',
+        image_url: '/assets/mitawali.jpg',
         safety_score: 9,
         safety_details: { accessibility: "High", terrain: "Steps", network: "Good" },
         ar_content_available: true
@@ -85,7 +85,7 @@ const MOCK_SITES = [
         longitude: 78.9333,
         entry_fee: 0,
         avg_visit_time_mins: 120,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Garh_Kundar.JPG',
+        image_url: '/assets/gwalior.jpg',
         safety_score: 7,
         safety_details: { accessibility: "Moderate", terrain: "Hilly", network: "Average" },
         ar_content_available: false
@@ -100,10 +100,10 @@ const MOCK_SITES = [
         longitude: 78.0833,
         entry_fee: 0,
         avg_visit_time_mins: 45,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Kakanmath_Temple%2C_Morena.jpg',
-        safety_score: 8,
-        safety_details: { accessibility: "Moderate", terrain: "Open", network: "Good" },
-        ar_content_available: true
+        image_url: '/assets/kakanmath.jpg',
+        safety_score: 7,
+        safety_details: { accessibility: "Moderate", terrain: "Flat", network: "Moderate" },
+        ar_content_available: false
     }
 ];
 
@@ -219,12 +219,13 @@ export const getMe = () => fetchWithFallback(
 );
 
 export const createPaymentIntent = (data: any) => fetchWithFallback(
-    () => api.post('/payment/create-intent', data),
-    () => ({
-        client_secret: 'mock_secret_' + Math.random().toString(36).substring(7),
-        amount: data.amount,
-        currency: 'inr'
-    })
+    () => api.post('/payments/create-intent', data),
+    () => ({ success: true })
+);
+
+export const confirmPayment = (data: any) => fetchWithFallback(
+    () => api.post('/payments/confirm', data),
+    () => ({ success: true })
 );
 
 export const AssetUrl = (path: string) => path;

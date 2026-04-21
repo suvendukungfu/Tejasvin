@@ -132,7 +132,7 @@ const SiteDetail = () => {
                              <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em' }}>DATA STREAM ACTIVE</span>
                         </div>
                         <div style={{ fontSize: '0.7rem', color: 'var(--color-text-secondary)', fontFamily: 'monospace' }}>
-                            LAT: {site.latitude?.toFixed(4) || '26.7577'} • LON: {site.longitude?.toFixed(4) || '78.1729'}
+                            LAT: {Number(site.latitude)?.toFixed(4) || '26.7577'} • LON: {Number(site.longitude)?.toFixed(4) || '78.1729'}
                         </div>
                     </motion.div>
                 </div>

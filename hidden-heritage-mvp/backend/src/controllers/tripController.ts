@@ -19,11 +19,11 @@ export const estimateTrip = async (req: Request, res: Response) => {
 
 export const saveTrip = async (req: Request, res: Response) => {
     try {
-        const { userId, name, totalCost, totalTime, siteIds, guideId } = req.body;
+        const { userId, name, totalCost, totalTime, siteIds, guideId, status } = req.body;
 
         const [result] = await mysqlPool.query(
-            'INSERT INTO trips (user_id, name, total_cost, total_time_mins, site_ids, guide_id) VALUES (?, ?, ?, ?, ?, ?)',
-            [userId || 'guest', name, totalCost, totalTime, JSON.stringify(siteIds), guideId]
+            'INSERT INTO trips (user_id, name, total_cost, total_time_mins, site_ids, guide_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [userId || null, name, totalCost, totalTime, JSON.stringify(siteIds), guideId, status || 'draft']
         );
 
         res.status(201).json({ message: 'Trip saved successfully', tripId: (result as any).insertId });

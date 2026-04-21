@@ -147,6 +147,37 @@ const TripBuilder = () => {
 
     const selectedSitesData = selectedSiteIds.map(id => allSites.find(s => s.id === id)).filter(s => !!s);
 
+    const [activeTripId, setActiveTripId] = useState<number | null>(null);
+
+    const handleProceedToPayment = async () => {
+        if (!isAuthenticated) {
+            navigate('/login', { state: { from: '/trip-builder', initialSelection: selectedSiteIds } });
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // Step 1: Save as Draft
+            const res = await saveTrip({
+                userId: user?.id || 1,
+                name: `Expedition: ${selectedSitesData[0]?.name || 'Explorer'}`,
+                totalCost: estimate?.totalCost,
+                totalTime: estimate?.totalTimeMinutes,
+                siteIds: selectedSiteIds,
+                guideId: input.guideId ? Number(input.guideId) : null,
+                status: 'draft'
+            });
+
+            const tripId = res.data?.tripId || res.tripId;
+            setActiveTripId(tripId);
+            setCheckoutStep('review');
+        } catch (err) {
+            alert('Failed to initialize mission sequence.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="min-h-screen" style={{ background: THEME.bg, color: THEME.textPrimary }}>
             <NavBar />
@@ -155,18 +186,12 @@ const TripBuilder = () => {
                 isOpen={checkoutStep !== null && checkoutStep !== 'success'}
                 onClose={() => setCheckoutStep(null)}
                 amount={estimate ? Math.round(estimate.totalCost * 1.18) : 0}
+                tripId={activeTripId || 0}
                 onSuccess={async () => {
                     try {
-                        await saveTrip({
-                            userId: user?.id || 1,
-                            name: `Expedition: ${selectedSitesData[0]?.name || 'Explorer'}`,
-                            totalCost: estimate?.totalCost,
-                            totalTime: estimate?.totalTimeMinutes,
-                            siteIds: selectedSiteIds,
-                            guideId: input.guideId ? Number(input.guideId) : null
-                        });
+                        // Trip status update is handled by backend confirmPayment
                         setCheckoutStep('success');
-                    } catch (err) { alert('Authorization failed. Contact Command.'); }
+                    } catch (err) { console.error(err); }
                 }}
             />
 
@@ -374,10 +399,7 @@ const TripBuilder = () => {
                                 <motion.button 
                                     whileHover={{ scale: 1.02, backgroundColor: '#000' }}
                                     whileTap={{ scale: 0.98 }}
-                                    onClick={() => {
-                                        if (!isAuthenticated) navigate('/login');
-                                        else setCheckoutStep('review');
-                                    }}
+                                    onClick={handleProceedToPayment}
                                     disabled={loading}
                                     style={{ 
                                         width: '100%', 
