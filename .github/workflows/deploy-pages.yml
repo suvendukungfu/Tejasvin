@@ -27,7 +27,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: hidden-heritage-mvp/frontend
+        working-directory: hidden-heritage-mvp
         run: npm install
 
       - name: Build
